@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!jflex-1.7.0.jar
 *.war
 *.nar
 *.ear

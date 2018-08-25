@@ -1,0 +1,39 @@
+<idea-plugin>
+    <id>com.github.amnonya.hdleditor</id>
+    <name>Editor for VHDL</name>
+    <version>0.1.0</version>
+    <vendor email="aamnony@gmail.com" url="http://www.github.com/amnonya">amnonya</vendor>
+
+    <!--TODO: fill description-->
+    <description><![CDATA[
+      Enter short description for your plugin here.<br>
+      <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!--TODO: fill change notes-->
+    <change-notes><![CDATA[
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="173.0" />
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlFileTypeFactory" />
+        <lang.parserDefinition language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.VhdlParserDefinition" />
+        <lang.syntaxHighlighterFactory language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlSyntaxHighlighterFactory" />
+        <annotator language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.annotation.VhdlAnnotator" />
+        <lang.findUsagesProvider language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.findUsages.VhdlFindUsagesProvider" />
+        <psi.referenceContributor implementation="com.github.amnonya.hdleditor.vhdl.psi.VhdlReferenceContributor" />
+        <lang.commenter language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.VhdlCommenter" />
+        <lang.formatter language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.formatting.VhdlFormattingModelBuilder" />
+    </extensions>
+</idea-plugin>
