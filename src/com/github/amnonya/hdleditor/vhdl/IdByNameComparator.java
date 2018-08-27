@@ -8,8 +8,8 @@ import java.util.Comparator;
  * Comparator between {@link VhdlIdentifier}s.
  * The comparison is made by comparing the identifiers' text fields while ignoring letter case.
  */
-public class VhdlIdentifierComparator implements Comparator<VhdlIdentifier> {
-    public static final VhdlIdentifierComparator INSTANCE = new VhdlIdentifierComparator();
+public class IdByNameComparator implements Comparator<VhdlIdentifier> {
+    public static final IdByNameComparator INSTANCE = new IdByNameComparator();
 
     @Override
     public int compare(VhdlIdentifier id1, VhdlIdentifier id2) {

@@ -1,5 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.psi;
 
+import com.github.amnonya.hdleditor.vhdl.IdByScopeComparator;
 import com.github.amnonya.hdleditor.vhdl.icons.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.psi.tree.VhdlPsiTreeUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
@@ -54,17 +55,36 @@ public class VhdlReference extends PsiReferenceBase<PsiNamedElement> {// impleme
     public PsiElement resolve() {
         VhdlIdentifier id = (VhdlIdentifier) getElement();
         if (!id.isDeclared()) {
+            PsiElement[] scopes = id.getScopes();
             // This identifier is mentioned, we need to find the declared reference.
             List<VhdlIdentifier> ids = new ArrayList<>();
             VhdlPsiTreeUtil.findIdentifiers(id, ids);
+
+            // Let's sort the references by their scope, so we'll find deeper declarations first.
+            ids.sort(new IdByScopeComparator());
+
             for (VhdlIdentifier ref : ids) {
                 if (ref.isDeclared()) {
-                    return ref;
+                    // We found a declaration, let's check its scope.
+                    PsiElement[] refScopes = ref.getScopes();
+                    int refScopeScore = IdByScopeComparator.getScore(refScopes[0]);
+
+                    if (refScopeScore >= IdByScopeComparator.DEEP_SCOPE) {
+                        // The reference scope is deep (process/subprogram body...) - if it's the same as the identifier's scope,
+                        // then this is the best reference declaration we could find. Otherwise we'll continue searching.
+                        if (refScopes[0] == scopes[0]) {
+                            return ref;
+                        }
+                    } else {
+                        // We couldn't find a deep declaration, so let's return the closest reference.
+                        return ref;
+                    }
                 }
             }
         }
         return null;
     }
+
 
     @NotNull
     @Override

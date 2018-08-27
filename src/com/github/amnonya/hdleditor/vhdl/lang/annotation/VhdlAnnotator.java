@@ -1,6 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.lang.annotation;
 
-import com.github.amnonya.hdleditor.vhdl.VhdlIdentifierComparator;
+import com.github.amnonya.hdleditor.vhdl.IdByNameComparator;
 import com.github.amnonya.hdleditor.vhdl.exceptions.DeclarationAlreadyExistsException;
 import com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlSyntaxHighlighter;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlArchitectureBody;
@@ -18,6 +18,7 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlRefname;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSignalDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubtypeDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlVariableDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.tree.VhdlPsiTreeUtil;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -49,6 +50,10 @@ public class VhdlAnnotator implements Annotator {
             handleEntity((VhdlEntityDeclaration) element);
         } else if (element instanceof VhdlArchitectureBody) {
             handleArchitecture((VhdlArchitectureBody) element);
+        } else if (element instanceof VhdlPackageDeclaration) {
+            handlePackage((VhdlPackageDeclaration) element);
+        } else if (element instanceof VhdlPackageBody) {
+            handlePackageBody((VhdlPackageBody) element);
         }
         // Object declarations:
         else if (element instanceof VhdlInterfaceGenericDeclaration) {
@@ -59,6 +64,8 @@ public class VhdlAnnotator implements Annotator {
             handleConstantDeclaration((VhdlConstantDeclaration) element);
         } else if (element instanceof VhdlSignalDeclaration) {
             handleSignalDeclaration((VhdlSignalDeclaration) element);
+        } else if (element instanceof VhdlVariableDeclaration) {
+            handleVariableDeclaration((VhdlVariableDeclaration) element);
         }
         // Type declarations:
         else if (element instanceof VhdlFullTypeDeclaration) {
@@ -164,26 +171,38 @@ public class VhdlAnnotator implements Annotator {
         annotateLabels(arch.getIdentifierList(), VhdlSyntaxHighlighter.SECONDARY_DESIGN_UNIT_NAME);
     }
 
+    /**
+     * Creates annotations in {@code pkg}.
+     *
+     * @param pkg The {@link VhdlPackageDeclaration} to annotate.
+     */
+    private void handlePackage(@NotNull VhdlPackageDeclaration pkg) {
+        annotateLabels(pkg.getIdentifierList(), VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT_NAME);
+    }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Creates annotations for {@code portDeclaration}.
+     * Creates annotations in {@code packageBody}.
      *
-     * @param portDeclaration The {@link VhdlInterfacePortDeclaration} to annotate.
+     * @param packageBody The {@link VhdlPackageBody} to annotate.
      */
-    private void handlePortDeclaration(VhdlInterfacePortDeclaration portDeclaration) {
-        for (VhdlIdentifier id : portDeclaration.getIdentifierList().getIdentifierList()) {
-            try {
-                checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.PORT_NAME);
-            } catch (DeclarationAlreadyExistsException e) {
-                holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
+    private void handlePackageBody(VhdlPackageBody packageBody) {
+        VhdlFile parent = (VhdlFile) packageBody.getParent();
+        VhdlIdentifier bodyPackageName = packageBody.getIdentifierList().get(0);
+        VhdlPackageDeclaration filePackage = parent.findChildByClass(VhdlPackageDeclaration.class);
+        if (filePackage != null) {
+            VhdlIdentifier filePackageName = filePackage.getIdentifierList().get(0);
+            if (!IdByNameComparator.match(bodyPackageName, filePackageName)) {
+                holder.createWarningAnnotation(bodyPackageName.getTextRange(), "Package body doesn't implement the package declared in this file");
             }
         }
+        annotateLabels(packageBody.getIdentifierList(), VhdlSyntaxHighlighter.SECONDARY_DESIGN_UNIT_NAME);
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Creates annotations for {@code genericDeclaration}.
@@ -205,8 +224,23 @@ public class VhdlAnnotator implements Annotator {
     }
 
     /**
+     * Creates annotations for {@code portDeclaration}.
+     *
+     * @param portDeclaration The {@link VhdlInterfacePortDeclaration} to annotate.
+     */
+    private void handlePortDeclaration(VhdlInterfacePortDeclaration portDeclaration) {
+        for (VhdlIdentifier id : portDeclaration.getIdentifierList().getIdentifierList()) {
+            try {
+                checkDuplicates(id);
+                annotateText(id, VhdlSyntaxHighlighter.PORT_NAME);
+            } catch (DeclarationAlreadyExistsException e) {
+                holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
+            }
+        }
+    }
+
+    /**
      * Creates annotations for {@code constantDeclaration}.
-     * TODO: Currently supports only architecture declarations.
      *
      * @param constantDeclaration The {@link VhdlConstantDeclaration} to annotate.
      */
@@ -226,7 +260,6 @@ public class VhdlAnnotator implements Annotator {
 
     /**
      * Creates annotations for {@code signalDeclaration}.
-     * TODO: Currently supports only architecture declarations.
      *
      * @param signalDeclaration The {@link VhdlSignalDeclaration} to annotate.
      */
@@ -242,6 +275,23 @@ public class VhdlAnnotator implements Annotator {
     }
 
     /**
+     * Creates annotations for {@code variableDeclaration}.
+     *
+     * @param variableDeclaration The {@link VhdlVariableDeclaration} to annotate.
+     */
+    private void handleVariableDeclaration(VhdlVariableDeclaration variableDeclaration) {
+        for (VhdlIdentifier id : variableDeclaration.getIdentifierList().getIdentifierList()) {
+            try {
+                checkDuplicates(id);
+                annotateText(id, VhdlSyntaxHighlighter.VARIABLE_NAME);
+            } catch (DeclarationAlreadyExistsException e) {
+                holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
+            }
+        }
+    }
+
+
+    /**
      * Creates annotations for {@code typeDeclaration}.
      *
      * @param typeDeclaration The {@link VhdlFullTypeDeclaration} to annotate.
@@ -250,7 +300,7 @@ public class VhdlAnnotator implements Annotator {
         VhdlIdentifier id = typeDeclaration.getIdentifier();
         try {
             checkDuplicates(id);
-            annotateText(id, VhdlSyntaxHighlighter.TYPE);
+            annotateText(id, VhdlSyntaxHighlighter.TYPE_NAME);
         } catch (DeclarationAlreadyExistsException e) {
             holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
         }
@@ -265,7 +315,7 @@ public class VhdlAnnotator implements Annotator {
         VhdlIdentifier id = subtypeDeclaration.getIdentifier();
         try {
             checkDuplicates(id);
-            annotateText(id, VhdlSyntaxHighlighter.SUBTYPE);
+            annotateText(id, VhdlSyntaxHighlighter.SUBTYPE_NAME);
         } catch (DeclarationAlreadyExistsException e) {
             holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
         }
@@ -280,14 +330,16 @@ public class VhdlAnnotator implements Annotator {
             annotateText(id, VhdlSyntaxHighlighter.CONSTANT_NAME);
         } else if (declaration instanceof VhdlSignalDeclaration) {
             annotateText(id, VhdlSyntaxHighlighter.SIGNAL_NAME);
+        } else if (declaration instanceof VhdlVariableDeclaration) {
+            annotateText(id, VhdlSyntaxHighlighter.VARIABLE_NAME);
+        } else if (declaration instanceof VhdlFullTypeDeclaration) {
+            annotateText(id, VhdlSyntaxHighlighter.TYPE_NAME);
+        } else if (declaration instanceof VhdlSubtypeDeclaration) {
+            annotateText(id, VhdlSyntaxHighlighter.SUBTYPE_NAME);
         } else if (declaration instanceof VhdlEntityDeclaration) {
             annotateText(id, VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT_NAME);
         } else if (declaration instanceof VhdlArchitectureBody) {
             annotateText(id, VhdlSyntaxHighlighter.SECONDARY_DESIGN_UNIT_NAME);
-        } else if (declaration instanceof VhdlFullTypeDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.TYPE);
-        } else if (declaration instanceof VhdlSubtypeDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.SUBTYPE);
         }
     }
 
@@ -308,6 +360,7 @@ public class VhdlAnnotator implements Annotator {
                 declaration = id.getParent();
                 if (declaration instanceof VhdlIdentifierList) {
                     declaration = declaration.getParent();
+                    break;
                 }
             }
         }
@@ -400,7 +453,7 @@ public class VhdlAnnotator implements Annotator {
     @NotNull
     private static Pair<Collection<VhdlIdentifier>, Collection<VhdlIdentifier>>
     getDuplicates(@NotNull Collection<VhdlIdentifier> ids) {
-        TreeSet<VhdlIdentifier> uniques = new TreeSet<>(VhdlIdentifierComparator.INSTANCE);
+        TreeSet<VhdlIdentifier> uniques = new TreeSet<>(IdByNameComparator.INSTANCE);
         List<VhdlIdentifier> duplicates = new ArrayList<>(ids.size() / 2);
 
         for (VhdlIdentifier id : ids) {

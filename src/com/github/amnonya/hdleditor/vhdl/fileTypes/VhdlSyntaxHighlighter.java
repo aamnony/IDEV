@@ -20,8 +20,8 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SECONDARY_DESIGN_UNIT_NAME;
     public static final TextAttributesKey KEYWORD;
     public static final TextAttributesKey OPERATOR;
-    public static final TextAttributesKey TYPE;
-    public static final TextAttributesKey SUBTYPE;
+    public static final TextAttributesKey TYPE_NAME;
+    public static final TextAttributesKey SUBTYPE_NAME;
     public static final TextAttributesKey SEMICOLON;
     public static final TextAttributesKey COMMA;
     public static final TextAttributesKey DOT;
@@ -36,14 +36,11 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
     //    public static final TextAttributesKey PARAMETER_NAME;
     public static final TextAttributesKey SIGNAL_NAME;
     public static final TextAttributesKey CONSTANT_NAME;
+    public static final TextAttributesKey VARIABLE_NAME;
 
     static {
-        PRIMARY_DESIGN_UNIT_NAME = createTextAttributesKey("PRIMARY_DESIGN_UNIT_NAME", DefaultLanguageHighlighterColors.INTERFACE_NAME);
-        SECONDARY_DESIGN_UNIT_NAME = createTextAttributesKey("SECONDARY_DESIGN_UNIT_NAME", DefaultLanguageHighlighterColors.CLASS_NAME);
         KEYWORD = createTextAttributesKey("KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
         OPERATOR = createTextAttributesKey("OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-        TYPE = createTextAttributesKey("TYPE", DefaultLanguageHighlighterColors.CLASS_REFERENCE); // todo
-        SUBTYPE = createTextAttributesKey("SUBTYPE", DefaultLanguageHighlighterColors.CLASS_REFERENCE); // todo
         SEMICOLON = createTextAttributesKey("SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
         COMMA = createTextAttributesKey("COMMA", DefaultLanguageHighlighterColors.COMMA);
         DOT = createTextAttributesKey("DOT", DefaultLanguageHighlighterColors.DOT);
@@ -53,18 +50,27 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
         STRING = createTextAttributesKey("STRING", DefaultLanguageHighlighterColors.STRING);
         NUMBER = createTextAttributesKey("NUMBER", DefaultLanguageHighlighterColors.NUMBER);
 
+        // TODO: Assign custom colors that match VHDL:
+        PRIMARY_DESIGN_UNIT_NAME = createTextAttributesKey("PRIMARY_DESIGN_UNIT_NAME", DefaultLanguageHighlighterColors.INTERFACE_NAME);
+        SECONDARY_DESIGN_UNIT_NAME = createTextAttributesKey("SECONDARY_DESIGN_UNIT_NAME", DefaultLanguageHighlighterColors.CLASS_NAME);
+
+        TYPE_NAME = createTextAttributesKey("TYPE_NAME", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
+        SUBTYPE_NAME = createTextAttributesKey("SUBTYPE_NAME", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
+
         GENERIC_NAME = createTextAttributesKey("GENERIC_NAME", DefaultLanguageHighlighterColors.PARAMETER);
         PORT_NAME = createTextAttributesKey("PORT_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
-        LABEL = createTextAttributesKey("LABEL", DefaultLanguageHighlighterColors.LABEL);
 //        PARAMETER_NAME = createTextAttributesKey("PARAMETER_NAME", DefaultLanguageHighlighterColors.PARAMETER);
-        SIGNAL_NAME = createTextAttributesKey("SIGNAL_NAME", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
         CONSTANT_NAME = createTextAttributesKey("CONSTANT_NAME", DefaultLanguageHighlighterColors.CONSTANT);
+        SIGNAL_NAME = createTextAttributesKey("SIGNAL_NAME", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+        VARIABLE_NAME = createTextAttributesKey("VARIABLE_NAME", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+
+        LABEL = createTextAttributesKey("LABEL", DefaultLanguageHighlighterColors.LABEL);
     }
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] KEYWORDS_KEYS = new TextAttributesKey[]{KEYWORD};
     private static final TextAttributesKey[] OPERATORS_KEYS = new TextAttributesKey[]{OPERATOR};
-    //private static final TextAttributesKey[] TYPES_KEYS = new TextAttributesKey[]{TYPE};
+    //private static final TextAttributesKey[] TYPES_KEYS = new TextAttributesKey[]{TYPE_NAME};
     private static final TextAttributesKey[] SEMICOLON_KEYS = new TextAttributesKey[]{SEMICOLON};
     private static final TextAttributesKey[] COMMA_KEYS = new TextAttributesKey[]{COMMA};
     private static final TextAttributesKey[] DOT_KEYS = new TextAttributesKey[]{DOT};

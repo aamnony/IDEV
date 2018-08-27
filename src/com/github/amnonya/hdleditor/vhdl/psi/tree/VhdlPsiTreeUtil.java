@@ -1,6 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.psi.tree;
 
-import com.github.amnonya.hdleditor.vhdl.VhdlIdentifierComparator;
+import com.github.amnonya.hdleditor.vhdl.IdByNameComparator;
 import com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlFileType;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlArchitectureBody;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlContextClause;
@@ -51,7 +51,7 @@ public class VhdlPsiTreeUtil {
      * If {@code id == null} then all found {@link VhdlIdentifier}s are returned in the order they were found in.<br>
      * The file containing {@code id}, is queried first.
      * <p>
-     * The comparison is made by {@link VhdlIdentifierComparator}.
+     * The comparison is made by {@link IdByNameComparator}.
      *
      * @param id       The {@link VhdlIdentifier} to look for.
      * @param foundIds A {@link List} of {@link VhdlIdentifier}s that match {@code id}.
@@ -95,7 +95,7 @@ public class VhdlPsiTreeUtil {
 
     /**
      * Finds {@link VhdlIdentifier}s that match the {@code id}, in the psi tree under {@code scopes}. <br>
-     * The comparison is made by {@link VhdlIdentifierComparator}.
+     * The comparison is made by {@link IdByNameComparator}.
      * If {@code id == null} then all found {@link VhdlIdentifier}s are returned.
      *
      * @param id       The {@link VhdlIdentifier} to look for.
@@ -108,7 +108,7 @@ public class VhdlPsiTreeUtil {
             for (PsiElement child : scope.getChildren()) {
                 if (child instanceof VhdlIdentifier) {
                     VhdlIdentifier childId = (VhdlIdentifier) child;
-                    if (id == null || VhdlIdentifierComparator.match(id, childId)) {
+                    if (id == null || IdByNameComparator.match(id, childId)) {
                         foundIds.add(childId);
                     }
                 } else {
