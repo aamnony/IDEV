@@ -16,61 +16,34 @@ import static com.intellij.openapi.editor.HighlighterColors.BAD_CHARACTER;
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
 public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
-    public static final TextAttributesKey PRIMARY_DESIGN_UNIT_NAME;
-    public static final TextAttributesKey SECONDARY_DESIGN_UNIT_NAME;
-    public static final TextAttributesKey KEYWORD;
-    public static final TextAttributesKey OPERATOR;
-    public static final TextAttributesKey TYPE_NAME;
-    public static final TextAttributesKey SUBTYPE_NAME;
-    public static final TextAttributesKey SEMICOLON;
-    public static final TextAttributesKey COMMA;
-    public static final TextAttributesKey DOT;
-    public static final TextAttributesKey PARENTHESIS;
-    public static final TextAttributesKey COMMENT;
-    public static final TextAttributesKey CHARACTER;
-    public static final TextAttributesKey STRING;
-    public static final TextAttributesKey NUMBER;
-    public static final TextAttributesKey GENERIC_NAME;
-    public static final TextAttributesKey PORT_NAME;
-    public static final TextAttributesKey LABEL;
-    //    public static final TextAttributesKey PARAMETER_NAME;
-    public static final TextAttributesKey SIGNAL_NAME;
-    public static final TextAttributesKey CONSTANT_NAME;
-    public static final TextAttributesKey VARIABLE_NAME;
+    public static final TextAttributesKey PRIMARY_DESIGN_UNIT = createTextAttributesKey("PRIMARY_DESIGN_UNIT", DefaultLanguageHighlighterColors.INTERFACE_NAME);
+    public static final TextAttributesKey SECONDARY_DESIGN_UNIT = createTextAttributesKey("SECONDARY_DESIGN_UNIT", DefaultLanguageHighlighterColors.CLASS_NAME);
+    public static final TextAttributesKey KEYWORD = createTextAttributesKey("KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey OPERATOR = createTextAttributesKey("OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
+    public static final TextAttributesKey TYPE = createTextAttributesKey("TYPE", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
+    public static final TextAttributesKey SUBTYPE = createTextAttributesKey("SUBTYPE", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
+    public static final TextAttributesKey SEMICOLON = createTextAttributesKey("SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
+    public static final TextAttributesKey COMMA = createTextAttributesKey("COMMA", DefaultLanguageHighlighterColors.COMMA);
+    public static final TextAttributesKey DOT = createTextAttributesKey("DOT", DefaultLanguageHighlighterColors.DOT);
+    public static final TextAttributesKey PARENTHESIS = createTextAttributesKey("PARENTHESIS", DefaultLanguageHighlighterColors.PARENTHESES);
+    public static final TextAttributesKey COMMENT = createTextAttributesKey("COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey CHARACTER = createTextAttributesKey("CHARACTER", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey STRING = createTextAttributesKey("STRING", DefaultLanguageHighlighterColors.STRING);
+    public static final TextAttributesKey NUMBER = createTextAttributesKey("NUMBER", DefaultLanguageHighlighterColors.NUMBER);
+    public static final TextAttributesKey GENERIC = createTextAttributesKey("GENERIC", DefaultLanguageHighlighterColors.PARAMETER);
+    public static final TextAttributesKey PORT = createTextAttributesKey("PORT", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
+    public static final TextAttributesKey SIGNAL = createTextAttributesKey("SIGNAL", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+    public static final TextAttributesKey CONSTANT = createTextAttributesKey("CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
+    public static final TextAttributesKey VARIABLE = createTextAttributesKey("VARIABLE", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+    public static final TextAttributesKey SUBPROGRAM_PARAMETER = createTextAttributesKey("SUBPROGRAM_PARAMETER", DefaultLanguageHighlighterColors.PARAMETER);
+    public static final TextAttributesKey SUBPROGRAM_DECLARATION = createTextAttributesKey("SUBPROGRAM_DECLARATION", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
+    public static final TextAttributesKey SUBPROGRAM_CALL = createTextAttributesKey("SUBPROGRAM_CALL", DefaultLanguageHighlighterColors.FUNCTION_CALL);
+    public static final TextAttributesKey LABEL = createTextAttributesKey("LABEL", DefaultLanguageHighlighterColors.LABEL);
 
-    static {
-        KEYWORD = createTextAttributesKey("KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
-        OPERATOR = createTextAttributesKey("OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-        SEMICOLON = createTextAttributesKey("SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
-        COMMA = createTextAttributesKey("COMMA", DefaultLanguageHighlighterColors.COMMA);
-        DOT = createTextAttributesKey("DOT", DefaultLanguageHighlighterColors.DOT);
-        PARENTHESIS = createTextAttributesKey("PARENTHESIS", DefaultLanguageHighlighterColors.PARENTHESES);
-        COMMENT = createTextAttributesKey("COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
-        CHARACTER = createTextAttributesKey("CHARACTER", DefaultLanguageHighlighterColors.STRING);
-        STRING = createTextAttributesKey("STRING", DefaultLanguageHighlighterColors.STRING);
-        NUMBER = createTextAttributesKey("NUMBER", DefaultLanguageHighlighterColors.NUMBER);
-
-        // TODO: Assign custom colors that match VHDL:
-        PRIMARY_DESIGN_UNIT_NAME = createTextAttributesKey("PRIMARY_DESIGN_UNIT_NAME", DefaultLanguageHighlighterColors.INTERFACE_NAME);
-        SECONDARY_DESIGN_UNIT_NAME = createTextAttributesKey("SECONDARY_DESIGN_UNIT_NAME", DefaultLanguageHighlighterColors.CLASS_NAME);
-
-        TYPE_NAME = createTextAttributesKey("TYPE_NAME", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
-        SUBTYPE_NAME = createTextAttributesKey("SUBTYPE_NAME", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
-
-        GENERIC_NAME = createTextAttributesKey("GENERIC_NAME", DefaultLanguageHighlighterColors.PARAMETER);
-        PORT_NAME = createTextAttributesKey("PORT_NAME", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
-//        PARAMETER_NAME = createTextAttributesKey("PARAMETER_NAME", DefaultLanguageHighlighterColors.PARAMETER);
-        CONSTANT_NAME = createTextAttributesKey("CONSTANT_NAME", DefaultLanguageHighlighterColors.CONSTANT);
-        SIGNAL_NAME = createTextAttributesKey("SIGNAL_NAME", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
-        VARIABLE_NAME = createTextAttributesKey("VARIABLE_NAME", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
-
-        LABEL = createTextAttributesKey("LABEL", DefaultLanguageHighlighterColors.LABEL);
-    }
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] KEYWORDS_KEYS = new TextAttributesKey[]{KEYWORD};
     private static final TextAttributesKey[] OPERATORS_KEYS = new TextAttributesKey[]{OPERATOR};
-    //private static final TextAttributesKey[] TYPES_KEYS = new TextAttributesKey[]{TYPE_NAME};
     private static final TextAttributesKey[] SEMICOLON_KEYS = new TextAttributesKey[]{SEMICOLON};
     private static final TextAttributesKey[] COMMA_KEYS = new TextAttributesKey[]{COMMA};
     private static final TextAttributesKey[] DOT_KEYS = new TextAttributesKey[]{DOT};
@@ -112,13 +85,7 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
     );
 
     private static final TokenSet OPERATORS_2 = TokenSet.create(VhdlTypes.T_APOSTROPHE);
-    //    private static final TokenSet KNOWN_TYPES = TokenSet.create(
-//            VhdlTypes.T_BIT, VhdlTypes.T_BIT_VECTOR, VhdlTypes.T_INTEGER, VhdlTypes.T_NATURAL, VhdlTypes.T_POSITIVE,
-//            VhdlTypes.T_REAL, VhdlTypes.T_BOOLEAN, VhdlTypes.T_CHARACTER, VhdlTypes.T_STRING, VhdlTypes.T_TIME,
-//            VhdlTypes.T_DELAY_LENGTH, VhdlTypes.T_SEVERITY_LEVEL, VhdlTypes.T_FILE_OPEN_KIND,
-//            VhdlTypes.T_FILE_OPEN_STATUS, VhdlTypes.T_STD_LOGIC, VhdlTypes.T_STD_ULOGIC, VhdlTypes.T_STD_LOGIC_VECTOR,
-//            VhdlTypes.T_STD_ULOGIC_VECTOR, VhdlTypes.T_SIGNED, VhdlTypes.T_UNSIGNED
-//    );
+
     public static final TokenSet PARENTHESES = TokenSet.create(
             VhdlTypes.T_LEFT_PAREN, VhdlTypes.T_RIGHT_PAREN
     );

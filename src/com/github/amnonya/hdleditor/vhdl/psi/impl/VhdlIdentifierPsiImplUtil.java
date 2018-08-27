@@ -7,13 +7,19 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlElementFactory;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlEntityDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFile;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFullTypeDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlFunctionParameterConstantDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlFunctionParameterSignalDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlIdentifier;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlIdentifierList;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageBody;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterConstantDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterSignalDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterVariableDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcessStatement;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramBody;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramParameterFileDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubtypeDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes;
 import com.github.amnonya.hdleditor.vhdl.psi.tree.VhdlPsiTreeUtil;
@@ -172,5 +178,20 @@ public class VhdlIdentifierPsiImplUtil {
     @NotNull
     public static PsiReference[] getReferences(PsiElement element) {
         return ReferenceProvidersRegistry.getReferencesFromProviders(element);
+    }
+
+
+    /**
+     * Checks if the {@code declaration} is of a subprogram (function/procedure) parameter.
+     * @param declaration The {@link PsiElement} to check the type of.
+     * @return Whether or not the {@code declaration} is of a subprogram (function/procedure) parameter.
+     */
+    public static boolean isSubprogramParameter(PsiElement declaration) {
+        return declaration instanceof VhdlFunctionParameterConstantDeclaration
+                || declaration instanceof VhdlFunctionParameterSignalDeclaration
+                || declaration instanceof VhdlProcedureParameterConstantDeclaration
+                || declaration instanceof VhdlProcedureParameterSignalDeclaration
+                || declaration instanceof VhdlProcedureParameterVariableDeclaration
+                || declaration instanceof VhdlSubprogramParameterFileDeclaration;
     }
 }
