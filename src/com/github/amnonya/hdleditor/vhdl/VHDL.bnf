@@ -16,13 +16,6 @@
 
     tokens =
     [
-        /* General */
-//        IDENTIFIER="regexp:\w+"
-//        STRING_LITERAL="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
-//        STRING_LITERAL="regexp:\"(\w+)\"" // TODO: add " before and after group?
-//        CHARACTER_LITERAL="regexp:\w"
-//        INTEGER_LITERAL="regexp:\d+"
-
         /* Keywords */
         /* Statements */
         T_ASSERT="ASSERT"
@@ -173,33 +166,6 @@
         T_QGT="?>"
         T_QGE="?>="
 
-        /* Builtin types */
-//        T_BIT="BIT"
-//        T_BIT_VECTOR="BIT_VECTOR"
-//        T_INTEGER="INTEGER"
-//        T_NATURAL="NATURAL"
-//        T_POSITIVE="POSITIVE"
-//        T_REAL="REAL"
-//        T_BOOLEAN="BOOLEAN"
-//        T_CHARACTER="CHARACTER"
-//        T_STRING="STRING"
-//        T_TIME="TIME"
-//        T_DELAY_LENGTH="DELAY_LENGTH"
-//        T_SEVERITY_LEVEL="SEVERITY_LEVEL"
-//        T_FILE_OPEN_KIND="FILE_OPEN_KIND"
-//        T_FILE_OPEN_STATUS="FILE_OPEN_STATUS"
-//
-//        /* std_logic_1164 types */
-//        T_STD_LOGIC="STD_LOGIC"
-//        T_STD_ULOGIC="STD_ULOGIC"
-//        T_STD_LOGIC_VECTOR="STD_LOGIC_VECTOR"
-//        T_STD_ULOGIC_VECTOR="STD_ULOGIC_VECTOR"
-//
-//        /* numeric_std types */
-//        T_SIGNED="SIGNED"
-//        T_UNSIGNED="UNSIGNED"
-
-
         /* Delay statements */
         T_AFTER="AFTER"
         T_INERTIAL="INERTIAL"
@@ -218,7 +184,6 @@
 
         /* Non-VHDL specific keywords */
         ID='ID'
-//        ID="regexp:[\w]+"
         BINLIT='BINLIT'
         OCTLIT='OCTLIT'
         HEXLIT='HEXLIT'
@@ -226,10 +191,7 @@
         STRLIT='STRLIT'
         CHRLIT='CHRLIT'
         COMMENT='COMMENT'
-//        INTLIT='INTLIT'
         REALLIT='REALLIT'
-//        LETLIT='LETTER'
-//        CHARLIT='CHARACTER'
         EXID='EXID'
         BITLIT='BITLIT'
         EXDIGIT='EXDIGIT'
@@ -273,10 +235,9 @@ private adding_operator ::= '+' | '-'  | '&'
 
 aggregate ::= '(' element_association ( ',' element_association )* ')'
 
-alias_declaration ::=
-    'alias' alias_designator [ ':' subtype_indication ] 'is' refname signature? ';'
+alias_declaration ::= 'alias' alias_designator [ ':' subtype_indication ] 'is' refname signature? ';'
 
-alias_designator ::= identifier | character_literal | operator_symbol
+private alias_designator ::= identifier | character_literal | operator_symbol
 
 allocator ::=
     'new' subtype_indication
@@ -308,7 +269,7 @@ association_element ::= [ formal_part '=>' ] actual_part
 
 attribute_declaration ::= 'attribute' identifier ':' type_mark ';'
 
-attribute_designator ::= identifier | range_type
+private attribute_designator ::= identifier | range_type
 
 attribute_name ::= //identifier signature? "'" attribute_designator [ '(' expression ')' ]
     suffix [ '(' actual_parameter_part ')' ] signature? "'" attribute_designator [ '(' expression ')' ]
@@ -391,8 +352,7 @@ component_configuration ::=
 
 component_declaration ::=
     'component' identifier [ 'is' ]
-        [ generic_clause ]
-        [ port_clause ]
+        entity_header
     'end' 'component' identifier? ';'
 
 component_instantiation_statement ::=
@@ -401,18 +361,15 @@ component_instantiation_statement ::=
             [ generic_map_aspect ]
             [ port_map_aspect ] ';'
 
-component_specification ::=
-    instantiation_list ':' refname
+component_specification ::= instantiation_list ':' refname
 
 private composite_type_definition ::=
     array_type_definition
     | record_type_definition
 
-concurrent_assertion_statement ::=
-    [ label ':' ] [ 'postponed' ] assertion ';'
+concurrent_assertion_statement ::= [ label ':' ] [ 'postponed' ] assertion ';'
 
-concurrent_procedure_call_statement ::=
-    [ label ':' ] [ 'postponed' ] procedure_call ';'
+concurrent_procedure_call_statement ::= [ label ':' ] [ 'postponed' ] procedure_call ';'
 
 concurrent_signal_assignment_statement ::=
       [ label ':' ] [ 'postponed' ] conditional_signal_assignment
@@ -616,8 +573,7 @@ factor ::=
     | 'abs' primary
     | 'not' primary
 
-file_declaration ::=
-    'file' identifier_list ':' subtype_indication file_open_information  ';'
+file_declaration ::= 'file' identifier_list ':' subtype_indication file_open_information ';'
 
 file_logical_name ::= expression
 

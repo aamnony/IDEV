@@ -5,8 +5,6 @@ import com.github.amnonya.hdleditor.vhdl.parser.VhdlParser;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFile;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;

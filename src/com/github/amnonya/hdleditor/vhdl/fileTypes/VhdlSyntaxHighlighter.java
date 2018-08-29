@@ -35,11 +35,14 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SIGNAL = createTextAttributesKey("SIGNAL", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
     public static final TextAttributesKey CONSTANT = createTextAttributesKey("CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
     public static final TextAttributesKey VARIABLE = createTextAttributesKey("VARIABLE", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+    public static final TextAttributesKey FILE_VARIABLE = createTextAttributesKey("FILE_VARIABLE", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+
+    public static final TextAttributesKey ATTRIBUTE = createTextAttributesKey("ATTRIBUTE", DefaultLanguageHighlighterColors.METADATA);
+    public static final TextAttributesKey ALIAS = createTextAttributesKey("ALIAS", DefaultLanguageHighlighterColors.MARKUP_ATTRIBUTE);
     public static final TextAttributesKey SUBPROGRAM_PARAMETER = createTextAttributesKey("SUBPROGRAM_PARAMETER", DefaultLanguageHighlighterColors.PARAMETER);
     public static final TextAttributesKey SUBPROGRAM_DECLARATION = createTextAttributesKey("SUBPROGRAM_DECLARATION", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
     public static final TextAttributesKey SUBPROGRAM_CALL = createTextAttributesKey("SUBPROGRAM_CALL", DefaultLanguageHighlighterColors.FUNCTION_CALL);
     public static final TextAttributesKey LABEL = createTextAttributesKey("LABEL", DefaultLanguageHighlighterColors.LABEL);
-
 
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] KEYWORDS_KEYS = new TextAttributesKey[]{KEYWORD};
@@ -53,6 +56,13 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
     private static final TextAttributesKey[] NUMERIC_KEYS = new TextAttributesKey[]{NUMBER};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
+
+    public static final String[] PREDEFINED_ATTRIBUTES = {
+            "ACTIVE", "ASCENDING", "BASE", "DELAYED", "DRIVING", "DRIVING_VALUE", "EVENT", "HIGH",
+            "IMAGE", "INSTANCE_NAME", "LAST_ACTIVE", "LAST_EVENT", "LAST_VALUE", "LEFT", "LEFTOF",
+            "LENGTH", "LOW", "PATH_NAME", "POS", "PRED", "QUIET", "RANGE", "REVERSE_RANGE",
+            "RIGHT", "RIGHTOF", "SIMPLE_NAME", "STABLE", "SUCC", "TRANSACTION", "VAL", "VALUE",
+    };
 
     public static final TokenSet KEYWORDS = TokenSet.create(
             VhdlTypes.T_ASSERT, VhdlTypes.T_SEVERITY, VhdlTypes.T_REPORT, VhdlTypes.T_NULL, VhdlTypes.T_IF,

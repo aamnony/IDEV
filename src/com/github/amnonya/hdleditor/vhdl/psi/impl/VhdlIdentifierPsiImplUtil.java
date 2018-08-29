@@ -1,7 +1,10 @@
 package com.github.amnonya.hdleditor.vhdl.psi.impl;
 
 import com.github.amnonya.hdleditor.vhdl.icons.VhdlIcons;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlAliasDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlArchitectureBody;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlAttributeDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlComponentDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlDesignator;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlElementFactory;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlEntityDeclaration;
@@ -110,7 +113,9 @@ public class VhdlIdentifierPsiImplUtil {
         if (parent instanceof VhdlIdentifierList
                 || parent instanceof VhdlFullTypeDeclaration
                 || parent instanceof VhdlSubtypeDeclaration
-                || parent instanceof VhdlSubprogramDeclaration) {
+                || parent instanceof VhdlSubprogramDeclaration
+                || parent instanceof VhdlAliasDeclaration
+                || parent instanceof VhdlAttributeDeclaration) {
             return true;
         }
 
@@ -118,11 +123,12 @@ public class VhdlIdentifierPsiImplUtil {
             // Subprogram (function/procedure).
             return parent.getParent().getParent() instanceof VhdlSubprogramDeclaration;
         }
-
+        // The following are code constructs that might have end labels. We consider the start label as the declaration.
         if (parent instanceof VhdlEntityDeclaration
                 || parent instanceof VhdlArchitectureBody
                 || parent instanceof VhdlPackageDeclaration
-                || parent instanceof VhdlPackageBody) {
+                || parent instanceof VhdlPackageBody
+                || parent instanceof VhdlComponentDeclaration) {
 
             PsiElement nextSibling = id.getNextSibling();
             while (true) {
@@ -183,6 +189,7 @@ public class VhdlIdentifierPsiImplUtil {
 
     /**
      * Checks if the {@code declaration} is of a subprogram (function/procedure) parameter.
+     *
      * @param declaration The {@link PsiElement} to check the type of.
      * @return Whether or not the {@code declaration} is of a subprogram (function/procedure) parameter.
      */

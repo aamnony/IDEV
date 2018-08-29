@@ -35,17 +35,22 @@ class VhdlBlock implements ASTBlock {
     private final ASTNode myNode;
     private final Wrap myWrap;
     private final SpacingBuilder mySpacingBuilder;
-    //    private final PyBlockContext myContext; // for settings. put in constructor (@NotNull)
     private List<VhdlBlock> mySubBlocks = null;
     private Map<ASTNode, VhdlBlock> mySubBlockByNode = null;
-//    private final boolean myEmptySequence;
 
     // Shared among multiple children sub-blocks
-    private Alignment myChildAlignment = null;
     private Alignment[] myListAlignments = null;
-    //    private Wrap myDictWrapping = null;
-//    private Wrap myFromImportWrapping = null;
     private Boolean myIncomplete;
+
+    private static final TokenSet OBJECT_DECLARATION_BLOCKS = TokenSet.create(
+            VhdlTypes.ARCHITECTURE_DECLARATIVE_PART, VhdlTypes.BLOCK_DECLARATIVE_PART, VhdlTypes.PACKAGE_DECLARATIVE_PART,
+            VhdlTypes.PACKAGE_BODY_DECLARATIVE_PART, VhdlTypes.PROCESS_DECLARATIVE_PART,
+            VhdlTypes.SUBPROGRAM_DECLARATIVE_PART, VhdlTypes.GENERATE_STATEMENT
+    );
+    private static final TokenSet OBJECT_DECLARATION_TYPES = TokenSet.create(
+            VhdlTypes.CONSTANT_DECLARATION, VhdlTypes.SIGNAL_DECLARATION, VhdlTypes.VARIABLE_DECLARATION,
+            VhdlTypes.FILE_DECLARATION, VhdlTypes.ATTRIBUTE_DECLARATION
+    );
 
     private static final TokenSet NORMAL_INDENTED_BLOCKS = TokenSet.create(
             VhdlTypes.USE_CLAUSE, VhdlTypes.ENTITY_HEADER, VhdlTypes.GENERIC_INTERFACE_LIST,
@@ -103,11 +108,7 @@ class VhdlBlock implements ASTBlock {
                     Alignment.createAlignment(true),
             };
         }
-        if (myType == VhdlTypes.ARCHITECTURE_DECLARATIVE_PART
-                || myType == VhdlTypes.BLOCK_DECLARATIVE_PART
-                || myType == VhdlTypes.PACKAGE_DECLARATIVE_PART
-                || myType == VhdlTypes.PACKAGE_BODY_DECLARATIVE_PART
-                || myType == VhdlTypes.GENERATE_STATEMENT) {
+        if (OBJECT_DECLARATION_BLOCKS.contains(myType)) {
             myListAlignments = new Alignment[]{
                     Alignment.createAlignment(true),
                     Alignment.createAlignment(true),
@@ -246,7 +247,13 @@ class VhdlBlock implements ASTBlock {
         // Alignment:
         Alignment childAlignment = null;
 
-        if (myType == VhdlTypes.INTERFACE_PORT_DECLARATION) {
+        if (myType == VhdlTypes.INTERFACE_GENERIC_DECLARATION) {
+            if (myChildType == VhdlTypes.T_COLON) {
+                childAlignment = myParent.myParent.myListAlignments[0];
+            } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
+                childAlignment = myParent.myParent.myListAlignments[1];
+            }
+        } else if (myType == VhdlTypes.INTERFACE_PORT_DECLARATION) {
             if (myChildType == VhdlTypes.T_COLON) {
                 childAlignment = myParent.myParent.myListAlignments[0];
             } else if (myChildType == VhdlTypes.MODE) {
@@ -256,42 +263,78 @@ class VhdlBlock implements ASTBlock {
             } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
                 childAlignment = myParent.myParent.myListAlignments[3];
             }
-        } else if (myChildType == VhdlTypes.COMMENT) {
-            Alignment commentAlignment = getPortDeclarationCommentAlignment(child);
-            if (commentAlignment != null) {
-                childAlignment = commentAlignment;
-            }
-        }
-        if (myType == VhdlTypes.INTERFACE_GENERIC_DECLARATION) {
+        } else if (OBJECT_DECLARATION_TYPES.contains(myType)) {
             if (myChildType == VhdlTypes.T_COLON) {
-                childAlignment = myParent.myParent.myListAlignments[0];
+                childAlignment = myParent.myListAlignments[0];
             } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
-                childAlignment = myParent.myParent.myListAlignments[1];
+                childAlignment = myParent.myListAlignments[1];
             }
         } else if (myChildType == VhdlTypes.COMMENT) {
             Alignment commentAlignment = getGenericDeclarationCommentAlignment(child);
+            if (commentAlignment == null) {
+                commentAlignment = getPortDeclarationCommentAlignment(child);
+            }
+            if (commentAlignment == null) {
+                commentAlignment = getObjectDeclarationCommentAlignment(child);
+            }
             if (commentAlignment != null) {
                 childAlignment = commentAlignment;
             }
-        }
-        if (myType == VhdlTypes.SIGNAL_DECLARATION) {
-            if (myChildType == VhdlTypes.T_COLON) {
-                childAlignment = myParent.myListAlignments[0];
-            } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
-                childAlignment = myParent.myListAlignments[1];
-            }
-        } else if (myType == VhdlTypes.CONSTANT_DECLARATION) {
-            if (myChildType == VhdlTypes.T_COLON) {
-                childAlignment = myParent.myListAlignments[0];
-            } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
-                childAlignment = myParent.myListAlignments[1];
-            }
+
         }
 
         // --------------------------------------------------------------------
         return new VhdlBlock(this, child, childAlignment, childIndent, childWrap, mySpacingBuilder);
     }
 
+    /**
+     * Gets the alignment for {@code child} if it is a {@link VhdlTypes#COMMENT} describing a generic declaration.
+     *
+     * @param child The comment {@link ASTNode} to get the alignment for.
+     * @return The alignment, or null if {@code child} is not a valid declaration comment.
+     */
+    @Nullable
+    private Alignment getGenericDeclarationCommentAlignment(@NotNull ASTNode child) {
+        IElementType myType = myNode.getElementType();
+        ASTNode childPrevSibling = child.getTreePrev();
+        if (childPrevSibling == null) {
+            return null;
+        }
+        IElementType childPrevSiblingType = childPrevSibling.getElementType();
+
+        if (myType == VhdlTypes.GENERIC_INTERFACE_LIST) {
+            // No space between generic declaration and comment:
+            boolean noSpace = childPrevSiblingType == VhdlTypes.T_SEMICOLON;
+            // Space between generic declaration and comment, but they are still on the same line:
+            boolean spaceWithoutLineBreak = childPrevSiblingType == TokenType.WHITE_SPACE && !childPrevSibling.getText().contains("\n");
+
+            if (noSpace || spaceWithoutLineBreak) {
+                // Comment is in the same line of the generic declaration, i.e. it describes the generic.
+                // Generic is not the last on the list.
+                return myParent.myListAlignments[2];
+            }
+        } else if (myType == VhdlTypes.GENERIC_CLAUSE) {
+            // No space between generic declaration and comment:
+            boolean noSpace = childPrevSiblingType == VhdlTypes.GENERIC_INTERFACE_LIST;
+            // Space between generic declaration and comment, but they are still on the same line:
+            boolean spaceWithoutLineBreak = childPrevSiblingType == TokenType.WHITE_SPACE && !childPrevSibling.getText().contains("\n");
+
+            if (noSpace || spaceWithoutLineBreak) {
+                // Comment is in the same line of the generic declaration, i.e. it describes the generic.
+                // Generic is the last on the list.
+                return myListAlignments[2];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the alignment for {@code child} if it is a {@link VhdlTypes#COMMENT} describing a port declaration.
+     *
+     * @param child The comment {@link ASTNode} to get the alignment for.
+     * @return The alignment, or null if {@code child} is not a valid declaration comment.
+     */
+    @Nullable
     private Alignment getPortDeclarationCommentAlignment(@NotNull ASTNode child) {
         IElementType myType = myNode.getElementType();
         ASTNode childPrevSibling = child.getTreePrev();
@@ -326,7 +369,15 @@ class VhdlBlock implements ASTBlock {
         return null;
     }
 
-    private Alignment getGenericDeclarationCommentAlignment(@NotNull ASTNode child) {
+    /**
+     * Gets the alignment for {@code child} if it is a {@link VhdlTypes#COMMENT} describing an object declaration,
+     * i.e. {@link #OBJECT_DECLARATION_TYPES}.
+     *
+     * @param child The comment {@link ASTNode} to get the alignment for.
+     * @return The alignment, or null if {@code child} is not a valid declaration comment.
+     */
+    @Nullable
+    private Alignment getObjectDeclarationCommentAlignment(@NotNull ASTNode child) {
         IElementType myType = myNode.getElementType();
         ASTNode childPrevSibling = child.getTreePrev();
         if (childPrevSibling == null) {
@@ -334,26 +385,14 @@ class VhdlBlock implements ASTBlock {
         }
         IElementType childPrevSiblingType = childPrevSibling.getElementType();
 
-        if (myType == VhdlTypes.GENERIC_INTERFACE_LIST) {
-            // No space between generic declaration and comment:
-            boolean noSpace = childPrevSiblingType == VhdlTypes.T_SEMICOLON;
-            // Space between generic declaration and comment, but they are still on the same line:
+        if (OBJECT_DECLARATION_BLOCKS.contains(myType)) {
+            // No space between object declaration and comment:
+            boolean noSpace = OBJECT_DECLARATION_TYPES.contains(childPrevSiblingType);
+            // Space between object declaration and comment, but they are still on the same line:
             boolean spaceWithoutLineBreak = childPrevSiblingType == TokenType.WHITE_SPACE && !childPrevSibling.getText().contains("\n");
 
             if (noSpace || spaceWithoutLineBreak) {
-                // Comment is in the same line of the generic declaration, i.e. it describes the generic.
-                // Generic is not the last on the list.
-                return myParent.myListAlignments[2];
-            }
-        } else if (myType == VhdlTypes.GENERIC_CLAUSE) {
-            // No space between port declaration and comment:
-            boolean noSpace = childPrevSiblingType == VhdlTypes.GENERIC_INTERFACE_LIST;
-            // Space between port declaration and comment, but they are still on the same line:
-            boolean spaceWithoutLineBreak = childPrevSiblingType == TokenType.WHITE_SPACE && !childPrevSibling.getText().contains("\n");
-
-            if (noSpace || spaceWithoutLineBreak) {
-                // Comment is in the same line of the generic declaration, i.e. it describes the generic.
-                // Generic is the last on the list.
+                // Comment is in the same line of the object declaration, i.e. it describes the object.
                 return myListAlignments[2];
             }
         }
