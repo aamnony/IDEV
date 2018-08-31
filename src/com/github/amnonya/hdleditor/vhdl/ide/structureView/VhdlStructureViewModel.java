@@ -5,13 +5,14 @@ import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.StructureViewModelBase;
 import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.util.treeView.smartTree.Sorter;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiFile;
 
 import org.jetbrains.annotations.NotNull;
 
 public class VhdlStructureViewModel extends StructureViewModelBase implements StructureViewModel.ElementInfoProvider {
-    public VhdlStructureViewModel(PsiFile psiFile) {
-        super(psiFile, new VhdlStructureViewElement(psiFile));
+    public VhdlStructureViewModel(PsiFile psiFile, Editor editor) {
+        super(psiFile, editor, new VhdlStructureViewElement(psiFile));
     }
 
     @NotNull

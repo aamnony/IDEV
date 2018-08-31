@@ -1,9 +1,14 @@
 package com.github.amnonya.hdleditor.vhdl.navigation;
 
-import com.github.amnonya.hdleditor.vhdl.icons.VhdlIcons;
+import com.github.amnonya.hdleditor.utils.StringUtils;
+import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlExpression;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlInterfacePortDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.tree.IElementType;
+
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
 
@@ -19,24 +24,37 @@ public class VhdlPortPresentation implements ItemPresentation {
     @Override
     public String getPresentableText() {
         String name = declaration.getIdentifierList().getIdentifierList().get(index).getName();
-        String mode = declaration.getMode().getText();
-        String type = declaration.getSubtypeIndication().getText();
+        String type = StringUtils.shrinkParenthesis(declaration.getSubtypeIndication().getText());
         VhdlExpression expression = declaration.getExpression();
 
         if (expression == null) {
-            return String.format("%s: %s %s", name, mode, type);
+            return String.format("%s: %s", name, type);
         } else {
-            return String.format("%s: %s %s := %s", name, mode, type, expression.getText());
+            return String.format("%s:%s = %s", name, type, expression.getText());
         }
     }
 
+    @Nullable
     @Override
     public String getLocationString() {
-        return declaration.getContainingFile().getName();
+        return null;
     }
 
+    @Nullable
     @Override
     public Icon getIcon(boolean unused) {
-        return VhdlIcons.FILE;
+        IElementType mode = declaration.getMode().getNode().getFirstChildNode().getElementType();
+        if (mode == VhdlTypes.T_IN) {
+            return VhdlIcons.PORT_IN;
+        } else if (mode == VhdlTypes.T_OUT) {
+            return VhdlIcons.PORT_OUT;
+        } else if (mode == VhdlTypes.T_INOUT) {
+            return VhdlIcons.PORT_INOUT;
+        } else if (mode == VhdlTypes.T_BUFFER) {
+            return VhdlIcons.PORT_BUFFER;
+        } else {
+            // Linkage is not supported.
+            return null;
+        }
     }
 }

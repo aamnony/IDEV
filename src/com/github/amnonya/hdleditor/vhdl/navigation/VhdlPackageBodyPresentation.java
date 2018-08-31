@@ -1,6 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.navigation;
 
-import com.github.amnonya.hdleditor.vhdl.icons.VhdlIcons;
+import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageBody;
 import com.intellij.navigation.ItemPresentation;
 
@@ -21,13 +21,14 @@ public class VhdlPackageBodyPresentation implements ItemPresentation {
         return body.getIdentifierList().get(0).getName();
     }
 
+    @Nullable
     @Override
     public String getLocationString() {
-        return body.getContainingFile().getName();
+        return null;
     }
 
     @Override
     public Icon getIcon(boolean unused) {
-        return VhdlIcons.FILE;
+        return VhdlIcons.PACKAGE_BODY;
     }
 }

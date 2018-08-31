@@ -1088,7 +1088,7 @@ use_clause ::= 'use' selected_name ( ',' selected_name )* ';'
 
 variable_assignment_statement ::= [ label ':' ] target ':=' expression ';'
 
-variable_declaration ::= [ 'shared' ] 'variable' identifier_list ':' subtype_indication [ ':=' expression ] ';'
+variable_declaration ::= [ 'shared' ] 'variable' identifier_list ':' subtype_indication [ ':=' expression ] ';' {methods=[getPresentation]}
 
 wait_statement ::= [ label ':' ] 'wait' [ sensitivity_clause ] [ condition_clause ] [ timeout_clause ] ';'
 

@@ -1,20 +1,19 @@
 package com.github.amnonya.hdleditor.vhdl.navigation;
 
 import com.github.amnonya.hdleditor.utils.StringUtils;
-import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
-import com.github.amnonya.hdleditor.vhdl.psi.VhdlConstantDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlExpression;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlVariableDeclaration;
 import com.intellij.navigation.ItemPresentation;
 
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
 
-public class VhdlConstantPresentation implements ItemPresentation {
-    private final VhdlConstantDeclaration declaration;
+public class VhdlVariablePresentation implements ItemPresentation {
+    private final VhdlVariableDeclaration declaration;
     private final int index;
 
-    public VhdlConstantPresentation(VhdlConstantDeclaration declaration, int index) {
+    public VhdlVariablePresentation(VhdlVariableDeclaration declaration, int index) {
         this.declaration = declaration;
         this.index = index;
     }
@@ -38,8 +37,9 @@ public class VhdlConstantPresentation implements ItemPresentation {
         return null;
     }
 
+    @Nullable
     @Override
     public Icon getIcon(boolean unused) {
-        return VhdlIcons.CONSTANT;
+        return null;
     }
 }

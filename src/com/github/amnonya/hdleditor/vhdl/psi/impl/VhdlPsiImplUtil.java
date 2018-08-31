@@ -119,7 +119,6 @@ public class VhdlPsiImplUtil {
         return new VhdlComponentPresentation(declaration);
     }
 
-
     /**
      * Returns whether {@code id} is mentioned or declared.
      *

@@ -19,7 +19,7 @@ public class VhdlStructureViewFactory implements PsiStructureViewFactory {
             @NotNull
             @Override
             public StructureViewModel createStructureViewModel(@Nullable Editor editor) {
-                return new VhdlStructureViewModel(psiFile);
+                return new VhdlStructureViewModel(psiFile, editor);
             }
         };
     }

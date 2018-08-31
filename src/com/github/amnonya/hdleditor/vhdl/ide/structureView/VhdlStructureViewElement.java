@@ -12,6 +12,7 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageBodyDeclarativePart;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageDeclarativePart;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPortClause;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSignalDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlVariableDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlArchitectureBodyImpl;
 import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlEntityDeclarationImpl;
 import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlPackageBodyImpl;
@@ -69,7 +70,7 @@ public class VhdlStructureViewElement implements StructureViewTreeElement, Sorta
     @Override
     public String getAlphaSortKey() {
         String presentableText = getPresentation().getPresentableText();
-        return presentableText != null ? presentableText : "dummy";
+        return presentableText != null ? presentableText : "zzzdummy";
     }
 
     @NotNull
@@ -194,6 +195,16 @@ public class VhdlStructureViewElement implements StructureViewTreeElement, Sorta
     private Collection<TreeElement> getSignalTreeElements(List<VhdlSignalDeclaration> declarations) {
         List<TreeElement> children = new ArrayList<>(declarations.size());
         for (VhdlSignalDeclaration declaration : declarations) {
+            for (int i = 0; i < declaration.getIdentifierList().getIdentifierList().size(); i++) {
+                children.add(new VhdlStructureViewElement((NavigatablePsiElement) declaration, i));
+            }
+        }
+        return children;
+    }
+
+    private Collection<TreeElement> getVariableTreeElements(List<VhdlVariableDeclaration> declarations) {
+        List<TreeElement> children = new ArrayList<>(declarations.size());
+        for (VhdlVariableDeclaration declaration : declarations) {
             for (int i = 0; i < declaration.getIdentifierList().getIdentifierList().size(); i++) {
                 children.add(new VhdlStructureViewElement((NavigatablePsiElement) declaration, i));
             }
