@@ -8,7 +8,7 @@
     psiPackage="com.github.amnonya.hdleditor.vhdl.psi"
     psiImplPackage="com.github.amnonya.hdleditor.vhdl.psi.impl"
 
-    psiImplUtilClass="com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlIdentifierPsiImplUtil"
+    psiImplUtilClass="com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlPsiImplUtil"
 
     elementTypeHolderClass="com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes"
     elementTypeClass="com.github.amnonya.hdleditor.vhdl.psi.tree.VhdlElementType"
@@ -249,6 +249,7 @@ architecture_body ::=
     'begin'
         architecture_statement_part
     'end' [ 'architecture' ] [ identifier ] ';' //{pin(".*") = 1}
+    {methods=[getPresentation]}
 
 architecture_declarative_part ::= ( declarative_item )*
 
@@ -354,6 +355,7 @@ component_declaration ::=
     'component' identifier [ 'is' ]
         entity_header
     'end' 'component' identifier? ';'
+     {methods=[getPresentation]}
 
 component_instantiation_statement ::=
     label ':'
@@ -418,6 +420,7 @@ configuration_specification ::=
 
 constant_declaration ::=
     'constant' identifier_list ':' subtype_indication [ ':=' expression ] ';'
+    {methods=[getPresentation]}
 
 constrained_array_definition ::=
     'array' index_constraint 'of' subtype_indication
@@ -495,6 +498,8 @@ entity_declaration ::=
 //        entity_declarative_part
 //        [ entity_statement_part ]
     'end' [ 'entity' ] identifier? ';' //{pin(".*")=1}
+    {methods=[getPresentation]}
+
 private not_semi_ ::= ! ';'
 
 private entity_declarative_item ::=
@@ -689,9 +694,9 @@ ilit ::= intlit
 
 integer_type_definition ::= range_constraint
 
-interface_generic_declaration ::= identifier_list ':' subtype_indication [ ':=' expression ]
+interface_generic_declaration ::= identifier_list ':' subtype_indication [ ':=' expression ] {methods=[getPresentation]}
 
-interface_port_declaration ::= identifier_list ':' mode subtype_indication [ ':=' expression ]
+interface_port_declaration ::= identifier_list ':' mode subtype_indication [ ':=' expression ] {methods=[getPresentation]}
 
 iteration_scheme ::=
     'while' condition
@@ -763,6 +768,7 @@ package_body ::=
     'package' 'body' identifier 'is'
         package_body_declarative_part
     'end' [ 'package' 'body' ] identifier? ';'
+    {methods=[getPresentation]}
 
 private package_body_declarative_item ::=
     subprogram_declaration
@@ -783,6 +789,7 @@ package_declaration ::=
     'package' identifier 'is'
         package_declarative_part
     'end' [ 'package' ] identifier? ';'
+    {methods=[getPresentation]}
 
 private package_declarative_item ::=
     subprogram_declaration
@@ -985,6 +992,7 @@ signal_assignment_statement ::=
 
 signal_declaration ::=
     'signal' identifier_list ':' subtype_indication [ signal_kind ] [ ':=' expression ] ';' //{pin(".*")=1}
+    {methods=[getPresentation]}
 
 signal_kind ::=  'register' | 'bus'
 

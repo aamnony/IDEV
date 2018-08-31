@@ -35,5 +35,6 @@
         <psi.referenceContributor implementation="com.github.amnonya.hdleditor.vhdl.psi.VhdlReferenceContributor" />
         <lang.commenter language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.VhdlCommenter" />
         <lang.formatter language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.formatting.VhdlFormattingModelBuilder" />
+        <lang.psiStructureViewFactory language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.VhdlStructureViewFactory" />
     </extensions>
 </idea-plugin>
