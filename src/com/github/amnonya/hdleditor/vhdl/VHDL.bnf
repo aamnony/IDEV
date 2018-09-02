@@ -362,6 +362,7 @@ component_instantiation_statement ::=
         instantiated_unit
             [ generic_map_aspect ]
             [ port_map_aspect ] ';'
+    {methods=[getPresentation]}
 
 component_specification ::= instantiation_list ':' refname
 
@@ -681,9 +682,9 @@ indexed_name ::= suffix aggregate
 
 
 instantiated_unit ::=
-    [ 'component' ] refname
-    | 'entity' refname [ '(' identifier ')' ]
-    | 'configuration' refname
+    [ 'component' ] {selected_name | identifier}
+    | 'entity' {selected_name | identifier} [ '(' identifier ')' ]
+    | 'configuration' {selected_name | identifier}
 
 instantiation_list ::=
     label ( ',' label )*
@@ -1044,6 +1045,7 @@ subprogram_specification ::=
     'procedure' designator [ '(' procedure_parameter_list ')' ]
     | [ 'pure' | 'impure' ]  'function' designator [ '(' function_parameter_list ')' ]
         'return' type_mark
+    {methods=[getPresentation]}
 
 subprogram_statement_part ::= ( sequential_statement )+
 

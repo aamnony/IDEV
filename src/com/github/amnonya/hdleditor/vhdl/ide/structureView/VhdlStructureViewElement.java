@@ -1,7 +1,9 @@
 package com.github.amnonya.hdleditor.vhdl.ide.structureView;
 
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlArchitectureDeclarativePart;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlArchitectureStatementPart;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlComponentDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlComponentInstantiationStatement;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlConstantDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlEntityHeader;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFile;
@@ -12,6 +14,8 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageBodyDeclarativePart;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageDeclarativePart;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPortClause;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSignalDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramBody;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlVariableDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlArchitectureBodyImpl;
 import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlEntityDeclarationImpl;
@@ -117,27 +121,44 @@ public class VhdlStructureViewElement implements StructureViewTreeElement, Sorta
             VhdlArchitectureDeclarativePart declarations = ((VhdlArchitectureBodyImpl) element).getArchitectureDeclarativePart();
             Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
             Collection<TreeElement> signals = getSignalTreeElements(declarations.getSignalDeclarationList());
+            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
+                    declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
+            );
             Collection<TreeElement> components = getComponentTreeElements(declarations.getComponentDeclarationList());
+
+            VhdlArchitectureStatementPart statements = ((VhdlArchitectureBodyImpl) element).getArchitectureStatementPart();
+            Collection<TreeElement> instantiations = getInstantiationTreeElements(statements.getComponentInstantiationStatementList());
+
             List<TreeElement> children = new ArrayList<>(10);
             children.addAll(constants);
             children.addAll(signals);
+            children.addAll(subprograms);
             children.addAll(components);
+            children.addAll(instantiations);
             return children.toArray(new TreeElement[0]);
         } else if (element instanceof VhdlPackageDeclarationImpl) {
             VhdlPackageDeclarativePart declarations = ((VhdlPackageDeclarationImpl) element).getPackageDeclarativePart();
             Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
             Collection<TreeElement> signals = getSignalTreeElements(declarations.getSignalDeclarationList());
+            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
+                    declarations.getSubprogramDeclarationList(), Collections.emptyList()
+            );
             Collection<TreeElement> components = getComponentTreeElements(declarations.getComponentDeclarationList());
             List<TreeElement> children = new ArrayList<>(10);
             children.addAll(constants);
             children.addAll(signals);
+            children.addAll(subprograms);
             children.addAll(components);
             return children.toArray(new TreeElement[0]);
         } else if (element instanceof VhdlPackageBodyImpl) {
             VhdlPackageBodyDeclarativePart declarations = ((VhdlPackageBodyImpl) element).getPackageBodyDeclarativePart();
             Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
+            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
+                    declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
+            );
             List<TreeElement> children = new ArrayList<>(10);
             children.addAll(constants);
+            children.addAll(subprograms);
             return children.toArray(new TreeElement[0]);
         } else if (element instanceof VhdlComponentDeclaration) {
             VhdlEntityHeader entityHeader = ((VhdlComponentDeclaration) element).getEntityHeader();
@@ -212,10 +233,30 @@ public class VhdlStructureViewElement implements StructureViewTreeElement, Sorta
         return children;
     }
 
+    private Collection<TreeElement> getSubprogramSpecificationTreeElements(@NotNull List<VhdlSubprogramDeclaration> subprogramDeclarations,
+                                                                           @NotNull List<VhdlSubprogramBody> subprogramBodies) {
+        List<TreeElement> children = new ArrayList<>(subprogramBodies.size() + subprogramDeclarations.size());
+        for (VhdlSubprogramBody subprogram : subprogramBodies) {
+            children.add(new VhdlStructureViewElement((NavigatablePsiElement) subprogram.getSubprogramSpecification()));
+        }
+        for (VhdlSubprogramDeclaration subprogram : subprogramDeclarations) {
+            children.add(new VhdlStructureViewElement((NavigatablePsiElement) subprogram.getSubprogramSpecification()));
+        }
+        return children;
+    }
+
     private Collection<TreeElement> getComponentTreeElements(List<VhdlComponentDeclaration> declarations) {
         List<TreeElement> children = new ArrayList<>(declarations.size());
         for (VhdlComponentDeclaration declaration : declarations) {
             children.add(new VhdlStructureViewElement((NavigatablePsiElement) declaration));
+        }
+        return children;
+    }
+
+    private Collection<TreeElement> getInstantiationTreeElements(List<VhdlComponentInstantiationStatement> instantiations) {
+        List<TreeElement> children = new ArrayList<>(instantiations.size());
+        for (VhdlComponentInstantiationStatement instantiation : instantiations) {
+            children.add(new VhdlStructureViewElement((NavigatablePsiElement) instantiation));
         }
         return children;
     }
