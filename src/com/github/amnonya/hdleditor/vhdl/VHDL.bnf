@@ -321,6 +321,7 @@ block_statement ::=
         'begin'
             block_statement_part
         'end' 'block' [ label ] ';'
+    {methods=[getPresentation]}
 
 block_statement_part ::= ( concurrent_statement )*
 
@@ -623,6 +624,7 @@ generate_statement ::=
         'begin' ]
             ( concurrent_statement )*
         'end' 'generate' [ label ] ';'
+     {methods=[getPresentation]}
 
 generation_scheme ::=
     'for' parameter_specification
@@ -897,6 +899,7 @@ process_statement ::=
         'begin'
             process_statement_part?
         'end' [ 'postponed' ] 'process' [ label ] ';'
+    {methods=[getPresentation]}
 
 process_statement_part ::=
     ( sequential_statement )+
