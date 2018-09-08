@@ -35,7 +35,7 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramSpecification;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubtypeDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlVariableDeclaration;
-import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlIdentifierPsiImplUtil;
+import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlPsiImplUtil;
 import com.github.amnonya.hdleditor.vhdl.psi.tree.VhdlPsiTreeUtil;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -595,7 +595,7 @@ public class VhdlAnnotator implements Annotator {
             annotateText(id, VhdlSyntaxHighlighter.TYPE);
         } else if (declaration instanceof VhdlSubtypeDeclaration) {
             annotateText(id, VhdlSyntaxHighlighter.SUBTYPE);
-        } else if (VhdlIdentifierPsiImplUtil.isSubprogramParameter(declaration)) {
+        } else if (VhdlPsiImplUtil.isSubprogramParameter(declaration)) {
             annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
         } else if (declaration instanceof VhdlSubprogramSpecification) {
             annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_CALL);

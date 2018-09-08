@@ -1,10 +1,28 @@
 package com.github.amnonya.hdleditor.vhdl.psi.impl;
 
-import com.github.amnonya.hdleditor.vhdl.icons.VhdlIcons;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlArchitecturePresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlBlockPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlComponentPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlConstantPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlEntityPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlGeneratePresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlGenericPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlIdentifierPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlInstantiationPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlPackageBodyPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlPackagePresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlPortPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlProcessPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlSignalPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlSubprogramPresentation;
+import com.github.amnonya.hdleditor.vhdl.navigation.VhdlVariablePresentation;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlAliasDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlArchitectureBody;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlAttributeDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlBlockStatement;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlComponentDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlComponentInstantiationStatement;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlConstantDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlDesignator;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlElementFactory;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlEntityDeclaration;
@@ -12,19 +30,25 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlFile;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFullTypeDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFunctionParameterConstantDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFunctionParameterSignalDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlGenerateStatement;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlIdentifier;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlIdentifierList;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlInterfaceGenericDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlInterfacePortDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageBody;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterConstantDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterSignalDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterVariableDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcessStatement;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSignalDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramBody;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramParameterFileDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramSpecification;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubtypeDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlVariableDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.tree.VhdlPsiTreeUtil;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiComment;
@@ -34,34 +58,9 @@ import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.Icon;
+public class VhdlPsiImplUtil {
 
-public class VhdlIdentifierPsiImplUtil {
-    //    public static String getKey(VhdlIdentifier element) {
-//        ASTNode keyNode = element.getNode().findChildByType(VhdlTypes.IDENTIFIER);
-//        if (keyNode != null) {
-//            // IMPORTANT: Convert embedded escaped spaces to simple spaces
-//            return keyNode.getText().replaceAll("\\\\ ", " ");
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    public static String getValue(VhdlIdentifier element) {
-//        ASTNode valueNode = element.getNode().findChildByType(SimpleTypes.VALUE);
-//        if (valueNode != null) {
-//            return valueNode.getText();
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    public static String getName(VhdlIdentifier id) {
-//        return id.getText();
-//    }
-//
     public static PsiElement setName(VhdlIdentifier id, String newName) {
         VhdlElementFactory.rename(id, newName);
         return id;
@@ -81,24 +80,84 @@ public class VhdlIdentifierPsiImplUtil {
 //        }
     }
 
-    public static ItemPresentation getPresentation(final VhdlIdentifier id) {
-        return new ItemPresentation() {
-            @Nullable
-            @Override
-            public String getPresentableText() {
-                return id.getName();
-            }
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlIdentifier id) {
+        return new VhdlIdentifierPresentation(id);
+    }
 
-            @Override
-            public String getLocationString() {
-                return id.getContainingFile().getName();
-            }
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlEntityDeclaration entityDeclaration) {
+        return new VhdlEntityPresentation(entityDeclaration);
+    }
 
-            @Override
-            public Icon getIcon(boolean unused) {
-                return VhdlIcons.FILE;
-            }
-        };
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlArchitectureBody architectureBody) {
+        return new VhdlArchitecturePresentation(architectureBody);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlPackageDeclaration packageDeclaration) {
+        return new VhdlPackagePresentation(packageDeclaration);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlPackageBody packageBody) {
+        return new VhdlPackageBodyPresentation(packageBody);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlBlockStatement block) {
+        return new VhdlBlockPresentation(block);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlGenerateStatement generate) {
+        return new VhdlGeneratePresentation(generate);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlInterfaceGenericDeclaration declaration, int index) {
+        return new VhdlGenericPresentation(declaration, index);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlInterfacePortDeclaration declaration, int index) {
+        return new VhdlPortPresentation(declaration, index);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlConstantDeclaration declaration, int index) {
+        return new VhdlConstantPresentation(declaration, index);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlSignalDeclaration declaration, int index) {
+        return new VhdlSignalPresentation(declaration, index);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlVariableDeclaration declaration, int index) {
+        return new VhdlVariablePresentation(declaration, index);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlComponentDeclaration declaration) {
+        return new VhdlComponentPresentation(declaration);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlComponentInstantiationStatement instantiation) {
+        return new VhdlInstantiationPresentation(instantiation);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlSubprogramSpecification subprogram) {
+        return new VhdlSubprogramPresentation(subprogram);
+    }
+
+    @NotNull
+    public static ItemPresentation getPresentation(VhdlProcessStatement process) {
+        return new VhdlProcessPresentation(process);
     }
 
     /**
@@ -201,4 +260,5 @@ public class VhdlIdentifierPsiImplUtil {
                 || declaration instanceof VhdlProcedureParameterVariableDeclaration
                 || declaration instanceof VhdlSubprogramParameterFileDeclaration;
     }
+
 }

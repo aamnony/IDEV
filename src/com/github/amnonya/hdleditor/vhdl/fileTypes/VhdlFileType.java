@@ -1,6 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.fileTypes;
 
-import com.github.amnonya.hdleditor.vhdl.icons.VhdlIcons;
+import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.lang.VhdlLanguage;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 

@@ -1,7 +1,7 @@
 package com.github.amnonya.hdleditor.vhdl.psi;
 
 import com.github.amnonya.hdleditor.vhdl.IdByScopeComparator;
-import com.github.amnonya.hdleditor.vhdl.icons.VhdlIcons;
+import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.psi.tree.VhdlPsiTreeUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
