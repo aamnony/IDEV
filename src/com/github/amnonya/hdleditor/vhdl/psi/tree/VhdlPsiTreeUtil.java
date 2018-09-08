@@ -8,8 +8,12 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlEntityDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFile;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlIdentifier;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageBody;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageBodyDeclarativePart;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlPackageDeclarativePart;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSelectedName;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramBody;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlUseClause;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.OrderRootType;
@@ -25,6 +29,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -137,33 +142,125 @@ public class VhdlPsiTreeUtil {
     }
 
     /**
+     * Gets the architectures which implement {@code entity}.
+     *
+     * @param entity The {@link VhdlEntityDeclaration} to find the architectures of.
+     * @return The {@link VhdlArchitectureBody}s that implement {@code entity}.
+     */
+    @NotNull
+    public static List<VhdlArchitectureBody> getArchitectures(VhdlEntityDeclaration entity) {
+        List<VhdlArchitectureBody> architectures = new ArrayList<>(1);
+        VhdlFile file = (VhdlFile) entity.getContainingFile();
+        VhdlArchitectureBody fileArchitecture = file.findChildByClass(VhdlArchitectureBody.class);
+        if (fileArchitecture == null) {
+            throw new UnsupportedOperationException("Architecture implementation of an entity in an outside file is not supported yet");
+        }
+        architectures.add(fileArchitecture);
+        return architectures;
+    }
+
+    /**
      * Gets the entity which {@code arch} is implementing.
      *
      * @param arch The {@link VhdlArchitectureBody} to find the entity of.
      * @return The {@link VhdlEntityDeclaration} that {@code arch} is implementing.
      */
+    @NotNull
     public static VhdlEntityDeclaration getEntity(VhdlArchitectureBody arch) {
-//        VhdlRefname archEntity = arch.getRefname();
-        VhdlFile parent = (VhdlFile) arch.getParent();
-        VhdlEntityDeclaration fileEntity = parent.findChildByClass(VhdlEntityDeclaration.class);
+        VhdlFile file = (VhdlFile) arch.getContainingFile();
+        VhdlEntityDeclaration fileEntity = file.findChildByClass(VhdlEntityDeclaration.class);
         if (fileEntity == null) {
-            throw new UnsupportedOperationException("Architecture implementing an Entity in an outside file is not supported yet");
+            throw new UnsupportedOperationException("Architecture implementing an entity in an outside file is not supported yet");
         }
         return fileEntity;
     }
 
     /**
+     * Gets the package bodies which implement {@code pkg}.
+     *
+     * @param pkg The {@link VhdlPackageDeclaration} to find the body of.
+     * @return The {@link VhdlPackageBody}s that implement {@code pkg}.
+     */
+    @NotNull
+    public static List<VhdlPackageBody> getPackageBodies(VhdlPackageDeclaration pkg) {
+        List<VhdlPackageBody> packageBodies = new ArrayList<>(1);
+        VhdlFile file = (VhdlFile) pkg.getContainingFile();
+        VhdlPackageBody filePackageBody = file.findChildByClass(VhdlPackageBody.class);
+        if (filePackageBody == null) {
+            throw new UnsupportedOperationException("Package body implementation of a package in an outside file is not supported yet");
+        }
+        packageBodies.add(filePackageBody);
+        return packageBodies;
+    }
+
+    /**
      * Gets the package which {@code packageBody} is implementing.
      *
-     * @param packageBody The {@link VhdlPackageBody} to find the package of.
+     * @param packageBody The {@link VhdlPackageBody} to find the declaration of.
      * @return The {@link VhdlPackageDeclaration} that {@code packageBody} is implementing.
      */
+    @NotNull
     public static VhdlPackageDeclaration getPackage(VhdlPackageBody packageBody) {
-        VhdlFile parent = (VhdlFile) packageBody.getParent();
-        VhdlPackageDeclaration filePackage = parent.findChildByClass(VhdlPackageDeclaration.class);
+        VhdlFile file = (VhdlFile) packageBody.getContainingFile();
+        VhdlPackageDeclaration filePackage = file.findChildByClass(VhdlPackageDeclaration.class);
         if (filePackage == null) {
-            throw new UnsupportedOperationException("Package Body implementing an Package in an outside file is not supported yet");
+            throw new UnsupportedOperationException("Package body implementing a package in an outside file is not supported yet");
         }
         return filePackage;
     }
+
+    /**
+     * Gets the subprogram bodies which implement {@code subprogram}.
+     * Only package subprograms are supported.
+     *
+     * @param subprogram The {@link VhdlSubprogramDeclaration} to find the body of.
+     * @return The {@link VhdlSubprogramBody} that implement {@code subprogram}.
+     */
+    @NotNull
+    public static List<VhdlSubprogramBody> getSubprogramBodies(VhdlSubprogramDeclaration subprogram) {
+        List<VhdlSubprogramBody> subprogramBodies = new ArrayList<>(1);
+        PsiElement parent = subprogram.getParent();
+        if (parent instanceof VhdlPackageDeclarativePart) {
+            VhdlPackageDeclaration packageDeclaration = (VhdlPackageDeclaration) parent.getParent();
+            List<VhdlPackageBody> packageBodies = getPackageBodies(packageDeclaration);
+            VhdlIdentifier declarationId = subprogram.getSubprogramSpecification().getDesignator().getIdentifier();
+            for (VhdlPackageBody packageBody : packageBodies) {
+                List<VhdlSubprogramBody> bodies = packageBody.getPackageBodyDeclarativePart().getSubprogramBodyList();
+                for (VhdlSubprogramBody body : bodies) {
+                    VhdlIdentifier bodyId = body.getSubprogramSpecification().getDesignator().getIdentifier();
+                    if (IdByNameComparator.match(bodyId, declarationId)) {
+                        subprogramBodies.add(body);
+                    }
+                }
+            }
+        }
+        return subprogramBodies;
+    }
+
+    /**
+     * Gets the subprogram which {@code subprogramBody} is implementing.
+     * Only package subprograms are supported.
+     *
+     * @param subprogramBody The {@link VhdlSubprogramBody} to find the declaration of.
+     * @return The {@link VhdlSubprogramDeclaration} that {@code subprogramBody} is implementing, or null if none is found.
+     */
+    @Nullable
+    public static VhdlSubprogramDeclaration getSubprogram(VhdlSubprogramBody subprogramBody) {
+        PsiElement parent = subprogramBody.getParent();
+        if (parent instanceof VhdlPackageBodyDeclarativePart) {
+            VhdlPackageBody packageBody = (VhdlPackageBody) parent.getParent();
+            VhdlPackageDeclaration pkg = getPackage(packageBody);
+
+            VhdlIdentifier bodyId = subprogramBody.getSubprogramSpecification().getDesignator().getIdentifier();
+            List<VhdlSubprogramDeclaration> declarations = pkg.getPackageDeclarativePart().getSubprogramDeclarationList();
+            for (VhdlSubprogramDeclaration declaration : declarations) {
+                VhdlIdentifier declarationId = declaration.getSubprogramSpecification().getDesignator().getIdentifier();
+                if (IdByNameComparator.match(declarationId, bodyId)) {
+                    return declaration;
+                }
+            }
+        }
+        return null;
+    }
+
 }
