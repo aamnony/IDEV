@@ -27,9 +27,8 @@ public class VhdlComponentPresentation implements ItemPresentation {
         return null;
     }
 
-    @Nullable
     @Override
     public Icon getIcon(boolean unused) {
-        return null;
+        return VhdlIcons.COMPONENT;
     }
 }

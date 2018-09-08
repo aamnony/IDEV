@@ -26,6 +26,8 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcessStatement;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSignalDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramBody;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramDeclaration;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramDeclarativePart;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramSpecification;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlVariableDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlArchitectureBodyImpl;
 import com.github.amnonya.hdleditor.vhdl.psi.impl.VhdlEntityDeclarationImpl;
@@ -128,9 +130,13 @@ public class VhdlStructureViewElement implements StructureViewTreeElement, Sorta
             return getChildren((VhdlProcessStatement) element);
         } else if (element instanceof VhdlComponentDeclaration) {
             return getChildren((VhdlComponentDeclaration) element);
-        } else {
-            return EMPTY_ARRAY;
+        } else if (element instanceof VhdlSubprogramSpecification) {
+            PsiElement parent = element.getParent();
+            if (parent instanceof VhdlSubprogramBody) {
+                return getChildren((VhdlSubprogramBody) parent);
+            }
         }
+        return EMPTY_ARRAY;
     }
 
     @NotNull
@@ -264,7 +270,7 @@ public class VhdlStructureViewElement implements StructureViewTreeElement, Sorta
         Collection<TreeElement> blocks = getTreeElements(element.getBlockStatementList());
         Collection<TreeElement> generates = getTreeElements(element.getGenerateStatementList());
 
-        List<TreeElement> children = new ArrayList<>(10);
+        List<TreeElement> children = new ArrayList<>(5);
         children.addAll(constants);
         children.addAll(signals);
         children.addAll(subprograms);
@@ -286,6 +292,25 @@ public class VhdlStructureViewElement implements StructureViewTreeElement, Sorta
                     declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
             );
             List<TreeElement> children = new ArrayList<>(10);
+            children.addAll(constants);
+            children.addAll(variables);
+            children.addAll(subprograms);
+            return children.toArray(new TreeElement[0]);
+        } else {
+            return EMPTY_ARRAY;
+        }
+    }
+
+    @NotNull
+    private static TreeElement[] getChildren(VhdlSubprogramBody element) {
+        VhdlSubprogramDeclarativePart declarations = element.getSubprogramDeclarativePart();
+        if (declarations != null) {
+            Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
+            Collection<TreeElement> variables = getVariableTreeElements(declarations.getVariableDeclarationList());
+            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
+                    declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
+            );
+            List<TreeElement> children = new ArrayList<>(3);
             children.addAll(constants);
             children.addAll(variables);
             children.addAll(subprograms);

@@ -1,5 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.navigation;
 
+import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlComponentInstantiationStatement;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlIdentifier;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlInstantiatedUnit;
@@ -62,7 +63,7 @@ public class VhdlInstantiationPresentation implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean unused) {
-        return null;
+        return VhdlIcons.INSTANTIATION;
     }
 
 }

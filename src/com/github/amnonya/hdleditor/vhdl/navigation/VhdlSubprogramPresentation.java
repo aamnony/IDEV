@@ -1,5 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.navigation;
 
+import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlDesignator;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFunctionParameterConstantDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlFunctionParameterList;
@@ -11,9 +12,12 @@ import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterList;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterSignalDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcedureParameterVariableDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlRefname;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramBody;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramParameterFileDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlSubprogramSpecification;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiElement;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +56,14 @@ public class VhdlSubprogramPresentation implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean unused) {
-        return null;
+        PsiElement parent = specs.getParent();
+        if (parent instanceof VhdlSubprogramDeclaration) {
+            return VhdlIcons.SUBPROGRAM;
+        } else if (parent instanceof VhdlSubprogramBody) {
+            return VhdlIcons.SUBPROGRAM_BODY;
+        } else {
+            throw new UnsupportedOperationException("Subprogram specification parent is of illegal type: " + parent.getClass());
+        }
     }
 
     @Nullable

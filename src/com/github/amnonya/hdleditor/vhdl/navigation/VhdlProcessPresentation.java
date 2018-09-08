@@ -1,5 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.navigation;
 
+import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlLabel;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlProcessStatement;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlRefname;
@@ -40,7 +41,7 @@ public class VhdlProcessPresentation implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean unused) {
-        return null;
+        return VhdlIcons.PROCESS;
     }
 
     @Nullable

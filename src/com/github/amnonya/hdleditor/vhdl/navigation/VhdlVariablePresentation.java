@@ -1,6 +1,7 @@
 package com.github.amnonya.hdleditor.vhdl.navigation;
 
 import com.github.amnonya.hdleditor.utils.StringUtils;
+import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlExpression;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlVariableDeclaration;
 import com.intellij.navigation.ItemPresentation;
@@ -37,9 +38,8 @@ public class VhdlVariablePresentation implements ItemPresentation {
         return null;
     }
 
-    @Nullable
     @Override
     public Icon getIcon(boolean unused) {
-        return null;
+        return VhdlIcons.VARIABLE;
     }
 }
