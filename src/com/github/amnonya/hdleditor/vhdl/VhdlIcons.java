@@ -27,4 +27,11 @@ public class VhdlIcons {
     public static final Icon CONSTANT = IconLoader.getIcon("/icons/constant.svg");
     public static final Icon SIGNAL = IconLoader.getIcon("/icons/signal.svg");
     public static final Icon VARIABLE = IconLoader.getIcon("/icons/variable.svg");
+
+    public static final Icon IMPLEMENTED_ENTITY = IconLoader.getIcon("/icons/implementedEntity.svg");
+    public static final Icon IMPLEMENTING_ENTITY = IconLoader.getIcon("/icons/implementingEntity.svg");
+    public static final Icon IMPLEMENTED_PACKAGE = IconLoader.getIcon("/icons/implementedPackage.svg");
+    public static final Icon IMPLEMENTING_PACKAGE = IconLoader.getIcon("/icons/implementingPackage.svg");
+    public static final Icon IMPLEMENTED_SUBPROGRAM = IconLoader.getIcon("/icons/implementedSubprogram.svg");
+    public static final Icon IMPLEMENTING_SUBPROGRAM = IconLoader.getIcon("/icons/implementingSubprogram.svg");
 }
