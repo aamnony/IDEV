@@ -347,7 +347,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : fileDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.FILE_VARIABLE);
+                annotateText(id, VhdlSyntaxHighlighter.VARIABLE);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -506,7 +506,7 @@ public class VhdlAnnotator implements Annotator {
         VhdlIdentifier id = subtypeDeclaration.getIdentifier();
         try {
             checkDuplicates(id);
-            annotateText(id, VhdlSyntaxHighlighter.SUBTYPE);
+            annotateText(id, VhdlSyntaxHighlighter.TYPE);
         } catch (DeclarationAlreadyExistsException e) {
             holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
         }
@@ -586,7 +586,7 @@ public class VhdlAnnotator implements Annotator {
         } else if (declaration instanceof VhdlVariableDeclaration) {
             annotateText(id, VhdlSyntaxHighlighter.VARIABLE);
         } else if (declaration instanceof VhdlFileDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.FILE_VARIABLE);
+            annotateText(id, VhdlSyntaxHighlighter.VARIABLE);
         } else if (declaration instanceof VhdlAliasDeclaration) {
             annotateText(id, VhdlSyntaxHighlighter.ALIAS);
         } else if (declaration instanceof VhdlAttributeDeclaration) {
@@ -594,7 +594,7 @@ public class VhdlAnnotator implements Annotator {
         } else if (declaration instanceof VhdlFullTypeDeclaration) {
             annotateText(id, VhdlSyntaxHighlighter.TYPE);
         } else if (declaration instanceof VhdlSubtypeDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.SUBTYPE);
+            annotateText(id, VhdlSyntaxHighlighter.TYPE);
         } else if (VhdlPsiImplUtil.isSubprogramParameter(declaration)) {
             annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
         } else if (declaration instanceof VhdlSubprogramSpecification) {

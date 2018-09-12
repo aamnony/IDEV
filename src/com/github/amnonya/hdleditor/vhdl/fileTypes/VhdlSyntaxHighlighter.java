@@ -21,7 +21,6 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey KEYWORD = createTextAttributesKey("KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey OPERATOR = createTextAttributesKey("OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
     public static final TextAttributesKey TYPE = createTextAttributesKey("TYPE", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
-    public static final TextAttributesKey SUBTYPE = createTextAttributesKey("SUBTYPE", DefaultLanguageHighlighterColors.CLASS_REFERENCE);
     public static final TextAttributesKey SEMICOLON = createTextAttributesKey("SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
     public static final TextAttributesKey COMMA = createTextAttributesKey("COMMA", DefaultLanguageHighlighterColors.COMMA);
     public static final TextAttributesKey DOT = createTextAttributesKey("DOT", DefaultLanguageHighlighterColors.DOT);
@@ -35,8 +34,6 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SIGNAL = createTextAttributesKey("SIGNAL", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
     public static final TextAttributesKey CONSTANT = createTextAttributesKey("CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
     public static final TextAttributesKey VARIABLE = createTextAttributesKey("VARIABLE", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
-    public static final TextAttributesKey FILE_VARIABLE = createTextAttributesKey("FILE_VARIABLE", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
-
     public static final TextAttributesKey ATTRIBUTE = createTextAttributesKey("ATTRIBUTE", DefaultLanguageHighlighterColors.METADATA);
     public static final TextAttributesKey ALIAS = createTextAttributesKey("ALIAS", DefaultLanguageHighlighterColors.MARKUP_ATTRIBUTE);
     public static final TextAttributesKey SUBPROGRAM_PARAMETER = createTextAttributesKey("SUBPROGRAM_PARAMETER", DefaultLanguageHighlighterColors.PARAMETER);
@@ -127,9 +124,6 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
         if (OPERATORS_2.contains(tokenType)) {
             return OPERATORS_KEYS;
         }
-//        if (KNOWN_TYPES.contains(tokenType)) {
-//            return TYPES_KEYS;
-//        }
         if (tokenType.equals(VhdlTypes.COMMENT)) {
             return COMMENTS_KEYS;
         }
