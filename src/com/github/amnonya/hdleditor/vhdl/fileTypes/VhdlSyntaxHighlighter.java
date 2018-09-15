@@ -82,26 +82,36 @@ public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
             VhdlTypes.T_AFTER, VhdlTypes.T_INERTIAL, VhdlTypes.T_REJECT, VhdlTypes.T_TRANSPORT, VhdlTypes.T_UNTIL,
             VhdlTypes.T_WAIT, VhdlTypes.T_BEGIN, VhdlTypes.T_END, VhdlTypes.T_IS, VhdlTypes.T_OF, VhdlTypes.T_ON
     );
-    public static final TokenSet OPERATORS = TokenSet.create(
-            VhdlTypes.T_EXP, VhdlTypes.T_MUL, VhdlTypes.T_DIV, VhdlTypes.T_ADD, VhdlTypes.T_SUB,
-            VhdlTypes.T_CONCAT, VhdlTypes.T_EQ, VhdlTypes.T_NE, VhdlTypes.T_LT, VhdlTypes.T_LE, VhdlTypes.T_GT,
-            VhdlTypes.T_GE, VhdlTypes.T_BLOCKING_ASSIGNMENT, VhdlTypes.T_MAP_ASSIGNMENT, VhdlTypes.T_ABS,
-            VhdlTypes.T_AND, VhdlTypes.T_MOD, VhdlTypes.T_NAND, VhdlTypes.T_NOR, VhdlTypes.T_NOT, VhdlTypes.T_OR,
-            VhdlTypes.T_REM, VhdlTypes.T_ROL, VhdlTypes.T_ROR, VhdlTypes.T_SLA, VhdlTypes.T_SLL, VhdlTypes.T_SRA,
-            VhdlTypes.T_SRL, VhdlTypes.T_XNOR, VhdlTypes.T_XOR,
+
+    public static final TokenSet ADDITIVE_OPERATORS = TokenSet.create(VhdlTypes.T_ADD, VhdlTypes.T_SUB, VhdlTypes.T_CONCAT);
+    public static final TokenSet ASSIGNMENT_OPERATORS = TokenSet.create(VhdlTypes.T_LE, VhdlTypes.T_BLOCKING_ASSIGNMENT, VhdlTypes.T_MAP_ASSIGNMENT);
+    public static final TokenSet EQUALITY_OPERATORS = TokenSet.create(
+            VhdlTypes.T_EQ, VhdlTypes.T_NE,
             // VHDL 2008 Operators:
-            VhdlTypes.T_QQ, VhdlTypes.T_QE, VhdlTypes.T_QNE, VhdlTypes.T_QLT, VhdlTypes.T_QLE, VhdlTypes.T_QGT,
-            VhdlTypes.T_QGE
+            VhdlTypes.T_QQ, VhdlTypes.T_QE, VhdlTypes.T_QNE
+    );
+    public static final TokenSet LOGICAL_OPERATORS = TokenSet.create(
+            VhdlTypes.T_NOT, VhdlTypes.T_AND, VhdlTypes.T_OR, VhdlTypes.T_NAND, VhdlTypes.T_NOR, VhdlTypes.T_XOR, VhdlTypes.T_XNOR
+    );
+    public static final TokenSet MULTIPLICATIVE_OPERATORS = TokenSet.create(VhdlTypes.T_EXP, VhdlTypes.T_MUL, VhdlTypes.T_DIV);
+    public static final TokenSet MULTIPLICATIVE_WORD_OPERATORS = TokenSet.create(VhdlTypes.T_ABS, VhdlTypes.T_MOD, VhdlTypes.T_REM);
+    public static final TokenSet RELATIONAL_OPERATORS = TokenSet.create(
+            VhdlTypes.T_LT, VhdlTypes.T_GT, VhdlTypes.T_GE,
+            // VHDL 2008 Operators:
+            VhdlTypes.T_QLT, VhdlTypes.T_QLE, VhdlTypes.T_QGT, VhdlTypes.T_QGE
+    );
+    public static final TokenSet SHIFT_OPERATORS = TokenSet.create(
+            VhdlTypes.T_ROL, VhdlTypes.T_ROR, VhdlTypes.T_SLA, VhdlTypes.T_SLL, VhdlTypes.T_SRA, VhdlTypes.T_SRL
+    );
+    public static final TokenSet OPERATORS = TokenSet.orSet(
+            ADDITIVE_OPERATORS, ASSIGNMENT_OPERATORS, EQUALITY_OPERATORS, LOGICAL_OPERATORS, RELATIONAL_OPERATORS,
+            MULTIPLICATIVE_OPERATORS, MULTIPLICATIVE_WORD_OPERATORS, SHIFT_OPERATORS
     );
 
     private static final TokenSet OPERATORS_2 = TokenSet.create(VhdlTypes.T_APOSTROPHE);
 
-    public static final TokenSet PARENTHESES = TokenSet.create(
-            VhdlTypes.T_LEFT_PAREN, VhdlTypes.T_RIGHT_PAREN
-    );
-    private static final TokenSet SEMICOLONS = TokenSet.create(
-            VhdlTypes.T_COLON, VhdlTypes.T_SEMICOLON
-    );
+    public static final TokenSet PARENTHESES = TokenSet.create(VhdlTypes.T_LEFT_PAREN, VhdlTypes.T_RIGHT_PAREN);
+    private static final TokenSet SEMICOLONS = TokenSet.create(VhdlTypes.T_COLON, VhdlTypes.T_SEMICOLON);
 
     @NotNull
     @Override

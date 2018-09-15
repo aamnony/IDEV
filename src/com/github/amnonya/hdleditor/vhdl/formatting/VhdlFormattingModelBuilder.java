@@ -13,6 +13,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
+import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,44 +37,31 @@ public class VhdlFormattingModelBuilder implements FormattingModelBuilder {
     }
 
     private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
-//        int indentSize = settings.getIndentSize(VhdlFileType.INSTANCE);
-        // TODO: Add dependency on settings
         // Rule order matters!
+        CommonCodeStyleSettings langSettings = settings.getCommonSettings(VhdlLanguage.INSTANCE);
         return new SpacingBuilder(settings, VhdlLanguage.INSTANCE)
                 .before(VhdlTypes.COMMENT).spaces(2)
-                .around(VhdlTypes.T_SEMICOLON).none()
-                .before(VhdlTypes.T_COMMA).none()
-                .after(VhdlTypes.T_COMMA).spaces(1)
+                .before(VhdlTypes.T_SEMICOLON).spaceIf(langSettings.SPACE_BEFORE_SEMICOLON)
+                .after(VhdlTypes.T_SEMICOLON).none()
+                .before(VhdlTypes.T_COMMA).spaceIf(langSettings.SPACE_BEFORE_COMMA)
+                .after(VhdlTypes.T_COMMA).spaceIf(langSettings.SPACE_AFTER_COMMA)
                 .around(VhdlTypes.T_DOT).none()
-                .around(VhdlTypes.T_COLON).spaces(1)
-                .after(VhdlTypes.T_LEFT_BRACKET).none()
-                .before(VhdlTypes.T_RIGHT_BRACKET).none()
-                .around(VhdlSyntaxHighlighter.OPERATORS).spaces(1)
+                .before(VhdlTypes.T_COLON).spaceIf(langSettings.SPACE_BEFORE_COLON)
+                .after(VhdlTypes.T_COLON).spaceIf(langSettings.SPACE_AFTER_COLON)
+                .after(VhdlTypes.T_LEFT_BRACKET).spaceIf(langSettings.SPACE_WITHIN_BRACKETS)
+                .before(VhdlTypes.T_RIGHT_BRACKET).spaceIf(langSettings.SPACE_WITHIN_BRACKETS)
+                .around(VhdlSyntaxHighlighter.ADDITIVE_OPERATORS).spaceIf(langSettings.SPACE_AROUND_ADDITIVE_OPERATORS)
+                .around(VhdlSyntaxHighlighter.ASSIGNMENT_OPERATORS).spaceIf(langSettings.SPACE_AROUND_ASSIGNMENT_OPERATORS)
+                .around(VhdlSyntaxHighlighter.EQUALITY_OPERATORS).spaceIf(langSettings.SPACE_AROUND_EQUALITY_OPERATORS)
+                .around(VhdlSyntaxHighlighter.LOGICAL_OPERATORS).spaces(1)
+                .around(VhdlSyntaxHighlighter.MULTIPLICATIVE_OPERATORS).spaceIf(langSettings.SPACE_AROUND_MULTIPLICATIVE_OPERATORS)
+                .around(VhdlSyntaxHighlighter.MULTIPLICATIVE_WORD_OPERATORS).spaces(1)
+                .around(VhdlSyntaxHighlighter.RELATIONAL_OPERATORS).spaceIf(langSettings.SPACE_AROUND_RELATIONAL_OPERATORS)
+                .around(VhdlSyntaxHighlighter.SHIFT_OPERATORS).spaces(1)
                 .around(VhdlSyntaxHighlighter.KEYWORDS).spaces(1)
-//                .around(VhdlTypes.CHARACTER_LITERAL).none()
-//                .around(VhdlTypes.IDENTIFIER).none()
-                .around(VhdlSyntaxHighlighter.PARENTHESES).none()
-                //
-//                .around(VhdlTypes.T_IS).spaces(1)
-//                .around(VhdlTypes.T_TYPE).spaces(1)
-//                .around(VhdlTypes.T_SUBTYPE).spaces(1)
-//                .after(VhdlTypes.T_LEFT_PAREN).none()
-//                .before(VhdlTypes.T_RIGHT_PAREN).none()
-//                .around(VhdlTypes.T_OF).spaces(1)
-//                .around(VhdlTypes.T_ARRAY).spaces(1)
-//                .around(VhdlTypes.T_ENTITY).spaces(1)
-//                .around(VhdlTypes.T_ARCHITECTURE).spaces(1)
-//                .around(VhdlTypes.T_PACKAGE).spaces(1)
-//                .around(VhdlTypes.T_BODY).spaces(1)
-//                .around(VhdlTypes.T_COMPONENT).spaces(1)
-                ;
-//                .before(VhdlTypes.USE_CLAUSE).spaces(indentSize);
-//                .around(VhdlTypes.USE_CLAUSE).spaces();
-//                .after(TokenSet.WHITE_SPACE).none();
-//                .around(VhdlTypes.SEPARATOR)
-//                .spaceIf(settings.SPACE_AROUND_ASSIGNMENT_OPERATORS)
-//                .before(VhdlTypes.PROPERTY)
-//                .none();
+                .after(VhdlTypes.T_LEFT_PAREN).spaceIf(langSettings.SPACE_WITHIN_PARENTHESES)
+                .before(VhdlTypes.T_RIGHT_PAREN).spaceIf(langSettings.SPACE_WITHIN_PARENTHESES)
+                .around(VhdlSyntaxHighlighter.PARENTHESES).none();
     }
 
     @Nullable
