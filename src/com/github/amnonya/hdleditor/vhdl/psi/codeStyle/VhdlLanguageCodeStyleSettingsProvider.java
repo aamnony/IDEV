@@ -38,9 +38,14 @@ public class VhdlLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSett
             consumer.showStandardOptions("SPACE_AROUND_RELATIONAL_OPERATORS");
             consumer.showStandardOptions("SPACE_WITHIN_PARENTHESES");
 //            consumer.renameStandardOption("SPACE_AROUND_ASSIGNMENT_OPERATORS", "Separator");
-        }/* else if (settingsType == SettingsType.BLANK_LINES_SETTINGS) {
+        }else if (settingsType == SettingsType.BLANK_LINES_SETTINGS) {
             consumer.showStandardOptions("KEEP_BLANK_LINES_IN_CODE");
-        }*/
+            consumer.showStandardOptions("KEEP_BLANK_LINES_IN_DECLARATIONS");
+            consumer.showStandardOptions("BLANK_LINES_BEFORE_IMPORTS");
+            consumer.showStandardOptions("BLANK_LINES_AFTER_IMPORTS");
+            consumer.showStandardOptions("BLANK_LINES_AROUND_CLASS");
+            consumer.renameStandardOption("BLANK_LINES_AROUND_CLASS", "After design unit (entity, package, ...)");
+        }
     }
 
     @Override
