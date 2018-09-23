@@ -1,31 +1,19 @@
 package com.github.amnonya.hdleditor.vhdl.formatting;
 
-import com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes;
-import com.intellij.formatting.ASTBlock;
-import com.intellij.formatting.Alignment;
-import com.intellij.formatting.Block;
-import com.intellij.formatting.ChildAttributes;
+import com.github.amnonya.hdleditor.vhdl.lang.*;
+import com.github.amnonya.hdleditor.vhdl.psi.*;
+import com.intellij.formatting.*;
 import com.intellij.formatting.Indent;
-import com.intellij.formatting.Spacing;
-import com.intellij.formatting.SpacingBuilder;
-import com.intellij.formatting.Wrap;
-import com.intellij.formatting.WrapType;
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.formatter.FormatterUtil;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
+import com.intellij.lang.*;
+import com.intellij.openapi.util.*;
+import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.*;
+import com.intellij.psi.formatter.*;
+import com.intellij.psi.tree.*;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 class VhdlBlock implements ASTBlock {
 
@@ -35,6 +23,7 @@ class VhdlBlock implements ASTBlock {
     private final ASTNode myNode;
     private final Wrap myWrap;
     private final SpacingBuilder mySpacingBuilder;
+    private final CodeStyleSettings mySettings;
     private List<VhdlBlock> mySubBlocks = null;
     private Map<ASTNode, VhdlBlock> mySubBlockByNode = null;
 
@@ -51,7 +40,6 @@ class VhdlBlock implements ASTBlock {
             VhdlTypes.CONSTANT_DECLARATION, VhdlTypes.SIGNAL_DECLARATION, VhdlTypes.VARIABLE_DECLARATION,
             VhdlTypes.FILE_DECLARATION, VhdlTypes.ATTRIBUTE_DECLARATION
     );
-
     private static final TokenSet NORMAL_INDENTED_BLOCKS = TokenSet.create(
             VhdlTypes.USE_CLAUSE, VhdlTypes.ENTITY_HEADER, VhdlTypes.GENERIC_INTERFACE_LIST,
             VhdlTypes.PORT_INTERFACE_LIST, VhdlTypes.ARCHITECTURE_DECLARATIVE_PART,
@@ -62,11 +50,7 @@ class VhdlBlock implements ASTBlock {
             VhdlTypes.ELEMENT_DECLARATION, VhdlTypes.PROCEDURE_PARAMETER_LIST, VhdlTypes.FUNCTION_PARAMETER_LIST,
             VhdlTypes.BLOCK_DECLARATIVE_PART, VhdlTypes.BLOCK_STATEMENT_PART
     );
-
-    private static final TokenSet LABEL_INDENTED_BLOCKS = TokenSet.create(
-            VhdlTypes.LABEL
-    );
-
+    private static final TokenSet LABEL_INDENTED_BLOCKS = TokenSet.create(VhdlTypes.LABEL);
     private static final TokenSet ALWAYS_WRAPPED_BLOCKS = TokenSet.create(
             VhdlTypes.GENERIC_CLAUSE, VhdlTypes.PORT_CLAUSE, VhdlTypes.INTERFACE_GENERIC_DECLARATION,
             VhdlTypes.INTERFACE_PORT_DECLARATION, VhdlTypes.ARCHITECTURE_DECLARATIVE_PART,
@@ -78,42 +62,28 @@ class VhdlBlock implements ASTBlock {
             VhdlTypes.PROCEDURE_PARAMETER_SIGNAL_DECLARATION, VhdlTypes.PROCEDURE_PARAMETER_VARIABLE_DECLARATION,
             VhdlTypes.FUNCTION_PARAMETER_CONSTANT_DECLARATION, VhdlTypes.FUNCTION_PARAMETER_SIGNAL_DECLARATION
     );
+    private CommonCodeStyleSettings myCommonSettings;
 
-    public VhdlBlock(@Nullable VhdlBlock parent, @NotNull ASTNode node, @Nullable Alignment alignment,
-                     @NotNull Indent indent, @Nullable Wrap wrap, SpacingBuilder spacingBuilder) {
+    public VhdlBlock(@Nullable VhdlBlock parent, CodeStyleSettings settings, SpacingBuilder spacingBuilder,
+                     @NotNull ASTNode node, @Nullable Alignment alignment, @NotNull Indent indent, @Nullable Wrap wrap) {
         myParent = parent;
         myAlignment = alignment;
         myIndent = indent;
         myNode = node;
         myWrap = wrap;
         mySpacingBuilder = spacingBuilder;
-//        myEmptySequence = isEmptySequence(node);
+        mySettings = settings;
+        myCommonSettings = mySettings.getCommonSettings(VhdlLanguage.INSTANCE);
 
-//        final PyCodeStyleSettings pySettings = myContext.getPySettings();
         final IElementType myType = node.getElementType();
-
         if (myType == VhdlTypes.PORT_CLAUSE) {
-            myListAlignments = new Alignment[]{
-                    Alignment.createAlignment(true),
-                    Alignment.createAlignment(true),
-                    Alignment.createAlignment(true),
-                    Alignment.createAlignment(true),
-                    Alignment.createAlignment(true),
-            };
+            myListAlignments = fillAlignments(new Alignment[5]);
         }
         if (myType == VhdlTypes.GENERIC_CLAUSE) {
-            myListAlignments = new Alignment[]{
-                    Alignment.createAlignment(true),
-                    Alignment.createAlignment(true),
-                    Alignment.createAlignment(true),
-            };
+            myListAlignments = fillAlignments(new Alignment[3]);
         }
         if (OBJECT_DECLARATION_BLOCKS.contains(myType)) {
-            myListAlignments = new Alignment[]{
-                    Alignment.createAlignment(true),
-                    Alignment.createAlignment(true),
-                    Alignment.createAlignment(true),
-            };
+            myListAlignments = fillAlignments(new Alignment[3]);
         }
 
     }
@@ -247,44 +217,51 @@ class VhdlBlock implements ASTBlock {
         // Alignment:
         Alignment childAlignment = null;
 
-        if (myType == VhdlTypes.INTERFACE_GENERIC_DECLARATION) {
-            if (myChildType == VhdlTypes.T_COLON) {
-                childAlignment = myParent.myParent.myListAlignments[0];
-            } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
-                childAlignment = myParent.myParent.myListAlignments[1];
+        if (myCommonSettings.ALIGN_GROUP_FIELD_DECLARATIONS) {
+            if (myType == VhdlTypes.INTERFACE_GENERIC_DECLARATION) {
+                if (myChildType == VhdlTypes.T_COLON) {
+                    childAlignment = myParent.myParent.myListAlignments[0];
+                } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
+                    childAlignment = myParent.myParent.myListAlignments[1];
+                }
+            } else if (myType == VhdlTypes.INTERFACE_PORT_DECLARATION) {
+                if (myChildType == VhdlTypes.T_COLON) {
+                    childAlignment = myParent.myParent.myListAlignments[0];
+                } else if (myChildType == VhdlTypes.MODE) {
+                    childAlignment = myParent.myParent.myListAlignments[1];
+                } else if (myChildType == VhdlTypes.SUBTYPE_INDICATION) {
+                    childAlignment = myParent.myParent.myListAlignments[2];
+                } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
+                    childAlignment = myParent.myParent.myListAlignments[3];
+                }
+            } else if (myChildType == VhdlTypes.COMMENT) {
+                Alignment commentAlignment = getGenericDeclarationCommentAlignment(child);
+                if (commentAlignment == null) {
+                    commentAlignment = getPortDeclarationCommentAlignment(child);
+                }
+                if (commentAlignment != null) {
+                    childAlignment = commentAlignment;
+                }
             }
-        } else if (myType == VhdlTypes.INTERFACE_PORT_DECLARATION) {
-            if (myChildType == VhdlTypes.T_COLON) {
-                childAlignment = myParent.myParent.myListAlignments[0];
-            } else if (myChildType == VhdlTypes.MODE) {
-                childAlignment = myParent.myParent.myListAlignments[1];
-            } else if (myChildType == VhdlTypes.SUBTYPE_INDICATION) {
-                childAlignment = myParent.myParent.myListAlignments[2];
-            } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
-                childAlignment = myParent.myParent.myListAlignments[3];
-            }
-        } else if (OBJECT_DECLARATION_TYPES.contains(myType)) {
-            if (myChildType == VhdlTypes.T_COLON) {
-                childAlignment = myParent.myListAlignments[0];
-            } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
-                childAlignment = myParent.myListAlignments[1];
-            }
-        } else if (myChildType == VhdlTypes.COMMENT) {
-            Alignment commentAlignment = getGenericDeclarationCommentAlignment(child);
-            if (commentAlignment == null) {
-                commentAlignment = getPortDeclarationCommentAlignment(child);
-            }
-            if (commentAlignment == null) {
-                commentAlignment = getObjectDeclarationCommentAlignment(child);
-            }
-            if (commentAlignment != null) {
-                childAlignment = commentAlignment;
-            }
+        }
 
+        if (myCommonSettings.ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS) {
+            if (OBJECT_DECLARATION_TYPES.contains(myType)) {
+                if (myChildType == VhdlTypes.T_COLON) {
+                    childAlignment = myParent.myListAlignments[0];
+                } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
+                    childAlignment = myParent.myListAlignments[1];
+                }
+            } else if (myChildType == VhdlTypes.COMMENT) {
+                Alignment commentAlignment = getObjectDeclarationCommentAlignment(child);
+                if (commentAlignment != null) {
+                    childAlignment = commentAlignment;
+                }
+            }
         }
 
         // --------------------------------------------------------------------
-        return new VhdlBlock(this, child, childAlignment, childIndent, childWrap, mySpacingBuilder);
+        return new VhdlBlock(this, mySettings, mySpacingBuilder, child, childAlignment, childIndent, childWrap);
     }
 
     /**
@@ -397,5 +374,13 @@ class VhdlBlock implements ASTBlock {
             }
         }
         return null;
+    }
+
+    @NotNull
+    private static Alignment[] fillAlignments(@NotNull Alignment[] alignments) {
+        for (int i = 0; i < alignments.length; i++) {
+            alignments[i] = Alignment.createAlignment(true);
+        }
+        return alignments;
     }
 }

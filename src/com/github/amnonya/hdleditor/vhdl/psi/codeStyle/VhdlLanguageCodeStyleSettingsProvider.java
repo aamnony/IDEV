@@ -1,11 +1,11 @@
 package com.github.amnonya.hdleditor.vhdl.psi.codeStyle;
 
-import com.github.amnonya.hdleditor.vhdl.lang.VhdlLanguage;
-import com.intellij.lang.Language;
-import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable;
-import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
+import com.github.amnonya.hdleditor.vhdl.lang.*;
+import com.intellij.application.options.*;
+import com.intellij.lang.*;
+import com.intellij.psi.codeStyle.*;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 public class VhdlLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
     @NotNull
@@ -16,36 +16,60 @@ public class VhdlLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSett
 
     @Override
     public void customizeSettings(@NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
-        if (settingsType == SettingsType.SPACING_SETTINGS) {
-            consumer.showStandardOptions("SPACE_BEFORE_SEMICOLON");
-            consumer.showStandardOptions("SPACE_BEFORE_COMMA");
-            consumer.showStandardOptions("SPACE_AFTER_COMMA");
-            consumer.showStandardOptions("SPACE_BEFORE_COLON");
-            consumer.moveStandardOption("SPACE_BEFORE_COLON", "Other");
-            consumer.renameStandardOption("SPACE_BEFORE_COLON", "Before colon");
-            consumer.showStandardOptions("SPACE_AFTER_COLON");
-            consumer.moveStandardOption("SPACE_AFTER_COLON", "Other");
-            consumer.renameStandardOption("SPACE_AFTER_COLON", "After colon");
-            consumer.showStandardOptions("SPACE_WITHIN_BRACKETS");
-            consumer.showStandardOptions("SPACE_AROUND_ADDITIVE_OPERATORS");
-            consumer.renameStandardOption("SPACE_AROUND_ADDITIVE_OPERATORS", "Additive operators (+, -, &)");
-            consumer.showStandardOptions("SPACE_AROUND_ASSIGNMENT_OPERATORS");
-            consumer.renameStandardOption("SPACE_AROUND_ASSIGNMENT_OPERATORS", "Assignment operators (<=, :=, =>)");
-            consumer.showStandardOptions("SPACE_AROUND_EQUALITY_OPERATORS");
-            consumer.renameStandardOption("SPACE_AROUND_EQUALITY_OPERATORS", "Equality operators (=, /=, ...)");
-            consumer.showStandardOptions("SPACE_AROUND_MULTIPLICATIVE_OPERATORS");
-            consumer.renameStandardOption("SPACE_AROUND_MULTIPLICATIVE_OPERATORS", "Multiplicative operators (*, /, **)");
-            consumer.showStandardOptions("SPACE_AROUND_RELATIONAL_OPERATORS");
-            consumer.showStandardOptions("SPACE_WITHIN_PARENTHESES");
-//            consumer.renameStandardOption("SPACE_AROUND_ASSIGNMENT_OPERATORS", "Separator");
-        }else if (settingsType == SettingsType.BLANK_LINES_SETTINGS) {
-            consumer.showStandardOptions("KEEP_BLANK_LINES_IN_CODE");
-            consumer.showStandardOptions("KEEP_BLANK_LINES_IN_DECLARATIONS");
-            consumer.showStandardOptions("BLANK_LINES_BEFORE_IMPORTS");
-            consumer.showStandardOptions("BLANK_LINES_AFTER_IMPORTS");
-            consumer.showStandardOptions("BLANK_LINES_AROUND_CLASS");
-            consumer.renameStandardOption("BLANK_LINES_AROUND_CLASS", "After design unit (entity, package, ...)");
+        switch (settingsType) {
+            case BLANK_LINES_SETTINGS:
+                consumer.showStandardOptions(
+                        "KEEP_BLANK_LINES_IN_CODE", "KEEP_BLANK_LINES_IN_DECLARATIONS",
+                        "BLANK_LINES_BEFORE_IMPORTS", "BLANK_LINES_AFTER_IMPORTS",
+                        "BLANK_LINES_AROUND_CLASS"
+                );
+                consumer.renameStandardOption("BLANK_LINES_AROUND_CLASS", "After design unit (entity, package, ...)");
+                break;
+            case SPACING_SETTINGS:
+                consumer.showStandardOptions(
+                        "SPACE_BEFORE_SEMICOLON",
+                        "SPACE_WITHIN_BRACKETS",
+                        "SPACE_WITHIN_PARENTHESES",
+                        "SPACE_BEFORE_COMMA", "SPACE_AFTER_COMMA",
+                        "SPACE_BEFORE_COLON", "SPACE_AFTER_COLON",
+                        "SPACE_AROUND_ADDITIVE_OPERATORS", "SPACE_AROUND_ASSIGNMENT_OPERATORS", "SPACE_AROUND_EQUALITY_OPERATORS",
+                        "SPACE_AROUND_MULTIPLICATIVE_OPERATORS", "SPACE_AROUND_RELATIONAL_OPERATORS"
+                );
+                consumer.moveStandardOption("SPACE_BEFORE_COLON", "Other");
+                consumer.moveStandardOption("SPACE_AFTER_COLON", "Other");
+                consumer.renameStandardOption("SPACE_BEFORE_COLON", "Before colon");
+                consumer.renameStandardOption("SPACE_AFTER_COLON", "After colon");
+                consumer.renameStandardOption("SPACE_AROUND_ADDITIVE_OPERATORS", "Additive operators (+, -, &)");
+                consumer.renameStandardOption("SPACE_AROUND_ASSIGNMENT_OPERATORS", "Assignxment operators (<=, :=, =>)");
+                consumer.renameStandardOption("SPACE_AROUND_EQUALITY_OPERATORS", "Equality operators (=, /=, ...)");
+                consumer.renameStandardOption("SPACE_AROUND_MULTIPLICATIVE_OPERATORS", "Multiplicative operators (*, /, **)");
+                break;
+            case WRAPPING_AND_BRACES_SETTINGS:
+                consumer.showStandardOptions("ALIGN_GROUP_FIELD_DECLARATIONS", "ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS");
+                consumer.renameStandardOption("ALIGN_GROUP_FIELD_DECLARATIONS", "Align ports & generics in columns");
+                consumer.renameStandardOption("ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS", "Align objects in columns");
+                break;
         }
+    }
+
+    @Nullable
+    @Override
+    public IndentOptionsEditor getIndentOptionsEditor() {
+        return new SmartIndentOptionsEditor();
+    }
+
+    @Nullable
+    @Override
+    public CommonCodeStyleSettings getDefaultCommonSettings() {
+        CommonCodeStyleSettings commonSettings = new CommonCodeStyleSettings(VhdlLanguage.INSTANCE);
+        CommonCodeStyleSettings.IndentOptions indentOptions = commonSettings.initIndentOptions();
+        commonSettings.BLANK_LINES_BEFORE_IMPORTS = 3;
+        commonSettings.BLANK_LINES_AFTER_IMPORTS = 2;
+        commonSettings.BLANK_LINES_AROUND_CLASS = 2;
+        commonSettings.KEEP_BLANK_LINES_IN_CODE = 1;
+        commonSettings.ALIGN_GROUP_FIELD_DECLARATIONS = true;
+        commonSettings.ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS = true;
+        return commonSettings;
     }
 
     @Override

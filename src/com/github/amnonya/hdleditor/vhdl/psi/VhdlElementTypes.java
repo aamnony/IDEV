@@ -1,6 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.psi;
 
-import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.tree.*;
 
 import static com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes.*;
 
@@ -17,7 +17,6 @@ public class VhdlElementTypes {
             SUBPROGRAM_PARAMETER_FILE_DECLARATION
     );
     public static final TokenSet STATEMENTS = TokenSet.create(
-            //ARCHITECTURE_STATEMENT_PART,
             ASSERTION_STATEMENT, REPORT_STATEMENT, BLOCK_STATEMENT, CASE_STATEMENT, CASE_STATEMENT_ALTERNATIVE,
             COMPONENT_INSTANTIATION_STATEMENT, CONCURRENT_ASSERTION_STATEMENT, CONCURRENT_PROCEDURE_CALL_STATEMENT,
             CONCURRENT_SIGNAL_ASSIGNMENT_STATEMENT, EXIT_STATEMENT, GENERATE_STATEMENT, IF_STATEMENT,
