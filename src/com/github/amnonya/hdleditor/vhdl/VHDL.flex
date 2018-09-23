@@ -50,8 +50,7 @@ STR_LIT = [\"]           // Starts with quote (").
 %%
 
 
-<YYINITIAL>
-{
+<YYINITIAL> {
     /* Keywords */
     /* Statements */
     "assert"                       { return VhdlTypes.T_ASSERT; }
@@ -243,16 +242,15 @@ STR_LIT = [\"]           // Starts with quote (").
     "on"                           { return VhdlTypes.T_ON; }
     "reverse_range"                { return VhdlTypes.T_REVERSE_RANGE; }
 
-    {BIN_LIT}                      { yybegin(YYINITIAL); return VhdlTypes.BINLIT; }
-    {OCT_LIT}                      { yybegin(YYINITIAL); return VhdlTypes.OCTLIT; }
-    {HEX_LIT}                      { yybegin(YYINITIAL); return VhdlTypes.HEXLIT; }
+    {BIN_LIT}                      { return VhdlTypes.BINLIT; }
+    {OCT_LIT}                      { return VhdlTypes.OCTLIT; }
+    {HEX_LIT}                      { return VhdlTypes.HEXLIT; }
 
-    {STR_LIT}                      { yybegin(YYINITIAL); return VhdlTypes.STRLIT; }
-    {IDENTIFIER}                   { yybegin(YYINITIAL); return VhdlTypes.ID; }
-    {END_OF_LINE_COMMENT}          { yybegin(YYINITIAL); return VhdlTypes.COMMENT; }
-    //{INT_LIT}                      { yybegin(YYINITIAL); return VhdlTypes.INTLIT;}
-    {REAL_LIT}                     { yybegin(YYINITIAL); return VhdlTypes.REALLIT;}
-    {CHR_LIT}                      { yybegin(YYINITIAL); return VhdlTypes.CHRLIT;}
+    {STR_LIT}                      { return VhdlTypes.STRLIT; }
+    {IDENTIFIER}                   { return VhdlTypes.ID; }
+    {END_OF_LINE_COMMENT}          { return VhdlTypes.COMMENT; }
+    {REAL_LIT}                     { return VhdlTypes.REALLIT;}
+    {CHR_LIT}                      { return VhdlTypes.CHRLIT;}
 }
 
 {WHITE_SPACE_CHAR}+                { return TokenType.WHITE_SPACE; }
