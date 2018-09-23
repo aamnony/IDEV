@@ -2,7 +2,8 @@ package com.github.amnonya.hdleditor.vhdl.lang.annotation;
 
 import com.github.amnonya.hdleditor.vhdl.IdByNameComparator;
 import com.github.amnonya.hdleditor.vhdl.exceptions.DeclarationAlreadyExistsException;
-import com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlSyntaxHighlighter;
+import com.github.amnonya.hdleditor.vhdl.highlighting.VhdlHighlightingColors;
+import com.github.amnonya.hdleditor.vhdl.highlighting.VhdlSyntaxHighlighter;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlAliasDeclaration;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlArchitectureBody;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlAttributeDeclaration;
@@ -194,7 +195,7 @@ public class VhdlAnnotator implements Annotator {
      * @param entity The {@link VhdlEntityDeclaration} to annotate.
      */
     private void annotate(@NotNull VhdlEntityDeclaration entity) {
-        annotateLabels(entity.getIdentifierList(), VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT);
+        annotateLabels(entity.getIdentifierList(), VhdlHighlightingColors.PRIMARY_DESIGN_UNIT);
     }
 
     /**
@@ -211,12 +212,12 @@ public class VhdlAnnotator implements Annotator {
             String entityName = fileEntity.getIdentifierList().get(0).getName();
 
             if (archEntity.getText().equalsIgnoreCase(entityName)) {
-                annotateText(archEntity, VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT);
+                annotateText(archEntity, VhdlHighlightingColors.PRIMARY_DESIGN_UNIT);
             } else {
                 holder.createWarningAnnotation(archEntity.getTextRange(), "Architecture doesn't implement the entity declared in this file");
             }
         }
-        annotateLabels(arch.getIdentifierList(), VhdlSyntaxHighlighter.SECONDARY_DESIGN_UNIT);
+        annotateLabels(arch.getIdentifierList(), VhdlHighlightingColors.SECONDARY_DESIGN_UNIT);
     }
 
     /**
@@ -225,7 +226,7 @@ public class VhdlAnnotator implements Annotator {
      * @param pkg The {@link VhdlPackageDeclaration} to annotate.
      */
     private void annotate(@NotNull VhdlPackageDeclaration pkg) {
-        annotateLabels(pkg.getIdentifierList(), VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT);
+        annotateLabels(pkg.getIdentifierList(), VhdlHighlightingColors.PRIMARY_DESIGN_UNIT);
     }
 
 
@@ -244,7 +245,7 @@ public class VhdlAnnotator implements Annotator {
                 holder.createWarningAnnotation(bodyPackageName.getTextRange(), "Package body doesn't implement the package declared in this file");
             }
         }
-        annotateLabels(packageBody.getIdentifierList(), VhdlSyntaxHighlighter.SECONDARY_DESIGN_UNIT);
+        annotateLabels(packageBody.getIdentifierList(), VhdlHighlightingColors.SECONDARY_DESIGN_UNIT);
     }
 
 
@@ -261,7 +262,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : genericDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.GENERIC);
+                annotateText(id, VhdlHighlightingColors.GENERIC);
                 if (!id.getText().toLowerCase().endsWith(SUFFIX_GENERIC)) {
                     holder.createWeakWarningAnnotation(id, String.format("Generic names should use '%s' suffix convention", SUFFIX_GENERIC));
                 }
@@ -280,7 +281,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : portDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.PORT);
+                annotateText(id, VhdlHighlightingColors.PORT);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -296,7 +297,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : constantDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.CONSTANT);
+                annotateText(id, VhdlHighlightingColors.CONSTANT);
                 if (!id.getText().toLowerCase().endsWith(SUFFIX_CONSTANT)) {
                     holder.createWeakWarningAnnotation(id, String.format("Constant names should use '%s' suffix convention", SUFFIX_CONSTANT));
                 }
@@ -315,7 +316,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : signalDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.SIGNAL);
+                annotateText(id, VhdlHighlightingColors.SIGNAL);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -331,7 +332,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : variableDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.VARIABLE);
+                annotateText(id, VhdlHighlightingColors.VARIABLE);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -347,7 +348,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : fileDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.VARIABLE);
+                annotateText(id, VhdlHighlightingColors.FILE_VARIABLE);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -364,7 +365,7 @@ public class VhdlAnnotator implements Annotator {
         if (id != null) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.ALIAS);
+                annotateText(id, VhdlHighlightingColors.ALIAS);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -380,7 +381,7 @@ public class VhdlAnnotator implements Annotator {
         VhdlIdentifier id = attributeDeclaration.getIdentifier();
         try {
             checkDuplicates(id);
-            annotateText(id, VhdlSyntaxHighlighter.ATTRIBUTE);
+            annotateText(id, VhdlHighlightingColors.ATTRIBUTE);
         } catch (DeclarationAlreadyExistsException e) {
             holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
         }
@@ -395,7 +396,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : constantDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
+                annotateText(id, VhdlHighlightingColors.SUBPROGRAM_PARAMETER);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -411,7 +412,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : signalDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
+                annotateText(id, VhdlHighlightingColors.SUBPROGRAM_PARAMETER);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -427,7 +428,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : constantDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
+                annotateText(id, VhdlHighlightingColors.SUBPROGRAM_PARAMETER);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -443,7 +444,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : signalDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
+                annotateText(id, VhdlHighlightingColors.SUBPROGRAM_PARAMETER);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -459,7 +460,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : variableDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
+                annotateText(id, VhdlHighlightingColors.SUBPROGRAM_PARAMETER);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -475,7 +476,7 @@ public class VhdlAnnotator implements Annotator {
         for (VhdlIdentifier id : fileDeclaration.getIdentifierList().getIdentifierList()) {
             try {
                 checkDuplicates(id);
-                annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
+                annotateText(id, VhdlHighlightingColors.SUBPROGRAM_PARAMETER);
             } catch (DeclarationAlreadyExistsException e) {
                 holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
             }
@@ -491,7 +492,7 @@ public class VhdlAnnotator implements Annotator {
         VhdlIdentifier id = typeDeclaration.getIdentifier();
         try {
             checkDuplicates(id);
-            annotateText(id, VhdlSyntaxHighlighter.TYPE);
+            annotateText(id, VhdlHighlightingColors.TYPE);
         } catch (DeclarationAlreadyExistsException e) {
             holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
         }
@@ -506,7 +507,7 @@ public class VhdlAnnotator implements Annotator {
         VhdlIdentifier id = subtypeDeclaration.getIdentifier();
         try {
             checkDuplicates(id);
-            annotateText(id, VhdlSyntaxHighlighter.TYPE);
+            annotateText(id, VhdlHighlightingColors.SUBTYPE);
         } catch (DeclarationAlreadyExistsException e) {
             holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
         }
@@ -526,7 +527,7 @@ public class VhdlAnnotator implements Annotator {
         }
         try {
             checkDuplicates(id);
-            annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_DECLARATION);
+            annotateText(id, VhdlHighlightingColors.SUBPROGRAM_DECLARATION);
         } catch (DeclarationAlreadyExistsException e) {
             holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
         }
@@ -553,7 +554,7 @@ public class VhdlAnnotator implements Annotator {
         }
         try {
             checkDuplicates(startId);
-            annotateLabels(ids, VhdlSyntaxHighlighter.SUBPROGRAM_DECLARATION);
+            annotateLabels(ids, VhdlHighlightingColors.SUBPROGRAM_DECLARATION);
         } catch (DeclarationAlreadyExistsException e) {
             holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
         }
@@ -565,7 +566,7 @@ public class VhdlAnnotator implements Annotator {
      * @param componentDeclaration The {@link VhdlComponentDeclaration} to annotate.
      */
     private void annotate(VhdlComponentDeclaration componentDeclaration) {
-        annotateLabels(componentDeclaration.getIdentifierList(), VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT);
+        annotateLabels(componentDeclaration.getIdentifierList(), VhdlHighlightingColors.PRIMARY_DESIGN_UNIT);
     }
 
     /**
@@ -576,37 +577,37 @@ public class VhdlAnnotator implements Annotator {
      */
     private void annotate(VhdlIdentifier id, PsiElement declaration) {
         if (declaration instanceof VhdlInterfaceGenericDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.GENERIC);
+            annotateText(id, VhdlHighlightingColors.GENERIC);
         } else if (declaration instanceof VhdlInterfacePortDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.PORT);
+            annotateText(id, VhdlHighlightingColors.PORT);
         } else if (declaration instanceof VhdlConstantDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.CONSTANT);
+            annotateText(id, VhdlHighlightingColors.CONSTANT);
         } else if (declaration instanceof VhdlSignalDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.SIGNAL);
+            annotateText(id, VhdlHighlightingColors.SIGNAL);
         } else if (declaration instanceof VhdlVariableDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.VARIABLE);
+            annotateText(id, VhdlHighlightingColors.VARIABLE);
         } else if (declaration instanceof VhdlFileDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.VARIABLE);
+            annotateText(id, VhdlHighlightingColors.FILE_VARIABLE);
         } else if (declaration instanceof VhdlAliasDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.ALIAS);
+            annotateText(id, VhdlHighlightingColors.ALIAS);
         } else if (declaration instanceof VhdlAttributeDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.ATTRIBUTE);
+            annotateText(id, VhdlHighlightingColors.ATTRIBUTE);
         } else if (declaration instanceof VhdlFullTypeDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.TYPE);
+            annotateText(id, VhdlHighlightingColors.TYPE);
         } else if (declaration instanceof VhdlSubtypeDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.TYPE);
+            annotateText(id, VhdlHighlightingColors.SUBTYPE);
         } else if (VhdlPsiImplUtil.isSubprogramParameter(declaration)) {
-            annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER);
+            annotateText(id, VhdlHighlightingColors.SUBPROGRAM_PARAMETER);
         } else if (declaration instanceof VhdlSubprogramSpecification) {
-            annotateText(id, VhdlSyntaxHighlighter.SUBPROGRAM_CALL);
+            annotateText(id, VhdlHighlightingColors.SUBPROGRAM_CALL);
         } else if (declaration instanceof VhdlComponentDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT);
+            annotateText(id, VhdlHighlightingColors.PRIMARY_DESIGN_UNIT);
         } else if (declaration instanceof VhdlEntityDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT);
+            annotateText(id, VhdlHighlightingColors.PRIMARY_DESIGN_UNIT);
         } else if (declaration instanceof VhdlArchitectureBody) {
-            annotateText(id, VhdlSyntaxHighlighter.SECONDARY_DESIGN_UNIT);
+            annotateText(id, VhdlHighlightingColors.SECONDARY_DESIGN_UNIT);
         } else if (declaration instanceof VhdlPackageDeclaration) {
-            annotateText(id, VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT);
+            annotateText(id, VhdlHighlightingColors.PRIMARY_DESIGN_UNIT);
         }
     }
 
@@ -659,7 +660,7 @@ public class VhdlAnnotator implements Annotator {
                 break;
             }
         }
-        annotateLabels(ids, VhdlSyntaxHighlighter.LABEL);
+        annotateLabels(ids, VhdlHighlightingColors.LABEL);
     }
 
     /**
@@ -670,7 +671,7 @@ public class VhdlAnnotator implements Annotator {
      */
     private void annotatePredefinedAttributeName(VhdlAttributeName attributeName) {
         if (attributeName.getRangeType() != null) {
-            annotateText(attributeName.getRangeType(), VhdlSyntaxHighlighter.ATTRIBUTE);
+            annotateText(attributeName.getRangeType(), VhdlHighlightingColors.ATTRIBUTE);
             return;
         }
         List<VhdlIdentifier> ids = attributeName.getIdentifierList();
@@ -689,7 +690,7 @@ public class VhdlAnnotator implements Annotator {
                 String idName = id.getName();
                 for (String predefinedAttribute : VhdlSyntaxHighlighter.PREDEFINED_ATTRIBUTES) {
                     if (predefinedAttribute.equalsIgnoreCase(idName)) {
-                        annotateText(id, VhdlSyntaxHighlighter.ATTRIBUTE);
+                        annotateText(id, VhdlHighlightingColors.ATTRIBUTE);
                         return;
                     }
                 }
