@@ -1,19 +1,34 @@
 package com.github.amnonya.hdleditor.vhdl.formatting;
 
-import com.github.amnonya.hdleditor.vhdl.lang.*;
-import com.github.amnonya.hdleditor.vhdl.psi.*;
-import com.intellij.formatting.*;
+import com.github.amnonya.hdleditor.vhdl.lang.VhdlLanguage;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes;
+import com.intellij.formatting.ASTBlock;
+import com.intellij.formatting.Alignment;
+import com.intellij.formatting.Block;
+import com.intellij.formatting.ChildAttributes;
 import com.intellij.formatting.Indent;
-import com.intellij.lang.*;
-import com.intellij.openapi.util.*;
-import com.intellij.psi.*;
-import com.intellij.psi.codeStyle.*;
-import com.intellij.psi.formatter.*;
-import com.intellij.psi.tree.*;
+import com.intellij.formatting.Spacing;
+import com.intellij.formatting.SpacingBuilder;
+import com.intellij.formatting.Wrap;
+import com.intellij.formatting.WrapType;
+import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.TokenType;
+import com.intellij.psi.codeStyle.CodeStyleSettings;
+import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
+import com.intellij.psi.formatter.FormatterUtil;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 class VhdlBlock implements ASTBlock {
 

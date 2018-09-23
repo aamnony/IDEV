@@ -1,11 +1,15 @@
 package com.github.amnonya.hdleditor.vhdl.psi.codeStyle;
 
-import com.github.amnonya.hdleditor.vhdl.lang.*;
-import com.intellij.application.options.*;
-import com.intellij.lang.*;
-import com.intellij.psi.codeStyle.*;
+import com.github.amnonya.hdleditor.vhdl.lang.VhdlLanguage;
+import com.intellij.application.options.IndentOptionsEditor;
+import com.intellij.application.options.SmartIndentOptionsEditor;
+import com.intellij.lang.Language;
+import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable;
+import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
+import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
 
-import org.jetbrains.annotations.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class VhdlLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
     @NotNull

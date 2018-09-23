@@ -1,6 +1,6 @@
 package com.github.amnonya.hdleditor.vhdl.psi;
 
-import com.intellij.psi.tree.*;
+import com.intellij.psi.tree.TokenSet;
 
 import static com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes.*;
 
