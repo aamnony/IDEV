@@ -1,8 +1,7 @@
 package com.github.amnonya.hdleditor.vhdl.options.colors;
 
 import com.github.amnonya.hdleditor.vhdl.VhdlIcons;
-import com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlSyntaxHighlighter;
-import com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlSyntaxHighlighterFactory;
+import com.github.amnonya.hdleditor.vhdl.highlighting.VhdlSyntaxHighlighterFactory;
 import com.github.amnonya.hdleditor.vhdl.lang.VhdlLanguage;
 import com.google.common.collect.ImmutableMap;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -18,49 +17,51 @@ import java.util.Map;
 
 import javax.swing.Icon;
 
+import static com.github.amnonya.hdleditor.vhdl.highlighting.VhdlHighlightingColors.*;
+
 public class VhdlColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Design Units//Primary Design Unit", VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT),
-            new AttributesDescriptor("Design Units//Secondary Design Unit", VhdlSyntaxHighlighter.SECONDARY_DESIGN_UNIT),
-            new AttributesDescriptor("Keyword", VhdlSyntaxHighlighter.KEYWORD),
-            new AttributesDescriptor("Braces and Operators//Operator", VhdlSyntaxHighlighter.OPERATOR),
-            new AttributesDescriptor("Identifiers//Type", VhdlSyntaxHighlighter.TYPE),
-            new AttributesDescriptor("Braces and Operators//Semicolon", VhdlSyntaxHighlighter.SEMICOLON),
-            new AttributesDescriptor("Braces and Operators//Comma", VhdlSyntaxHighlighter.COMMA),
-            new AttributesDescriptor("Braces and Operators//Dot", VhdlSyntaxHighlighter.DOT),
-            new AttributesDescriptor("Braces and Operators//Parenthesis", VhdlSyntaxHighlighter.PARENTHESIS),
-            new AttributesDescriptor("Comment", VhdlSyntaxHighlighter.COMMENT),
-            new AttributesDescriptor("Character", VhdlSyntaxHighlighter.CHARACTER),
-            new AttributesDescriptor("String", VhdlSyntaxHighlighter.STRING),
-            new AttributesDescriptor("Number", VhdlSyntaxHighlighter.NUMBER),
-            new AttributesDescriptor("Identifiers//Generic", VhdlSyntaxHighlighter.GENERIC),
-            new AttributesDescriptor("Identifiers//Port", VhdlSyntaxHighlighter.PORT),
-            new AttributesDescriptor("Identifiers//Signal", VhdlSyntaxHighlighter.SIGNAL),
-            new AttributesDescriptor("Identifiers//Constant", VhdlSyntaxHighlighter.CONSTANT),
-            new AttributesDescriptor("Identifiers//Variable", VhdlSyntaxHighlighter.VARIABLE),
-            new AttributesDescriptor("Identifiers//Attribute", VhdlSyntaxHighlighter.ATTRIBUTE),
-            new AttributesDescriptor("Identifiers//Alias", VhdlSyntaxHighlighter.ALIAS),
-            new AttributesDescriptor("Identifiers//Subprogram Parameter", VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER),
-            new AttributesDescriptor("Identifiers//Subprogram Declaration", VhdlSyntaxHighlighter.SUBPROGRAM_DECLARATION),
-            new AttributesDescriptor("Identifiers//Subprogram Call", VhdlSyntaxHighlighter.SUBPROGRAM_CALL),
-            new AttributesDescriptor("Identifiers//Label", VhdlSyntaxHighlighter.LABEL),
+            new AttributesDescriptor("Design Units//Primary Design Unit", PRIMARY_DESIGN_UNIT),
+            new AttributesDescriptor("Design Units//Secondary Design Unit", SECONDARY_DESIGN_UNIT),
+            new AttributesDescriptor("Keyword", KEYWORD),
+            new AttributesDescriptor("Braces and Operators//Operator", OPERATOR),
+            new AttributesDescriptor("Identifiers//Type", TYPE),
+            new AttributesDescriptor("Braces and Operators//Semicolon", SEMICOLON),
+            new AttributesDescriptor("Braces and Operators//Comma", COMMA),
+            new AttributesDescriptor("Braces and Operators//Dot", DOT),
+            new AttributesDescriptor("Braces and Operators//Parenthesis", PARENTHESIS),
+            new AttributesDescriptor("Comment", COMMENT),
+            new AttributesDescriptor("Character", CHARACTER),
+            new AttributesDescriptor("String", STRING),
+            new AttributesDescriptor("Number", NUMBER),
+            new AttributesDescriptor("Identifiers//Generic", GENERIC),
+            new AttributesDescriptor("Identifiers//Port", PORT),
+            new AttributesDescriptor("Identifiers//Signal", SIGNAL),
+            new AttributesDescriptor("Identifiers//Constant", CONSTANT),
+            new AttributesDescriptor("Identifiers//Variable", VARIABLE),
+            new AttributesDescriptor("Identifiers//Attribute", ATTRIBUTE),
+            new AttributesDescriptor("Identifiers//Alias", ALIAS),
+            new AttributesDescriptor("Identifiers//Subprogram Parameter", SUBPROGRAM_PARAMETER),
+            new AttributesDescriptor("Identifiers//Subprogram Declaration", SUBPROGRAM_DECLARATION),
+            new AttributesDescriptor("Identifiers//Subprogram Call", SUBPROGRAM_CALL),
+            new AttributesDescriptor("Identifiers//Label", LABEL),
     };
 
     private static final Map<String, TextAttributesKey> ADDITIONAL_DESCRIPTORS = ImmutableMap.<String, TextAttributesKey>builder()
-            .put("primary_design_unit", VhdlSyntaxHighlighter.PRIMARY_DESIGN_UNIT)
-            .put("secondary_design_unit", VhdlSyntaxHighlighter.SECONDARY_DESIGN_UNIT)
-            .put("type", VhdlSyntaxHighlighter.TYPE)
-            .put("generic", VhdlSyntaxHighlighter.GENERIC)
-            .put("port", VhdlSyntaxHighlighter.PORT)
-            .put("signal", VhdlSyntaxHighlighter.SIGNAL)
-            .put("constant", VhdlSyntaxHighlighter.CONSTANT)
-            .put("variable", VhdlSyntaxHighlighter.VARIABLE)
-            .put("attribute", VhdlSyntaxHighlighter.ATTRIBUTE)
-            .put("alias", VhdlSyntaxHighlighter.ALIAS)
-            .put("subprogram_parameter", VhdlSyntaxHighlighter.SUBPROGRAM_PARAMETER)
-            .put("subprogram_declaration", VhdlSyntaxHighlighter.SUBPROGRAM_DECLARATION)
-            .put("subprogram_call", VhdlSyntaxHighlighter.SUBPROGRAM_CALL)
-            .put("label", VhdlSyntaxHighlighter.LABEL)
+            .put("primary_design_unit", PRIMARY_DESIGN_UNIT)
+            .put("secondary_design_unit", SECONDARY_DESIGN_UNIT)
+            .put("type", TYPE)
+            .put("generic", GENERIC)
+            .put("port", PORT)
+            .put("signal", SIGNAL)
+            .put("constant", CONSTANT)
+            .put("variable", VARIABLE)
+            .put("attribute", ATTRIBUTE)
+            .put("alias", ALIAS)
+            .put("subprogram_parameter", SUBPROGRAM_PARAMETER)
+            .put("subprogram_declaration", SUBPROGRAM_DECLARATION)
+            .put("subprogram_call", SUBPROGRAM_CALL)
+            .put("label", LABEL)
             .build();
 
     @Nullable

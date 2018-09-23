@@ -1,6 +1,5 @@
-package com.github.amnonya.hdleditor.vhdl.fileTypes;
+package com.github.amnonya.hdleditor.vhdl.highlighting;
 
-import com.github.amnonya.hdleditor.vhdl.highlighting.VhdlSyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.project.Project;

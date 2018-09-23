@@ -29,7 +29,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlFileTypeFactory" />
         <lang.parserDefinition language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.VhdlParserDefinition" />
-        <lang.syntaxHighlighterFactory language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlSyntaxHighlighterFactory" />
+        <lang.syntaxHighlighterFactory language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.highlighting.VhdlSyntaxHighlighterFactory" />
         <colorSettingsPage implementation="com.github.amnonya.hdleditor.vhdl.options.colors.VhdlColorSettingsPage"/>
         <annotator language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.annotation.VhdlAnnotator" />
         <lang.findUsagesProvider language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.findUsages.VhdlFindUsagesProvider" />
