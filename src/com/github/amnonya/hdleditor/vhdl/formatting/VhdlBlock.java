@@ -1,6 +1,7 @@
 package com.github.amnonya.hdleditor.vhdl.formatting;
 
 import com.github.amnonya.hdleditor.vhdl.lang.VhdlLanguage;
+import com.github.amnonya.hdleditor.vhdl.psi.VhdlElementTypes;
 import com.github.amnonya.hdleditor.vhdl.psi.VhdlTypes;
 import com.intellij.formatting.ASTBlock;
 import com.intellij.formatting.Alignment;
@@ -46,6 +47,13 @@ class VhdlBlock implements ASTBlock {
     private Alignment[] myListAlignments = null;
     private Boolean myIncomplete;
 
+    private static final TokenSet OBJECT_STATEMENT_BLOCKS = TokenSet.create(
+            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.BLOCK_STATEMENT_PART, VhdlTypes.PROCESS_STATEMENT_PART,
+            VhdlTypes.SUBPROGRAM_STATEMENT_PART, VhdlTypes.GENERATE_STATEMENT, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.AGGREGATE
+    );
+    private static final TokenSet OBJECT_ASSIGNMENT_STATEMENT_TYPES = TokenSet.create(
+            VhdlTypes.SIGNAL_ASSIGNMENT_STATEMENT, VhdlTypes.VARIABLE_ASSIGNMENT_STATEMENT, VhdlTypes.ELEMENT_ASSOCIATION
+    );
     private static final TokenSet OBJECT_DECLARATION_BLOCKS = TokenSet.create(
             VhdlTypes.ARCHITECTURE_DECLARATIVE_PART, VhdlTypes.BLOCK_DECLARATIVE_PART, VhdlTypes.PACKAGE_DECLARATIVE_PART,
             VhdlTypes.PACKAGE_BODY_DECLARATIVE_PART, VhdlTypes.PROCESS_DECLARATIVE_PART, VhdlTypes.SUBPROGRAM_DECLARATIVE_PART,
@@ -101,17 +109,15 @@ class VhdlBlock implements ASTBlock {
         final IElementType myType = node.getElementType();
         if (myType == VhdlTypes.PORT_CLAUSE) {
             myListAlignments = fillAlignments(new Alignment[5]);
-        }
-        else if (myType == VhdlTypes.GENERIC_CLAUSE) {
+        } else if (myType == VhdlTypes.GENERIC_CLAUSE) {
             myListAlignments = fillAlignments(new Alignment[3]);
-        }
-        else if (OBJECT_DECLARATION_BLOCKS.contains(myType)) {
+        } else if (OBJECT_DECLARATION_BLOCKS.contains(myType)) {
             myListAlignments = fillAlignments(new Alignment[3]);
-        }
-        else if (SUBPROGRAM_PARAMETER_LISTS.contains(myType)) {
+        } else if (SUBPROGRAM_PARAMETER_LISTS.contains(myType)) {
             myListAlignments = fillAlignments(new Alignment[3]);
+        } else if (OBJECT_STATEMENT_BLOCKS.contains(myType)) {
+            myListAlignments = fillAlignments(new Alignment[2]);
         }
-
     }
 
     public ASTNode getNode() {
@@ -270,7 +276,6 @@ class VhdlBlock implements ASTBlock {
                 }
             }
         }
-
         if (myCommonSettings.ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS) {
             if (OBJECT_DECLARATION_TYPES.contains(myType) || SUBPROGRAM_PARAMETER_DECLARATION_TYPES.contains(myType)) {
                 if (myChildType == VhdlTypes.T_COLON) {
@@ -286,6 +291,18 @@ class VhdlBlock implements ASTBlock {
                 if (commentAlignment == null) {
                     commentAlignment = getAttributeSpecificationCommentAlignment(child);
                 }
+                if (commentAlignment != null) {
+                    childAlignment = commentAlignment;
+                }
+            }
+        }
+        if (true /*myCommonSettings.ALIGN_ASSIGNMENT_STATEMENTS*/) {
+            if (OBJECT_ASSIGNMENT_STATEMENT_TYPES.contains(myType)) {
+                if (VhdlElementTypes.ASSIGNMENT_OPERATORS.contains(myChildType)) {
+                    childAlignment = myParent.myListAlignments[0];
+                }
+            } else if (myChildType == VhdlTypes.COMMENT) {
+                Alignment commentAlignment = getObjectAssignmentStatementCommentAlignment(child);
                 if (commentAlignment != null) {
                     childAlignment = commentAlignment;
                 }
@@ -463,6 +480,36 @@ class VhdlBlock implements ASTBlock {
             if (noSpace || spaceWithoutLineBreak) {
                 // Comment is in the same line of the parameter declaration, i.e. it describes the parameter.
                 return myListAlignments[2];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the alignment for {@code child} if it is a {@link VhdlTypes#COMMENT} describing an object assignment statement,
+     * i.e. {@link #OBJECT_ASSIGNMENT_STATEMENT_TYPES}.
+     *
+     * @param child The comment {@link ASTNode} to get the alignment for.
+     * @return The alignment, or null if {@code child} is not a valid assignment statement comment.
+     */
+    @Nullable
+    private Alignment getObjectAssignmentStatementCommentAlignment(@NotNull ASTNode child) {
+        IElementType myType = myNode.getElementType();
+        ASTNode childPrevSibling = child.getTreePrev();
+        if (childPrevSibling == null) {
+            return null;
+        }
+        IElementType childPrevSiblingType = childPrevSibling.getElementType();
+
+        if (OBJECT_STATEMENT_BLOCKS.contains(myType)) {
+            // No space between assignment statement and comment:
+            boolean noSpace = OBJECT_ASSIGNMENT_STATEMENT_TYPES.contains(childPrevSiblingType);
+            // Space between assignment statement and comment, but they are still on the same line:
+            boolean spaceWithoutLineBreak = childPrevSiblingType == TokenType.WHITE_SPACE && !childPrevSibling.getText().contains("\n");
+
+            if (noSpace || spaceWithoutLineBreak) {
+                // Comment is in the same line of the assignment statement, i.e. it describes the statement.
+                return myListAlignments[1];
             }
         }
         return null;
