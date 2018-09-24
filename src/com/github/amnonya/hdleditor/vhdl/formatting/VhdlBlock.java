@@ -48,12 +48,20 @@ class VhdlBlock implements ASTBlock {
 
     private static final TokenSet OBJECT_DECLARATION_BLOCKS = TokenSet.create(
             VhdlTypes.ARCHITECTURE_DECLARATIVE_PART, VhdlTypes.BLOCK_DECLARATIVE_PART, VhdlTypes.PACKAGE_DECLARATIVE_PART,
-            VhdlTypes.PACKAGE_BODY_DECLARATIVE_PART, VhdlTypes.PROCESS_DECLARATIVE_PART,
-            VhdlTypes.SUBPROGRAM_DECLARATIVE_PART, VhdlTypes.GENERATE_STATEMENT
+            VhdlTypes.PACKAGE_BODY_DECLARATIVE_PART, VhdlTypes.PROCESS_DECLARATIVE_PART, VhdlTypes.SUBPROGRAM_DECLARATIVE_PART,
+            VhdlTypes.GENERATE_STATEMENT
     );
     private static final TokenSet OBJECT_DECLARATION_TYPES = TokenSet.create(
             VhdlTypes.CONSTANT_DECLARATION, VhdlTypes.SIGNAL_DECLARATION, VhdlTypes.VARIABLE_DECLARATION,
             VhdlTypes.FILE_DECLARATION, VhdlTypes.ATTRIBUTE_DECLARATION
+    );
+    private static final TokenSet SUBPROGRAM_PARAMETER_LISTS = TokenSet.create(
+            VhdlTypes.FUNCTION_PARAMETER_LIST, VhdlTypes.PROCEDURE_PARAMETER_LIST
+    );
+    private static final TokenSet SUBPROGRAM_PARAMETER_DECLARATION_TYPES = TokenSet.create(
+            VhdlTypes.FUNCTION_PARAMETER_CONSTANT_DECLARATION, VhdlTypes.FUNCTION_PARAMETER_SIGNAL_DECLARATION,
+            VhdlTypes.PROCEDURE_PARAMETER_CONSTANT_DECLARATION, VhdlTypes.PROCEDURE_PARAMETER_SIGNAL_DECLARATION,
+            VhdlTypes.PROCEDURE_PARAMETER_VARIABLE_DECLARATION, VhdlTypes.SUBPROGRAM_PARAMETER_FILE_DECLARATION
     );
     private static final TokenSet NORMAL_INDENTED_BLOCKS = TokenSet.create(
             VhdlTypes.USE_CLAUSE, VhdlTypes.ENTITY_HEADER, VhdlTypes.GENERIC_INTERFACE_LIST,
@@ -94,10 +102,13 @@ class VhdlBlock implements ASTBlock {
         if (myType == VhdlTypes.PORT_CLAUSE) {
             myListAlignments = fillAlignments(new Alignment[5]);
         }
-        if (myType == VhdlTypes.GENERIC_CLAUSE) {
+        else if (myType == VhdlTypes.GENERIC_CLAUSE) {
             myListAlignments = fillAlignments(new Alignment[3]);
         }
-        if (OBJECT_DECLARATION_BLOCKS.contains(myType)) {
+        else if (OBJECT_DECLARATION_BLOCKS.contains(myType)) {
+            myListAlignments = fillAlignments(new Alignment[3]);
+        }
+        else if (SUBPROGRAM_PARAMETER_LISTS.contains(myType)) {
             myListAlignments = fillAlignments(new Alignment[3]);
         }
 
@@ -261,7 +272,7 @@ class VhdlBlock implements ASTBlock {
         }
 
         if (myCommonSettings.ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS) {
-            if (OBJECT_DECLARATION_TYPES.contains(myType)) {
+            if (OBJECT_DECLARATION_TYPES.contains(myType) || SUBPROGRAM_PARAMETER_DECLARATION_TYPES.contains(myType)) {
                 if (myChildType == VhdlTypes.T_COLON) {
                     childAlignment = myParent.myListAlignments[0];
                 } else if (myChildType == VhdlTypes.T_BLOCKING_ASSIGNMENT) {
@@ -269,6 +280,12 @@ class VhdlBlock implements ASTBlock {
                 }
             } else if (myChildType == VhdlTypes.COMMENT) {
                 Alignment commentAlignment = getObjectDeclarationCommentAlignment(child);
+                if (commentAlignment == null) {
+                    commentAlignment = getSubprogramParameterDeclarationCommentAlignment(child);
+                }
+                if (commentAlignment == null) {
+                    commentAlignment = getAttributeSpecificationCommentAlignment(child);
+                }
                 if (commentAlignment != null) {
                     childAlignment = commentAlignment;
                 }
@@ -385,6 +402,66 @@ class VhdlBlock implements ASTBlock {
 
             if (noSpace || spaceWithoutLineBreak) {
                 // Comment is in the same line of the object declaration, i.e. it describes the object.
+                return myListAlignments[2];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the alignment for {@code child} if it is a {@link VhdlTypes#COMMENT} describing an attribute specification,
+     * i.e. {@link VhdlTypes#ATTRIBUTE_SPECIFICATION}.
+     *
+     * @param child The comment {@link ASTNode} to get the alignment for.
+     * @return The alignment, or null if {@code child} is not a valid attribute specification comment.
+     */
+    @Nullable
+    private Alignment getAttributeSpecificationCommentAlignment(@NotNull ASTNode child) {
+        IElementType myType = myNode.getElementType();
+        ASTNode childPrevSibling = child.getTreePrev();
+        if (childPrevSibling == null) {
+            return null;
+        }
+        IElementType childPrevSiblingType = childPrevSibling.getElementType();
+
+        if (myType == VhdlTypes.ATTRIBUTE_SPECIFICATION) {
+            // No space between attribute specification and comment:
+            boolean noSpace = childPrevSiblingType == VhdlTypes.ATTRIBUTE_SPECIFICATION;
+            // Space between attribute specification and comment, but they are still on the same line:
+            boolean spaceWithoutLineBreak = childPrevSiblingType == TokenType.WHITE_SPACE && !childPrevSibling.getText().contains("\n");
+
+            if (noSpace || spaceWithoutLineBreak) {
+                // Comment is in the same line of the attribute specification , i.e. it describes the attribute.
+                return myListAlignments[2];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the alignment for {@code child} if it is a {@link VhdlTypes#COMMENT} describing a parameter declaration,
+     * i.e. {@link #SUBPROGRAM_PARAMETER_DECLARATION_TYPES}.
+     *
+     * @param child The comment {@link ASTNode} to get the alignment for.
+     * @return The alignment, or null if {@code child} is not a valid declaration comment.
+     */
+    @Nullable
+    private Alignment getSubprogramParameterDeclarationCommentAlignment(@NotNull ASTNode child) {
+        IElementType myType = myNode.getElementType();
+        ASTNode childPrevSibling = child.getTreePrev();
+        if (childPrevSibling == null) {
+            return null;
+        }
+        IElementType childPrevSiblingType = childPrevSibling.getElementType();
+
+        if (SUBPROGRAM_PARAMETER_LISTS.contains(myType)) {
+            // No space between parameter declaration and comment:
+            boolean noSpace = SUBPROGRAM_PARAMETER_DECLARATION_TYPES.contains(childPrevSiblingType);
+            // Space between parameter declaration and comment, but they are still on the same line:
+            boolean spaceWithoutLineBreak = childPrevSiblingType == TokenType.WHITE_SPACE && !childPrevSibling.getText().contains("\n");
+
+            if (noSpace || spaceWithoutLineBreak) {
+                // Comment is in the same line of the parameter declaration, i.e. it describes the parameter.
                 return myListAlignments[2];
             }
         }
