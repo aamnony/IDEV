@@ -1,8 +1,8 @@
 <idea-plugin>
-    <id>com.github.amnonya.hdleditor</id>
+    <id>com.github.aamnony.idev</id>
     <name>Editor for VHDL</name>
     <version>0.1.0</version>
-    <vendor email="aamnony@gmail.com" url="http://www.github.com/amnonya">amnonya</vendor>
+    <vendor email="aamnony@gmail.com" url="http://www.github.com/amnony">amnony</vendor>
 
     <!--TODO: fill description-->
     <description><![CDATA[
@@ -27,19 +27,19 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileTypeFactory implementation="com.github.amnonya.hdleditor.vhdl.fileTypes.VhdlFileTypeFactory" />
-        <lang.parserDefinition language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.VhdlParserDefinition" />
-        <lang.syntaxHighlighterFactory language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.highlighting.VhdlSyntaxHighlighterFactory" />
-        <colorSettingsPage implementation="com.github.amnonya.hdleditor.vhdl.options.colors.VhdlColorSettingsPage"/>
-        <annotator language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.annotation.VhdlAnnotator" />
-        <lang.findUsagesProvider language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.findUsages.VhdlFindUsagesProvider" />
-        <psi.referenceContributor implementation="com.github.amnonya.hdleditor.vhdl.psi.VhdlReferenceContributor" />
-        <lang.commenter language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.VhdlCommenter" />
-        <lang.formatter language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.formatting.VhdlFormattingModelBuilder" />
-        <codeStyleSettingsProvider implementation="com.github.amnonya.hdleditor.vhdl.psi.codeStyle.VhdlCodeStyleSettingsProvider"/>
-        <langCodeStyleSettingsProvider implementation="com.github.amnonya.hdleditor.vhdl.psi.codeStyle.VhdlLanguageCodeStyleSettingsProvider"/>
-        <lang.psiStructureViewFactory language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.VhdlStructureViewFactory" />
-        <codeInsight.lineMarkerProvider language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.codeInsight.daemon.VhdlLineMarkerProvider" />
-        <lang.foldingBuilder language="VHDL" implementationClass="com.github.amnonya.hdleditor.vhdl.lang.folding.VhdlFoldingBuilder" />
+        <fileTypeFactory implementation="com.github.aamnony.idev.vhdl.fileTypes.VhdlFileTypeFactory" />
+        <lang.parserDefinition language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.VhdlParserDefinition" />
+        <lang.syntaxHighlighterFactory language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.highlighting.VhdlSyntaxHighlighterFactory" />
+        <colorSettingsPage implementation="com.github.aamnony.idev.vhdl.options.colors.VhdlColorSettingsPage"/>
+        <annotator language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.annotation.VhdlAnnotator" />
+        <lang.findUsagesProvider language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.findUsages.VhdlFindUsagesProvider" />
+        <psi.referenceContributor implementation="com.github.aamnony.idev.vhdl.psi.VhdlReferenceContributor" />
+        <lang.commenter language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.VhdlCommenter" />
+        <lang.formatter language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.formatting.VhdlFormattingModelBuilder" />
+        <codeStyleSettingsProvider implementation="com.github.aamnony.idev.vhdl.psi.codeStyle.VhdlCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider implementation="com.github.aamnony.idev.vhdl.psi.codeStyle.VhdlLanguageCodeStyleSettingsProvider"/>
+        <lang.psiStructureViewFactory language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.VhdlStructureViewFactory" />
+        <codeInsight.lineMarkerProvider language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.codeInsight.daemon.VhdlLineMarkerProvider" />
+        <lang.foldingBuilder language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.folding.VhdlFoldingBuilder" />
     </extensions>
 </idea-plugin>
