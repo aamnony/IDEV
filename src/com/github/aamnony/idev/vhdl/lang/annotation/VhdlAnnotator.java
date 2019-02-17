@@ -1,30 +1,5 @@
 package com.github.aamnony.idev.vhdl.lang.annotation;
 
-import com.github.aamnony.idev.vhdl.exceptions.DeclarationAlreadyExistsException;
-import com.github.aamnony.idev.vhdl.highlighting.VhdlHighlightingColors;
-import com.github.aamnony.idev.vhdl.highlighting.VhdlSyntaxHighlighter;
-import com.github.aamnony.idev.vhdl.psi.VhdlAttributeDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlDesignator;
-import com.github.aamnony.idev.vhdl.psi.VhdlEntityDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlFullTypeDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlFunctionParameterConstantDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlFunctionParameterSignalDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
-import com.github.aamnony.idev.vhdl.psi.VhdlInterfaceGenericDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlInterfacePortDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlLabel;
-import com.github.aamnony.idev.vhdl.psi.VhdlPackageBody;
-import com.github.aamnony.idev.vhdl.psi.VhdlPackageDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlProcedureParameterConstantDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlProcedureParameterSignalDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlProcedureParameterVariableDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlRefname;
-import com.github.aamnony.idev.vhdl.psi.VhdlSignalDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramBody;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramSpecification;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubtypeDeclaration;
-import com.github.aamnony.idev.vhdl.psi.impl.VhdlPsiImplUtil;
 import com.github.aamnony.idev.vhdl.IdByNameComparator;
 import com.github.aamnony.idev.vhdl.exceptions.DeclarationAlreadyExistsException;
 import com.github.aamnony.idev.vhdl.highlighting.VhdlHighlightingColors;
@@ -37,6 +12,8 @@ import com.github.aamnony.idev.vhdl.psi.VhdlComponentDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlConstantDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlDesignator;
 import com.github.aamnony.idev.vhdl.psi.VhdlEntityDeclaration;
+import com.github.aamnony.idev.vhdl.psi.VhdlEnumerationLiteral;
+import com.github.aamnony.idev.vhdl.psi.VhdlEnumerationTypeDefinition;
 import com.github.aamnony.idev.vhdl.psi.VhdlFile;
 import com.github.aamnony.idev.vhdl.psi.VhdlFileDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlFullTypeDeclaration;
@@ -132,6 +109,8 @@ public class VhdlAnnotator implements Annotator {
             annotate((VhdlFullTypeDeclaration) element);
         } else if (element instanceof VhdlSubtypeDeclaration) {
             annotate((VhdlSubtypeDeclaration) element);
+        } else if (element instanceof VhdlEnumerationTypeDefinition) {
+            annotate((VhdlEnumerationTypeDefinition) element);
         }
         // Subprograms (functions, procedures):
         else if (element instanceof VhdlSubprogramDeclaration) {
@@ -539,6 +518,25 @@ public class VhdlAnnotator implements Annotator {
     }
 
     /**
+     * Creates annotations for {@code enumerationTypeDefinition}.
+     *
+     * @param enumerationTypeDefinition The {@link VhdlEnumerationTypeDefinition} to annotate.
+     */
+    private void annotate(VhdlEnumerationTypeDefinition enumerationTypeDefinition) {
+        for (VhdlEnumerationLiteral eid : enumerationTypeDefinition.getEnumerationList().getEnumerationLiteralList()) {
+            VhdlIdentifier id = eid.getIdentifier();
+            if (id != null) {
+                try {
+                    checkDuplicates(id);
+                    annotateText(id, VhdlHighlightingColors.ENUM);
+                } catch (DeclarationAlreadyExistsException e) {
+                    holder.createErrorAnnotation(e.getIdentifier(), e.getMessage());
+                }
+            }
+        }
+    }
+
+    /**
      * Creates annotations for {@code subprogramDeclaration}.
      *
      * @param subprogramDeclaration The {@link VhdlSubprogramDeclaration} to annotate.
@@ -621,6 +619,8 @@ public class VhdlAnnotator implements Annotator {
             annotateText(id, VhdlHighlightingColors.TYPE);
         } else if (declaration instanceof VhdlSubtypeDeclaration) {
             annotateText(id, VhdlHighlightingColors.SUBTYPE);
+        } else if (declaration instanceof VhdlEnumerationLiteral) {
+            annotateText(id, VhdlHighlightingColors.ENUM);
         } else if (VhdlPsiImplUtil.isSubprogramParameter(declaration)) {
             annotateText(id, VhdlHighlightingColors.SUBPROGRAM_PARAMETER);
         } else if (declaration instanceof VhdlSubprogramSpecification) {

@@ -32,4 +32,5 @@ public class VhdlHighlightingColors {
     public static final TextAttributesKey SUBPROGRAM_DECLARATION = createTextAttributesKey("SUBPROGRAM_DECLARATION", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
     public static final TextAttributesKey SUBPROGRAM_CALL = createTextAttributesKey("SUBPROGRAM_CALL", DefaultLanguageHighlighterColors.FUNCTION_CALL);
     public static final TextAttributesKey LABEL = createTextAttributesKey("LABEL", DefaultLanguageHighlighterColors.LABEL);
+    public static final TextAttributesKey ENUM = createTextAttributesKey("ENUM", DefaultLanguageHighlighterColors.STRING);
 }

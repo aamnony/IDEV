@@ -28,6 +28,7 @@ import com.github.aamnony.idev.vhdl.psi.VhdlConstantDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlDesignator;
 import com.github.aamnony.idev.vhdl.psi.VhdlElementFactory;
 import com.github.aamnony.idev.vhdl.psi.VhdlEntityDeclaration;
+import com.github.aamnony.idev.vhdl.psi.VhdlEnumerationLiteral;
 import com.github.aamnony.idev.vhdl.psi.VhdlFile;
 import com.github.aamnony.idev.vhdl.psi.VhdlFullTypeDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlFunctionParameterConstantDeclaration;
@@ -421,7 +422,8 @@ public class VhdlPsiImplUtil {
                 || parent instanceof VhdlSubtypeDeclaration
                 || parent instanceof VhdlSubprogramDeclaration
                 || parent instanceof VhdlAliasDeclaration
-                || parent instanceof VhdlAttributeDeclaration) {
+                || parent instanceof VhdlAttributeDeclaration
+                || parent instanceof VhdlEnumerationLiteral) {
             return true;
         }
 
