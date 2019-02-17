@@ -42,5 +42,7 @@
         <codeInsight.lineMarkerProvider language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.codeInsight.daemon.VhdlLineMarkerProvider" />
         <lang.foldingBuilder language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.folding.VhdlFoldingBuilder" />
         <completion.contributor language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.codeInsight.completion.VhdlCompletionContributor"/>
+        <defaultLiveTemplatesProvider implementation="com.github.aamnony.idev.vhdl.codeInsight.template.VhdlTemplateProvider"/>
+        <liveTemplateContext implementation="com.github.aamnony.idev.vhdl.codeInsight.template.VhdlContext"/>
     </extensions>
 </idea-plugin>

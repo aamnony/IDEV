@@ -1,0 +1,53 @@
+<templateSet group="VHDL">
+  <template name="iff" value="if $COND$ then&#10;    $END$&#10;end if;" description="Inserts ''if-and-only-if'' statement" toReformat="false" toShortenFQNames="true">
+    <variable name="COND" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="VHDL" value="true" />
+    </context>
+  </template>
+  <template name="if" value="if $COND$ then&#10;    $END$" description="Inserts ''if' branch" toReformat="false" toShortenFQNames="true">
+    <variable name="COND" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="VHDL" value="true" />
+    </context>
+  </template>
+  <template name="else" value="else &#10;    $END$" description="Inserts ''else'' branch" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="VHDL" value="true" />
+    </context>
+  </template>
+  <template name="elsif" value="elsif $COND$ then&#10;    $END$" description="Inserts ''elsif'' branch" toReformat="false" toShortenFQNames="true">
+    <variable name="COND" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="VHDL" value="true" />
+    </context>
+  </template>
+  <template name="ife" value="if $COND$ then&#10;    $END$&#10;else&#10;    &#10;end if;" description="Inserts ''if-else'' statement" toReformat="false" toShortenFQNames="true">
+    <variable name="COND" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="VHDL" value="true" />
+    </context>
+  </template>
+  <template name="ff" value="$PROC_NAME$_proc : process ($CLOCK$, $RESET$) is&#10;begin&#10;    if $RESET$ = $RESET_POLARITY$ then&#10;        $END$&#10;    elsif rising_edge($CLOCK$) then&#10;        &#10;    end if;&#10;end process $PROC_NAME$_proc;" description="Inserts ''synchronous process with reset'' statement" toReformat="false" toShortenFQNames="true">
+    <variable name="PROC_NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="CLOCK" expression="&quot;clock&quot;" defaultValue="" alwaysStopAt="true" />
+    <variable name="RESET" expression="&quot;reset&quot;" defaultValue="" alwaysStopAt="true" />
+    <variable name="RESET_POLARITY" expression="enum(&quot;reset_polarity_g&quot;, &quot;'1'&quot;, &quot;'0'&quot;, &quot;true&quot;)" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="VHDL" value="true" />
+    </context>
+  </template>
+  <template name="ifre" value="if rising_edge($CLOCK$) then&#10;    $END$" description="Inserts ''if rising_edge(clock)'' branch" toReformat="false" toShortenFQNames="true">
+    <variable name="CLOCK" expression="&quot;clock&quot;" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="VHDL" value="true" />
+    </context>
+  </template>
+  <template name="nrff" value="$PROC_NAME$_proc : process ($CLOCK$) is&#10;begin&#10;    if rising_edge($CLOCK$) then&#10;        $END$&#10;    end if;&#10;end process $PROC_NAME$_proc;" description="Inserts ''synchronous process without reset'' statement" toReformat="false" toShortenFQNames="true">
+    <variable name="PROC_NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="CLOCK" expression="&quot;clock&quot;" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="VHDL" value="true" />
+    </context>
+  </template>
+</templateSet>
