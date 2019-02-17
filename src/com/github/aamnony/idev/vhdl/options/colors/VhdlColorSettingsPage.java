@@ -48,6 +48,7 @@ public class VhdlColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Identifiers//Subprogram Declaration", VhdlHighlightingColors.SUBPROGRAM_DECLARATION),
             new AttributesDescriptor("Identifiers//Subprogram Call", VhdlHighlightingColors.SUBPROGRAM_CALL),
             new AttributesDescriptor("Identifiers//Label", VhdlHighlightingColors.LABEL),
+            new AttributesDescriptor("Identifiers//Enumeration", VhdlHighlightingColors.ENUM),
     };
 
     private static final Map<String, TextAttributesKey> ADDITIONAL_DESCRIPTORS = ImmutableMap.<String, TextAttributesKey>builder()
