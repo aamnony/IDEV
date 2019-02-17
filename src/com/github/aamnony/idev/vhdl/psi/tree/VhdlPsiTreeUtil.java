@@ -1,8 +1,14 @@
 package com.github.aamnony.idev.vhdl.psi.tree;
 
-import com.github.aamnony.idev.vhdl.IdByNameComparator;
 import com.github.aamnony.idev.vhdl.fileTypes.VhdlFileType;
-import com.github.aamnony.idev.vhdl.psi.VhdlFile;
+import com.github.aamnony.idev.vhdl.psi.VhdlContextClause;
+import com.github.aamnony.idev.vhdl.psi.VhdlEntityDeclaration;
+import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
+import com.github.aamnony.idev.vhdl.psi.VhdlPackageBody;
+import com.github.aamnony.idev.vhdl.psi.VhdlPackageBodyDeclarativePart;
+import com.github.aamnony.idev.vhdl.psi.VhdlPackageDeclaration;
+import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramBody;
+import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramDeclaration;
 import com.github.aamnony.idev.vhdl.IdByNameComparator;
 import com.github.aamnony.idev.vhdl.fileTypes.VhdlFileType;
 import com.github.aamnony.idev.vhdl.psi.VhdlArchitectureBody;
@@ -69,8 +75,10 @@ public class VhdlPsiTreeUtil {
         Project project = id.getProject();
         VhdlFile idFile = (VhdlFile) id.getContainingFile();
 
+        PsiElement[] scopes = id.getScopes();
         // Search first in the id containing file.
-        findIdentifiers(id, foundIds, idFile);
+        findIdentifiers(id, foundIds, scopes);
+//        findIdentifiers(id, foundIds, idFile);
 
         Set<String> importedPackageNames = new HashSet<>(IMPORTED_PACKAGES_INITIAL_COUNT);
         importedPackageNames.addAll(ALWAYS_IMPORTED_PACKAGES);

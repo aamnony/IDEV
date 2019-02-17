@@ -200,23 +200,6 @@
 
 design_file ::= design_unit ( design_unit )*
 
-declaration ::=
-    type_declaration
-    | subtype_declaration
-    | object_declaration
-    | procedure_parameter_declaration
-    | alias_declaration
-    | attribute_declaration
-    | component_declaration
-    | group_template_declaration
-    | group_declaration
-    | entity_declaration
-    | configuration_declaration
-    | subprogram_declaration
-    | package_declaration
-
-//abstract_literal ::= decimal_literal | based_literal
-
 access_type_definition ::= 'access' subtype_indication
 
 actual_designator ::=
@@ -231,7 +214,7 @@ actual_part ::=
     | refname '(' actual_designator ')'
     | type_mark '(' actual_designator ')'
 
-private adding_operator ::= '+' | '-'  | '&'
+private adding_operator ::= '+' | '-' | '&'
 
 aggregate ::= '(' element_association ( ',' element_association )* ')'
 
@@ -248,8 +231,11 @@ architecture_body ::=
         architecture_declarative_part
     'begin'
         architecture_statement_part
-    'end' [ 'architecture' ] [ identifier ] ';' //{pin(".*") = 1}
-    {methods=[getPresentation]}
+    'end' [ 'architecture' ] [ identifier ] ';'
+{
+    methods=[getPresentation getIcon getType]
+    pin=1
+}
 
 architecture_declarative_part ::= ( declarative_item )*
 
@@ -262,37 +248,28 @@ assertion ::=
         [ 'report' expression ]
         [ 'severity' expression ]
 
-assertion_statement ::=  [ label ':' ] assertion ';'
+assertion_statement ::= [ label ':' ] assertion ';'
 
 association_element ::= [ formal_part '=>' ] actual_part
 
-//association_list ::= association_element ( ',' association_element )*
+association_list ::= association_element ( ',' association_element )*
 
 attribute_declaration ::= 'attribute' identifier ':' type_mark ';'
 
 private attribute_designator ::= identifier | range_type
 
-attribute_name ::= //identifier signature? "'" attribute_designator [ '(' expression ')' ]
-    suffix [ '(' actual_parameter_part ')' ] signature? "'" attribute_designator [ '(' expression ')' ]
+attribute_name ::= suffix [ '(' actual_parameter_part ')' ] signature? "'" attribute_designator [ '(' expression ')' ]
 
 attribute_specification ::= 'attribute' attribute_designator 'of' entity_specification 'is' expression ';'
 
-//base ::= ilit
-
 base_unit_declaration ::= identifier ';'
-
-//based_integer ::= extended_digit ( [ underline ] extended_digit )*
-
-//based_literal ::= base '#' based_integer [ ',' based_integer ] '#' [ exponent ]
-
-//basic_identifier ::= id
 
 binding_indication ::=
     [ 'use' entity_aspect ]
     [ generic_map_aspect ]
     [ port_map_aspect ]
 
-bit_string_literal ::= binlit | octlit |  hexlit
+bit_string_literal ::= binlit | octlit | hexlit
 
 block_configuration ::=
     'for' block_specification
@@ -321,7 +298,9 @@ block_statement ::=
         'begin'
             block_statement_part
         'end' 'block' [ label ] ';'
-    {methods=[getPresentation]}
+{
+    methods=[getPresentation getIcon getType]
+}
 
 block_statement_part ::= ( concurrent_statement )*
 
@@ -356,20 +335,22 @@ component_declaration ::=
     'component' identifier [ 'is' ]
         entity_header
     'end' 'component' identifier? ';'
-     {methods=[getPresentation]}
+{
+    methods=[getPresentation getIcon getType]
+}
 
 component_instantiation_statement ::=
     label ':'
         instantiated_unit
             [ generic_map_aspect ]
             [ port_map_aspect ] ';'
-    {methods=[getPresentation]}
+{
+    methods=[getPresentation getIcon getType]
+}
 
 component_specification ::= instantiation_list ':' refname
 
-private composite_type_definition ::=
-    array_type_definition
-    | record_type_definition
+private composite_type_definition ::= array_type_definition | record_type_definition
 
 concurrent_assertion_statement ::= [ label ':' ] [ 'postponed' ] assertion ';'
 
@@ -392,8 +373,7 @@ condition ::= expression
 
 condition_clause ::= 'until' condition
 
-conditional_signal_assignment ::=
-    target  '<=' options conditional_waveforms ';'
+conditional_signal_assignment ::= target '<=' options conditional_waveforms ';'
 
 conditional_waveforms ::=
     ( waveform 'when' condition 'else' )*
@@ -410,34 +390,25 @@ configuration_declarative_item ::=
     | attribute_specification
     | group_declaration
 
-configuration_declarative_part ::=
-    ( configuration_declarative_item )*
+configuration_declarative_part ::= ( configuration_declarative_item )*
 
-configuration_item ::=
-    block_configuration
-    | component_configuration
+configuration_item ::= block_configuration | component_configuration
 
-configuration_specification ::=
-    'for' component_specification binding_indication ';'
+configuration_specification ::= 'for' component_specification binding_indication ';'
 
 constant_declaration ::=
     'constant' identifier_list ':' subtype_indication [ ':=' expression ] ';'
-    {methods=[getPresentation]}
+{
+    methods=[getPresentation getIcon getType]
+}
 
-constrained_array_definition ::=
-    'array' index_constraint 'of' subtype_indication
+constrained_array_definition ::= 'array' index_constraint 'of' subtype_indication
 
-constraint ::=
-    range_constraint
-    | index_constraint
+constraint ::= range_constraint | index_constraint
 
 context_clause ::= ( context_item )*
 
-private context_item ::=
-    library_clause
-    | use_clause
-
-//decimal_literal ::= ilit [ '.' ilit ] [ exponent ]
+private context_item ::= library_clause | use_clause
 
 private declarative_item ::=
     subprogram_declaration
@@ -458,7 +429,6 @@ private declarative_item ::=
     | group_template_declaration
     | group_declaration
 
-
 delay_mechanism ::=
     'transport'
     | [ 'reject' expression ] 'inertial'
@@ -471,7 +441,7 @@ direction ::= 'to' | 'downto'
 
 disconnection_specification ::= 'disconnect' guarded_signal_specification 'after' expression ';'
 
-discrete_range ::= /*subtype_indication | */range
+discrete_range ::= range
 
 element_association ::= [ choices '=>' ] expression
 
@@ -489,45 +459,22 @@ private entity_class ::=
     | 'type'      | 'subtype'      | 'constant'      | 'signal'    | 'variable' | 'component'
     | 'label'     | 'literal'      | 'units'         | 'group'     | 'file'
 
-entity_class_entry ::=  entity_class [ '<>' ]
+entity_class_entry ::= entity_class [ '<>' ]
 
-entity_class_entry_list ::=
-    entity_class_entry ( ',' entity_class_entry )*
+entity_class_entry_list ::= entity_class_entry ( ',' entity_class_entry )*
 
 entity_declaration ::=
     'entity' identifier 'is'
-        entity_header //port (), generic ()
-//        entity_declarative_part
-//        [ entity_statement_part ]
-    'end' [ 'entity' ] identifier? ';' //{pin(".*")=1}
-    {methods=[getPresentation]}
-
-private not_semi_ ::= ! ';'
-
-private entity_declarative_item ::=
-    subprogram_declaration
-    | subprogram_body
-    | type_declaration
-    | subtype_declaration
-    | constant_declaration
-//    | signal_declaration
-//    | variable_declaration
-//    | file_declaration
-//    | alias_declaration
-    | attribute_declaration
-    | attribute_specification
-    | disconnection_specification
-    | use_clause
-    | group_template_declaration
-    | group_declaration
-
-entity_declarative_part ::= ( entity_declarative_item )*
+        entity_header
+    'end' [ 'entity' ] identifier? ';'
+{
+    methods=[getPresentation getIcon getType]
+    pin=1
+}
 
 entity_designator ::= entity_tag signature?
 
-entity_header ::=
-    [ generic_clause ]
-    [ port_clause ]
+entity_header ::= generic_clause? port_clause?
 
 entity_name_list ::=
     entity_designator ( ',' entity_designator )*
@@ -535,13 +482,6 @@ entity_name_list ::=
     | 'all'
 
 entity_specification ::= entity_name_list ':' entity_class
-
-private entity_statement ::=
-    concurrent_assertion_statement
-    | concurrent_procedure_call_statement
-    | process_statement
-
-entity_statement_part ::= 'begin' ( entity_statement )*
 
 private entity_tag ::=
     identifier
@@ -558,9 +498,6 @@ enumeration_type_definition ::= '(' enumeration_list ')'
 
 exit_statement ::= [ label ':' ] 'exit' [ label ] [ 'when' condition ] ';'
 
-
-//exponent ::= 'e' [ '+' ] ilit | 'e' '-' ilit
-
 expression ::=
       relation ( 'and' relation )+
     | relation ( 'or' relation )+
@@ -570,10 +507,6 @@ expression ::=
     | relation 'nor' relation
     | relation
     | discrete_range
-
-//extended_digit ::= 'exdigit'
-
-//extended_identifier ::= 'exid'
 
 factor ::=
     primary [ '**' primary ]
@@ -588,8 +521,6 @@ file_open_information ::= [ 'open' expression ] 'is' file_logical_name
 
 file_type_definition ::= 'file' 'of' type_mark
 
-//floating_type_definition ::= range_constraint
-
 formal_designator ::= refname
 
 formal_part ::=
@@ -598,8 +529,6 @@ formal_part ::=
     | type_mark '(' formal_designator ')'
 
 full_type_declaration ::= 'type' identifier 'is' type_definition ';'
-
-//function_call ::= refname '(' actual_parameter_part ')'
 
 function_parameter_constant_declaration ::=
     [ 'constant' ] identifier_list ':' [ 'in' ]  // Either in+constant/constant/in/nothing.
@@ -612,7 +541,7 @@ function_parameter_signal_declaration ::=
 private function_parameter_declaration ::=
     function_parameter_constant_declaration
     | function_parameter_signal_declaration
-    | subprogram_parameter_file_declaration //{pin(".*")=1}
+    | subprogram_parameter_file_declaration
 
 function_parameter_list ::=
     function_parameter_declaration ( ';' function_parameter_declaration )*
@@ -624,7 +553,9 @@ generate_statement ::=
         'begin' ]
             ( concurrent_statement )*
         'end' 'generate' [ label ] ';'
-     {methods=[getPresentation]}
+{
+    methods=[getPresentation getIcon getType]
+}
 
 generation_scheme ::=
     'for' parameter_specification
@@ -634,28 +565,30 @@ generic_clause ::= 'generic' '(' generic_interface_list ')' ';'
 
 generic_interface_list ::= interface_generic_declaration ( ';' interface_generic_declaration )*
 
-//generic_map_aspect ::= 'generic' 'map' '(' association_list ')'
 generic_map_aspect ::= 'generic' 'map' aggregate
 
 group_constituent ::= refname | character_literal
 
 group_constituent_list ::= group_constituent ( ',' group_constituent )*
 
-group_template_declaration ::=
-    'group' identifier 'is' '(' entity_class_entry_list ')' ';'
+group_template_declaration ::= 'group' identifier 'is' '(' entity_class_entry_list ')' ';'
 
-group_declaration ::=
-    'group' identifier ':' refname '(' group_constituent_list ')' ';'
+group_declaration ::= 'group' identifier ':' refname '(' group_constituent_list ')' ';'
 
-guarded_signal_specification ::=
-    signal_list ':' type_mark
+guarded_signal_specification ::= signal_list ':' type_mark
 
-identifier ::= ID {mixin="com.github.aamnony.idev.vhdl.psi.impl.VhdlNamedElementImpl"
-                    implements="com.github.aamnony.idev.vhdl.psi.VhdlNamedElement"
-                    methods=[setName getName getNameIdentifier getReferences getPresentation isDeclared getScopes]}
-//    basic_identifier | extended_identifier //{implements("identifier")="com.oatau.vhdl.psi.VhdlNamedElement" extends("identifier")="com.oatau.vhdl.psi.impl.VhdlEntity"}
+identifier ::= ID
+{
+    mixin="com.github.aamnony.idev.vhdl.psi.impl.VhdlNamedElementImpl"
+    implements="com.github.aamnony.idev.vhdl.psi.VhdlNamedElement"
+
+    methods=[setName getName getNameIdentifier getReferences getPresentation isDeclared getScopes getIcon getType]
+}
 
 identifier_list ::= identifier ( ',' identifier )*
+{
+    pin=1
+}
 
 if_statement ::=
     [ label ':' ]
@@ -677,11 +610,7 @@ index_specification ::=
 
 index_subtype_definition ::= type_mark [ 'range' '<>' ]
 
-//indexed_name ::= suffix '(' expression ( ',' expression )* ')'
 indexed_name ::= suffix aggregate
-//indexed_name ::= identifier '(' [ '(' actual_parameter_part ')' ] '(' expression ( ',' expression )* ')'
-//private indexed_name_tail ::= actual_parameter_part ')' '(' expression (',' expression)* ')'
-
 
 instantiated_unit ::=
     [ 'component' ] {selected_name | identifier}
@@ -693,27 +622,26 @@ instantiation_list ::=
     | 'others'
     | 'all'
 
-ilit ::= intlit
+interface_generic_declaration ::= identifier_list ':' subtype_indication [ ':=' expression ]
+{
+    methods=[getPresentation getIcon getType]
+}
 
-integer_type_definition ::= range_constraint
-
-interface_generic_declaration ::= identifier_list ':' subtype_indication [ ':=' expression ] {methods=[getPresentation]}
-
-interface_port_declaration ::= identifier_list ':' mode subtype_indication [ ':=' expression ] {methods=[getPresentation]}
+interface_port_declaration ::= identifier_list ':' mode subtype_indication [ ':=' expression ]
+{
+    methods=[getPresentation getIcon getType]
+}
 
 iteration_scheme ::=
     'while' condition
     | 'for' parameter_specification
 
-private known_type ::=
-    'bit'              | 'bit_vector'     | 'integer'     | 'natural' | 'positive'  | 'real'
-    | 'boolean'        | 'character'      | 'string'      | 'time'    | 'delay_length'
-    | 'severity_level' | 'file_open_kind' | 'file_open_status'        | 'std_logic' | 'std_ulogic'
-    | 'std_logic_vector'                  | 'std_ulogic_vector'       | 'signed'    | 'unsigned'
-
 label ::= identifier
 
-library_clause ::= 'library' logical_name_list ';' //{pin(".*")=1}
+library_clause ::= 'library' logical_name_list ';'
+{
+    pin=1
+}
 
 private library_unit ::=
     primary_unit
@@ -737,7 +665,7 @@ loop_statement ::=
             sequence_of_statements
         'end' 'loop' [ label ] ';'
 
-mode ::= mode_simple  | 'buffer' | 'linkage'
+mode ::= mode_simple | 'buffer' | 'linkage'
 
 private mode_simple ::= 'in' | 'out' | 'inout'
 
@@ -745,23 +673,14 @@ private multiplying_operator ::= '*' | '/' | 'mod' | 'rem'
 
 refname ::=
     operator_symbol
-//    | selected_name
     | indexed_name
     | slice_name
     | attribute_name
-//    | function_call
     | identifier
-//    | procedure_call
 
 next_statement ::= [ label ':' ] 'next' [ label ] [ 'when' condition ] ';'
 
 null_statement ::= [ label ':' ] 'null' ';'
-
-private object_declaration ::=
-    constant_declaration
-    | signal_declaration
-    | variable_declaration
-    | file_declaration
 
 operator_symbol ::= string_literal
 
@@ -771,7 +690,9 @@ package_body ::=
     'package' 'body' identifier 'is'
         package_body_declarative_part
     'end' [ 'package' 'body' ] identifier? ';'
-    {methods=[getPresentation]}
+{
+    methods=[getPresentation getIcon getType]
+}
 
 private package_body_declarative_item ::=
     subprogram_declaration
@@ -792,7 +713,9 @@ package_declaration ::=
     'package' identifier 'is'
         package_declarative_part
     'end' [ 'package' ] identifier? ';'
-    {methods=[getPresentation]}
+{
+    methods=[getPresentation getIcon getType]
+}
 
 private package_declarative_item ::=
     subprogram_declaration
@@ -815,8 +738,6 @@ package_declarative_part ::= ( package_declarative_item )*
 
 parameter_specification ::= identifier 'in' discrete_range
 
-//physical_literal ::= [ abstract_literal ] refname
-
 physical_type_definition ::=
     range_constraint
         ( 'units'
@@ -824,19 +745,15 @@ physical_type_definition ::=
               ( secondary_unit_declaration )*
           'end' 'units' identifier? )?
 
-port_clause ::= 'port' '(' port_interface_list ')' ';' //{pin=1}
-private not_parenth ::= ! ')'
+port_clause ::= 'port' '(' port_interface_list ')' ';'
 
 port_interface_list ::= interface_port_declaration ( ';' interface_port_declaration )*
 
-//port_map_aspect ::= 'port' 'map' '(' association_list ')'
 port_map_aspect ::= 'port' 'map' aggregate
 
 private primary ::=
     refname ( '.' refname )*
     | literal
-    //| identifier [ '(' actual_parameter_part ')' ]
-    //| identifier [ '(' actual_parameter_part ')' ]
     | qualified_expression
     | type_conversion
     | allocator
@@ -848,8 +765,6 @@ private primary_unit ::=
     | configuration_declaration
     | package_declaration
 
-//procedure_call ::= refname [ '(' actual_parameter_part ')' ]
-//procedure_call ::= suffix '(' actual_parameter_part ')'
 private procedure_call ::= indexed_name
 
 procedure_call_statement ::= [ label ':' ] procedure_call ';'
@@ -870,10 +785,9 @@ private procedure_parameter_declaration ::=
     procedure_parameter_variable_declaration
     | procedure_parameter_constant_declaration
     | procedure_parameter_signal_declaration
-    | subprogram_parameter_file_declaration //{pin(".*")=1}
+    | subprogram_parameter_file_declaration
 
-procedure_parameter_list ::=
-    procedure_parameter_declaration ( ';' procedure_parameter_declaration )*
+procedure_parameter_list ::= procedure_parameter_declaration ( ';' procedure_parameter_declaration )*
 
 private process_declarative_item ::=
     subprogram_declaration
@@ -897,12 +811,11 @@ process_statement ::=
         [ 'postponed' ] 'process' [ '(' sensitivity_list ')' ] [ 'is'
             process_declarative_part? ]
         'begin'
-            process_statement_part?
+            sequence_of_statements
         'end' [ 'postponed' ] 'process' [ label ] ';'
-    {methods=[getPresentation]}
-
-process_statement_part ::=
-    ( sequential_statement )+
+{
+    methods=[getPresentation getIcon getType]
+}
 
 qualified_expression ::=
     type_mark "'" '(' expression ')'
@@ -912,9 +825,6 @@ range ::=
     simple_expression direction simple_expression
     | attribute_name
     | identifier
-    //| range_attribute
-
-//range_attribute ::= identifier [ '(' actual_parameter_part ')' ] signature? "'" range_type
 
 range_constraint ::= 'range' range
 
@@ -923,7 +833,6 @@ range_type ::= 'range' | 'reverse_range'
 private record_type_definition ::=
     'record'
         ( element_declaration )+
-//        ( element_declaration )*
     'end' 'record' [ identifier ]
 
 relation ::= shift_expression [ relational_operator shift_expression ]
@@ -941,11 +850,7 @@ resolution_function ::= 'resolved' | '(' 'resolved' ')'
 
 return_statement ::= [ label ':' ] 'return' [ expression ] ';'
 
-scalar_type_definition ::=
-    enumeration_type_definition
-    //| integer_type_definition
-    //| floating_type_definition
-    | physical_type_definition
+scalar_type_definition ::= enumeration_type_definition | physical_type_definition
 
 private secondary_unit ::=
     architecture_body
@@ -953,7 +858,6 @@ private secondary_unit ::=
 
 secondary_unit_declaration ::= identifier '=' reallit ';'
 
-//selected_name ::= identifier [ '(' actual_parameter_part ')' ] '.' suffix
 selected_name ::= identifier ( '.' suffix )+
 
 selected_signal_assignment ::=
@@ -964,7 +868,7 @@ selected_waveforms ::=
     ( waveform 'when' choices ',' )*
     waveform 'when' choices
 
-sensitivity_clause ::=  'on' sensitivity_list
+sensitivity_clause ::= 'on' sensitivity_list
 
 sensitivity_list ::= refname ( ',' refname )*
 
@@ -991,14 +895,18 @@ private shift_operator ::= 'sll' | 'srl' | 'sla' | 'sra' | 'rol' | 'ror'
 
 private sign ::= '+' | '-'
 
-signal_assignment_statement ::=
-    [ label ':' ] target '<=' [ delay_mechanism ] waveform ';' //{pin(".*") = 3}
+signal_assignment_statement ::= [ label ':' ] target '<=' [ delay_mechanism ] waveform ';'
+{
+    pin(".*")=3
+}
 
-signal_declaration ::=
-    'signal' identifier_list ':' subtype_indication [ signal_kind ] [ ':=' expression ] ';' //{pin(".*")=1}
-    {methods=[getPresentation]}
+signal_declaration ::= 'signal' identifier_list ':' subtype_indication [ signal_kind ] [ ':=' expression ] ';'
+{
+    methods=[getPresentation getIcon getType]
+    pin=1
+}
 
-signal_kind ::=  'register' | 'bus'
+signal_kind ::= 'register' | 'bus'
 
 signal_list ::=
     refname ( ',' refname )*
@@ -1009,7 +917,7 @@ signature ::= '[' [ type_mark ( ',' type_mark )* ] [ 'return' type_mark ] ']'
 
 simple_expression ::= [ sign ] term ( adding_operator term )*
 
-slice_name ::=  identifier [ '(' actual_parameter_part ')' ] '(' discrete_range ')'
+slice_name ::= identifier [ '(' actual_parameter_part ')' ] '(' discrete_range ')'
 
 string_literal ::= strlit
 
@@ -1017,7 +925,7 @@ subprogram_body ::=
     subprogram_specification 'is'
         subprogram_declarative_part?
     'begin'
-        subprogram_statement_part?
+        sequence_of_statements
     'end' [ subprogram_kind ] [ designator ] ';'
 
 subprogram_declaration ::= subprogram_specification ';'
@@ -1041,16 +949,15 @@ subprogram_declarative_part ::= ( subprogram_declarative_item )+
 
 subprogram_kind ::= 'procedure' | 'function'
 
-subprogram_parameter_file_declaration ::=
-    'file' identifier_list ':' subtype_indication
+subprogram_parameter_file_declaration ::= 'file' identifier_list ':' subtype_indication
 
 subprogram_specification ::=
     'procedure' designator [ '(' procedure_parameter_list ')' ]
-    | [ 'pure' | 'impure' ]  'function' designator [ '(' function_parameter_list ')' ]
+    | [ 'pure' | 'impure' ] 'function' designator [ '(' function_parameter_list ')' ]
         'return' type_mark
-    {methods=[getPresentation]}
-
-subprogram_statement_part ::= ( sequential_statement )+
+{
+    methods=[getPresentation getIcon getType]
+}
 
 subtype_declaration ::= 'subtype' identifier 'is' subtype_indication ';'
 
@@ -1093,7 +1000,10 @@ use_clause ::= 'use' selected_name ( ',' selected_name )* ';'
 
 variable_assignment_statement ::= [ label ':' ] target ':=' expression ';'
 
-variable_declaration ::= [ 'shared' ] 'variable' identifier_list ':' subtype_indication [ ':=' expression ] ';' {methods=[getPresentation]}
+variable_declaration ::= [ 'shared' ] 'variable' identifier_list ':' subtype_indication [ ':=' expression ] ';'
+{
+    methods=[getPresentation getIcon getType]
+}
 
 wait_statement ::= [ label ':' ] 'wait' [ sensitivity_clause ] [ condition_clause ] [ timeout_clause ] ';'
 

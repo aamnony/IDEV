@@ -1,6 +1,5 @@
 package com.github.aamnony.idev.vhdl.navigation;
 
-import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.psi.VhdlLabel;
 import com.github.aamnony.idev.vhdl.psi.VhdlProcessStatement;
 import com.github.aamnony.idev.vhdl.psi.VhdlRefname;
@@ -41,7 +40,7 @@ public class VhdlProcessPresentation implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean unused) {
-        return VhdlIcons.PROCESS;
+        return process.getIcon(0);
     }
 
     @Nullable

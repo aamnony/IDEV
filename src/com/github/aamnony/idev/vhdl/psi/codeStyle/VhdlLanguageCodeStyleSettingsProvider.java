@@ -44,7 +44,7 @@ public class VhdlLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSett
                 consumer.renameStandardOption("SPACE_BEFORE_COLON", "Before colon");
                 consumer.renameStandardOption("SPACE_AFTER_COLON", "After colon");
                 consumer.renameStandardOption("SPACE_AROUND_ADDITIVE_OPERATORS", "Additive operators (+, -, &)");
-                consumer.renameStandardOption("SPACE_AROUND_ASSIGNMENT_OPERATORS", "Assignxment operators (<=, :=, =>)");
+                consumer.renameStandardOption("SPACE_AROUND_ASSIGNMENT_OPERATORS", "Assignment operators (<=, :=, =>)");
                 consumer.renameStandardOption("SPACE_AROUND_EQUALITY_OPERATORS", "Equality operators (=, /=, ...)");
                 consumer.renameStandardOption("SPACE_AROUND_MULTIPLICATIVE_OPERATORS", "Multiplicative operators (*, /, **)");
                 break;

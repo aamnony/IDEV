@@ -1,6 +1,6 @@
 package com.github.aamnony.idev.vhdl.highlighting;
 
-import com.github.aamnony.idev.vhdl.lexer.VhdlLexerAdapter;
+import com.github.aamnony.idev.vhdl.psi.VhdlElementTypes;
 import com.github.aamnony.idev.vhdl.lexer.VhdlLexerAdapter;
 import com.github.aamnony.idev.vhdl.psi.VhdlElementTypes;
 import com.github.aamnony.idev.vhdl.psi.VhdlTypes;

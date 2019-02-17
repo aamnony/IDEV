@@ -1,7 +1,6 @@
 package com.github.aamnony.idev.vhdl.psi.tree;
 
 import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
-import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
 import com.intellij.psi.tree.IElementType;
 
 import org.jetbrains.annotations.NonNls;
@@ -14,7 +13,7 @@ public class VhdlTokenType extends IElementType {
 
     @Override
     public String toString() {
-        return "VhdlTokenType." + super.toString();
+        return super.toString();
     }
 }
 

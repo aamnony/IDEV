@@ -2,6 +2,7 @@ package com.github.aamnony.idev.vhdl.lang.findUsages;
 
 
 import com.github.aamnony.idev.vhdl.lexer.VhdlLexerAdapter;
+import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
 import com.github.aamnony.idev.vhdl.lexer.VhdlLexerAdapter;
 import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
 import com.github.aamnony.idev.vhdl.psi.VhdlTypes;

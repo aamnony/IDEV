@@ -1,7 +1,6 @@
 package com.github.aamnony.idev.vhdl.formatting;
 
 import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
-import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
 import com.github.aamnony.idev.vhdl.psi.VhdlElementTypes;
 import com.github.aamnony.idev.vhdl.psi.VhdlTypes;
 import com.intellij.formatting.ASTBlock;
@@ -49,8 +48,8 @@ class VhdlBlock implements ASTBlock {
     private Boolean myIncomplete;
 
     private static final TokenSet OBJECT_STATEMENT_BLOCKS = TokenSet.create(
-            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.BLOCK_STATEMENT_PART, VhdlTypes.PROCESS_STATEMENT_PART,
-            VhdlTypes.SUBPROGRAM_STATEMENT_PART, VhdlTypes.GENERATE_STATEMENT, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.AGGREGATE
+            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.BLOCK_STATEMENT_PART,
+            VhdlTypes.GENERATE_STATEMENT, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.AGGREGATE
     );
     private static final TokenSet OBJECT_ASSIGNMENT_STATEMENT_TYPES = TokenSet.create(
             VhdlTypes.SIGNAL_ASSIGNMENT_STATEMENT, VhdlTypes.VARIABLE_ASSIGNMENT_STATEMENT, VhdlTypes.ELEMENT_ASSOCIATION
@@ -75,10 +74,10 @@ class VhdlBlock implements ASTBlock {
     private static final TokenSet NORMAL_INDENTED_BLOCKS = TokenSet.create(
             VhdlTypes.USE_CLAUSE, VhdlTypes.ENTITY_HEADER, VhdlTypes.GENERIC_INTERFACE_LIST,
             VhdlTypes.PORT_INTERFACE_LIST, VhdlTypes.ARCHITECTURE_DECLARATIVE_PART,
-            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.PROCESS_DECLARATIVE_PART, VhdlTypes.PROCESS_STATEMENT_PART,
+            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.PROCESS_DECLARATIVE_PART,
             VhdlTypes.CASE_STATEMENT_ALTERNATIVE, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.PACKAGE_DECLARATIVE_PART,
             VhdlTypes.PACKAGE_BODY_DECLARATIVE_PART, VhdlTypes.SUBPROGRAM_DECLARATIVE_PART,
-            VhdlTypes.SUBPROGRAM_STATEMENT_PART, /*TODO: fix later: VhdlTypes.ENUMERATION_LIST,*/
+            /*TODO: fix later: VhdlTypes.ENUMERATION_LIST,*/
             VhdlTypes.ELEMENT_DECLARATION, VhdlTypes.PROCEDURE_PARAMETER_LIST, VhdlTypes.FUNCTION_PARAMETER_LIST,
             VhdlTypes.BLOCK_DECLARATIVE_PART, VhdlTypes.BLOCK_STATEMENT_PART
     );
@@ -86,10 +85,10 @@ class VhdlBlock implements ASTBlock {
     private static final TokenSet ALWAYS_WRAPPED_BLOCKS = TokenSet.create(
             VhdlTypes.GENERIC_CLAUSE, VhdlTypes.PORT_CLAUSE, VhdlTypes.INTERFACE_GENERIC_DECLARATION,
             VhdlTypes.INTERFACE_PORT_DECLARATION, VhdlTypes.ARCHITECTURE_DECLARATIVE_PART,
-            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.PROCESS_DECLARATIVE_PART, VhdlTypes.PROCESS_STATEMENT_PART,
+            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.PROCESS_DECLARATIVE_PART,
             VhdlTypes.CASE_STATEMENT_ALTERNATIVE, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.T_BEGIN, VhdlTypes.T_END,
             VhdlTypes.PACKAGE_DECLARATIVE_PART, VhdlTypes.PACKAGE_BODY_DECLARATIVE_PART,
-            VhdlTypes.SUBPROGRAM_DECLARATIVE_PART, VhdlTypes.SUBPROGRAM_STATEMENT_PART, VhdlTypes.ENUMERATION_LITERAL,
+            VhdlTypes.SUBPROGRAM_DECLARATIVE_PART, VhdlTypes.ENUMERATION_LITERAL,
             VhdlTypes.ELEMENT_DECLARATION, VhdlTypes.T_RECORD, VhdlTypes.PROCEDURE_PARAMETER_CONSTANT_DECLARATION,
             VhdlTypes.PROCEDURE_PARAMETER_SIGNAL_DECLARATION, VhdlTypes.PROCEDURE_PARAMETER_VARIABLE_DECLARATION,
             VhdlTypes.FUNCTION_PARAMETER_CONSTANT_DECLARATION, VhdlTypes.FUNCTION_PARAMETER_SIGNAL_DECLARATION

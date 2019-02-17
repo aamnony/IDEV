@@ -1,9 +1,8 @@
 package com.github.aamnony.idev.vhdl.psi;
 
 import com.github.aamnony.idev.vhdl.IdByScopeComparator;
-import com.github.aamnony.idev.vhdl.VhdlIcons;
+import com.github.aamnony.idev.vhdl.psi.tree.VhdlPsiTreeUtil;
 import com.github.aamnony.idev.vhdl.IdByScopeComparator;
-import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.psi.tree.VhdlPsiTreeUtil;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
@@ -93,19 +92,38 @@ public class VhdlReference extends PsiReferenceBase<PsiNamedElement> {// impleme
     public Object[] getVariants() {
 //        return EMPTY_ARRAY; // todo
         VhdlIdentifier id = (VhdlIdentifier) getElement();
+        // When trying to autocomplete a word (...), or when the word is incomplete, the text is:
+        // ...IntellijIdeaRulezzz
 
         List<VhdlIdentifier> ids = new ArrayList<>();
         VhdlPsiTreeUtil.findIdentifiers(id, ids);
 
-        LookupElement[] variants = new LookupElement[ids.size()];
-        for (int i = 0; i < variants.length; i++) {
-            VhdlIdentifier ref = ids.get(i);
-            variants[i] = LookupElementBuilder.create(ref)
-                    .withIcon(VhdlIcons.FILE)
-                    .withTypeText(ref.getContainingFile().getName());
+        // Let's sort the references by their scope, so we'll find deeper declarations first.
+        ids.sort(new IdByScopeComparator());
 
+        List<LookupElement> variants = new LookupElementArrayList(ids.size() / 4);
+        for (VhdlIdentifier ref : ids) {
+            if (!variants.contains(ref) && ref.isDeclared()) {
+                String presentableText = ref.getPresentation().getPresentableText();
+                variants.add(LookupElementBuilder.create(ref)
+                        .withPresentableText(presentableText != null ? presentableText : ref.getText()) // TODO: work this out
+                        .withIcon(ref.getIcon(0))
+                        .withCaseSensitivity(false)
+                        .withTypeText(ref.getType()));
+            }
         }
-        return variants;
+
+
+//        for (VhdlIdentifier ref : ids) {
+//            if (!variants.contains(ref.getText())) {
+//                variants.add(ref.getText());
+//            }
+//            variants.add(LookupElementBuilder.create(ref)
+//                    .withIcon(VhdlIcons.FILE)
+//                    .withTypeText(ref.getContainingFile().getName());
+
+//        }
+        return variants.toArray();
     }
 
     @Override
@@ -116,5 +134,32 @@ public class VhdlReference extends PsiReferenceBase<PsiNamedElement> {// impleme
     @Override
     public TextRange getRangeInElement() {
         return new TextRange(0, getElement().getTextLength());
+    }
+
+    private static class LookupElementArrayList extends ArrayList<LookupElement> {
+        LookupElementArrayList(int initialCapacity) {
+            super(initialCapacity);
+        }
+
+        /**
+         * {@inheritDoc}
+         * If the given object is a {@link String} then its value is searched in the lookup element,
+         * where the case sensitivity of the comparison is dependent on each lookup element.
+         */
+        @Override
+        public boolean contains(Object o) {
+            if (o instanceof VhdlIdentifier) {
+                String text = ((VhdlIdentifier) o).getText();
+                for (LookupElement element : this) {
+                    if ((element.isCaseSensitive() && text.equals(element.getLookupString()))
+                            || text.equalsIgnoreCase(element.getLookupString())) {
+                        return true;
+                    }
+                }
+                return false;
+            } else {
+                return super.contains(o);
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.github.aamnony.idev.vhdl.ide.structureView;
 
+import com.github.aamnony.idev.vhdl.psi.impl.VhdlArchitectureBodyImpl;
 import com.github.aamnony.idev.vhdl.psi.VhdlArchitectureBody;
 import com.github.aamnony.idev.vhdl.psi.VhdlArchitectureDeclarativePart;
 import com.github.aamnony.idev.vhdl.psi.VhdlArchitectureStatementPart;

@@ -1,5 +1,11 @@
 package com.github.aamnony.idev.vhdl;
 
+import com.github.aamnony.idev.vhdl.psi.VhdlEntityDeclaration;
+import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
+import com.github.aamnony.idev.vhdl.psi.VhdlPackageDeclaration;
+import com.github.aamnony.idev.vhdl.psi.VhdlProcessStatement;
+import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramBody;
+import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlArchitectureBody;
 import com.github.aamnony.idev.vhdl.psi.VhdlEntityDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;

@@ -1,6 +1,8 @@
 package com.github.aamnony.idev.vhdl;
 
 import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
+import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
+import com.intellij.codeInsight.completion.CompletionUtil;
 
 import java.util.Comparator;
 
@@ -13,7 +15,21 @@ public class IdByNameComparator implements Comparator<VhdlIdentifier> {
 
     @Override
     public int compare(VhdlIdentifier id1, VhdlIdentifier id2) {
-        return id1.getText().compareToIgnoreCase(id2.getText());
+        String text1 = id1.getText();
+        String text2 = id2.getText();
+
+        if (text1.endsWith(CompletionUtil.DUMMY_IDENTIFIER_TRIMMED)) {
+            return startsWith(text1, text2);
+        }
+        if (text2.endsWith(CompletionUtil.DUMMY_IDENTIFIER_TRIMMED)) {
+            return startsWith(text2, text1);
+        }
+        return text1.compareToIgnoreCase(text2);
+    }
+
+    private int startsWith(String needleWithDummy, String haystack) {
+        String needle = needleWithDummy.substring(0, needleWithDummy.length() - CompletionUtil.DUMMY_IDENTIFIER_TRIMMED.length());
+        return haystack.toLowerCase().startsWith(needle.toLowerCase()) ? 0 : 1;
     }
 
     public static boolean match(VhdlIdentifier id1, VhdlIdentifier id2) {

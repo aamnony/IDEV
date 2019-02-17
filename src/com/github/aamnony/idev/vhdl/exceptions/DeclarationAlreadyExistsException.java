@@ -1,6 +1,7 @@
 package com.github.aamnony.idev.vhdl.exceptions;
 
 import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
+import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
 
 public class DeclarationAlreadyExistsException extends Exception {
 

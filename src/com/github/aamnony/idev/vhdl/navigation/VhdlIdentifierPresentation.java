@@ -1,6 +1,5 @@
 package com.github.aamnony.idev.vhdl.navigation;
 
-import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
 import com.intellij.navigation.ItemPresentation;
 

@@ -1,8 +1,6 @@
 package com.github.aamnony.idev.vhdl.navigation;
 
-import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.utils.StringUtils;
-import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.psi.VhdlExpression;
 import com.github.aamnony.idev.vhdl.psi.VhdlSignalDeclaration;
 import com.intellij.navigation.ItemPresentation;
@@ -23,7 +21,7 @@ public class VhdlSignalPresentation implements ItemPresentation {
     @Override
     public String getPresentableText() {
         String name = declaration.getIdentifierList().getIdentifierList().get(index).getName();
-        String type = StringUtils.shrinkParenthesis(declaration.getSubtypeIndication().getText());
+        String type = StringUtils.shrinkParenthesis(declaration.getType());
         VhdlExpression expression = declaration.getExpression();
 
         if (expression == null) {
@@ -41,6 +39,6 @@ public class VhdlSignalPresentation implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean unused) {
-        return VhdlIcons.SIGNAL;
+        return declaration.getIcon(0);
     }
 }

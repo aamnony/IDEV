@@ -1,6 +1,6 @@
 package com.github.aamnony.idev.vhdl.formatting;
 
-import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
+import com.github.aamnony.idev.vhdl.psi.VhdlElementTypes;
 import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
 import com.intellij.formatting.FormattingModel;
 import com.intellij.formatting.FormattingModelBuilder;
@@ -57,10 +57,10 @@ public class VhdlFormattingModelBuilder implements FormattingModelBuilder {
                 .after(ARCHITECTURE_BODY).blankLines(commonSettings.BLANK_LINES_AROUND_CLASS)
                 .after(PACKAGE_DECLARATION).blankLines(commonSettings.BLANK_LINES_AROUND_CLASS)
 
-                .between(STATEMENTS, STATEMENTS).spacing(0, Integer.MAX_VALUE, 1, false, commonSettings.KEEP_BLANK_LINES_IN_CODE)
-                .between(DECLARATIONS, DECLARATIONS).spacing(0, Integer.MAX_VALUE, 1, false, commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS)
-                .between(COMMENT, STATEMENTS).spacing(0, Integer.MAX_VALUE, 1, false, commonSettings.KEEP_BLANK_LINES_IN_CODE)
-                .between(COMMENT, DECLARATIONS).spacing(0, Integer.MAX_VALUE, 1, false, commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS)
+                .between(VhdlElementTypes.STATEMENTS, VhdlElementTypes.STATEMENTS).spacing(0, Integer.MAX_VALUE, 1, false, commonSettings.KEEP_BLANK_LINES_IN_CODE)
+                .between(VhdlElementTypes.DECLARATIONS, VhdlElementTypes.DECLARATIONS).spacing(0, Integer.MAX_VALUE, 1, false, commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS)
+                .between(COMMENT, VhdlElementTypes.STATEMENTS).spacing(0, Integer.MAX_VALUE, 1, false, commonSettings.KEEP_BLANK_LINES_IN_CODE)
+                .between(COMMENT, VhdlElementTypes.DECLARATIONS).spacing(0, Integer.MAX_VALUE, 1, false, commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS)
 
                 // Spaces:
                 .before(COMMENT).spaces(2)
@@ -73,18 +73,18 @@ public class VhdlFormattingModelBuilder implements FormattingModelBuilder {
                 .after(T_COLON).spaceIf(commonSettings.SPACE_AFTER_COLON)
                 .after(T_LEFT_BRACKET).spaceIf(commonSettings.SPACE_WITHIN_BRACKETS)
                 .before(T_RIGHT_BRACKET).spaceIf(commonSettings.SPACE_WITHIN_BRACKETS)
-                .around(ADDITIVE_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_ADDITIVE_OPERATORS)
-                .around(ASSIGNMENT_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_ASSIGNMENT_OPERATORS)
-                .around(EQUALITY_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_EQUALITY_OPERATORS)
-                .around(LOGICAL_OPERATORS).spaces(1)
-                .around(MULTIPLICATIVE_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_MULTIPLICATIVE_OPERATORS)
-                .around(MULTIPLICATIVE_WORD_OPERATORS).spaces(1)
-                .around(RELATIONAL_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_RELATIONAL_OPERATORS)
-                .around(SHIFT_OPERATORS).spaces(1)
-                .around(KEYWORDS).spaces(1)
+                .around(VhdlElementTypes.ADDITIVE_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_ADDITIVE_OPERATORS)
+                .around(VhdlElementTypes.ASSIGNMENT_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_ASSIGNMENT_OPERATORS)
+                .around(VhdlElementTypes.EQUALITY_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_EQUALITY_OPERATORS)
+                .around(VhdlElementTypes.LOGICAL_OPERATORS).spaces(1)
+                .around(VhdlElementTypes.MULTIPLICATIVE_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_MULTIPLICATIVE_OPERATORS)
+                .around(VhdlElementTypes.MULTIPLICATIVE_WORD_OPERATORS).spaces(1)
+                .around(VhdlElementTypes.RELATIONAL_OPERATORS).spaceIf(commonSettings.SPACE_AROUND_RELATIONAL_OPERATORS)
+                .around(VhdlElementTypes.SHIFT_OPERATORS).spaces(1)
+                .around(VhdlElementTypes.KEYWORDS).spaces(1)
                 .after(T_LEFT_PAREN).spaceIf(commonSettings.SPACE_WITHIN_PARENTHESES)
                 .before(T_RIGHT_PAREN).spaceIf(commonSettings.SPACE_WITHIN_PARENTHESES)
-                .around(PARENTHESES).none();
+                .around(VhdlElementTypes.PARENTHESES).none();
     }
 
     @Nullable

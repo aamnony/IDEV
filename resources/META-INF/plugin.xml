@@ -2,7 +2,7 @@
     <id>com.github.aamnony.idev</id>
     <name>Editor for VHDL</name>
     <version>0.1.0</version>
-    <vendor email="aamnony@gmail.com" url="http://www.github.com/amnony">amnony</vendor>
+    <vendor email="aamnony@gmail.com" url="http://www.github.com/aamnony">aamnony</vendor>
 
     <!--TODO: fill description-->
     <description><![CDATA[
@@ -41,5 +41,6 @@
         <lang.psiStructureViewFactory language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.VhdlStructureViewFactory" />
         <codeInsight.lineMarkerProvider language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.codeInsight.daemon.VhdlLineMarkerProvider" />
         <lang.foldingBuilder language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.folding.VhdlFoldingBuilder" />
+        <completion.contributor language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.codeInsight.completion.VhdlCompletionContributor"/>
     </extensions>
 </idea-plugin>

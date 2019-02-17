@@ -1,7 +1,5 @@
 package com.github.aamnony.idev.vhdl.navigation;
 
-import com.github.aamnony.idev.vhdl.VhdlIcons;
-import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.psi.VhdlPackageBody;
 import com.intellij.navigation.ItemPresentation;
 
@@ -30,6 +28,6 @@ public class VhdlPackageBodyPresentation implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean unused) {
-        return VhdlIcons.PACKAGE_BODY;
+        return body.getIcon(0);
     }
 }

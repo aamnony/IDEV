@@ -1,6 +1,8 @@
 package com.github.aamnony.idev.vhdl.options.colors;
 
-import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
+import com.github.aamnony.idev.vhdl.VhdlIcons;
+import com.github.aamnony.idev.vhdl.highlighting.VhdlHighlightingColors;
+import com.github.aamnony.idev.vhdl.highlighting.VhdlSyntaxHighlighterFactory;
 import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.highlighting.VhdlSyntaxHighlighterFactory;
 import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
@@ -22,47 +24,47 @@ import static com.github.aamnony.idev.vhdl.highlighting.VhdlHighlightingColors.*
 
 public class VhdlColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Design Units//Primary Design Unit", PRIMARY_DESIGN_UNIT),
-            new AttributesDescriptor("Design Units//Secondary Design Unit", SECONDARY_DESIGN_UNIT),
-            new AttributesDescriptor("Keyword", KEYWORD),
-            new AttributesDescriptor("Braces and Operators//Operator", OPERATOR),
-            new AttributesDescriptor("Identifiers//Type", TYPE),
-            new AttributesDescriptor("Braces and Operators//Semicolon", SEMICOLON),
-            new AttributesDescriptor("Braces and Operators//Comma", COMMA),
-            new AttributesDescriptor("Braces and Operators//Dot", DOT),
-            new AttributesDescriptor("Braces and Operators//Parenthesis", PARENTHESIS),
-            new AttributesDescriptor("Comment", COMMENT),
-            new AttributesDescriptor("Character", CHARACTER),
-            new AttributesDescriptor("String", STRING),
-            new AttributesDescriptor("Number", NUMBER),
-            new AttributesDescriptor("Identifiers//Generic", GENERIC),
-            new AttributesDescriptor("Identifiers//Port", PORT),
-            new AttributesDescriptor("Identifiers//Signal", SIGNAL),
-            new AttributesDescriptor("Identifiers//Constant", CONSTANT),
-            new AttributesDescriptor("Identifiers//Variable", VARIABLE),
-            new AttributesDescriptor("Identifiers//Attribute", ATTRIBUTE),
-            new AttributesDescriptor("Identifiers//Alias", ALIAS),
-            new AttributesDescriptor("Identifiers//Subprogram Parameter", SUBPROGRAM_PARAMETER),
-            new AttributesDescriptor("Identifiers//Subprogram Declaration", SUBPROGRAM_DECLARATION),
-            new AttributesDescriptor("Identifiers//Subprogram Call", SUBPROGRAM_CALL),
-            new AttributesDescriptor("Identifiers//Label", LABEL),
+            new AttributesDescriptor("Design Units//Primary Design Unit", VhdlHighlightingColors.PRIMARY_DESIGN_UNIT),
+            new AttributesDescriptor("Design Units//Secondary Design Unit", VhdlHighlightingColors.SECONDARY_DESIGN_UNIT),
+            new AttributesDescriptor("Keyword", VhdlHighlightingColors.KEYWORD),
+            new AttributesDescriptor("Braces and Operators//Operator", VhdlHighlightingColors.OPERATOR),
+            new AttributesDescriptor("Identifiers//Type", VhdlHighlightingColors.TYPE),
+            new AttributesDescriptor("Braces and Operators//Semicolon", VhdlHighlightingColors.SEMICOLON),
+            new AttributesDescriptor("Braces and Operators//Comma", VhdlHighlightingColors.COMMA),
+            new AttributesDescriptor("Braces and Operators//Dot", VhdlHighlightingColors.DOT),
+            new AttributesDescriptor("Braces and Operators//Parenthesis", VhdlHighlightingColors.PARENTHESIS),
+            new AttributesDescriptor("Comment", VhdlHighlightingColors.COMMENT),
+            new AttributesDescriptor("Character", VhdlHighlightingColors.CHARACTER),
+            new AttributesDescriptor("String", VhdlHighlightingColors.STRING),
+            new AttributesDescriptor("Number", VhdlHighlightingColors.NUMBER),
+            new AttributesDescriptor("Identifiers//Generic", VhdlHighlightingColors.GENERIC),
+            new AttributesDescriptor("Identifiers//Port", VhdlHighlightingColors.PORT),
+            new AttributesDescriptor("Identifiers//Signal", VhdlHighlightingColors.SIGNAL),
+            new AttributesDescriptor("Identifiers//Constant", VhdlHighlightingColors.CONSTANT),
+            new AttributesDescriptor("Identifiers//Variable", VhdlHighlightingColors.VARIABLE),
+            new AttributesDescriptor("Identifiers//Attribute", VhdlHighlightingColors.ATTRIBUTE),
+            new AttributesDescriptor("Identifiers//Alias", VhdlHighlightingColors.ALIAS),
+            new AttributesDescriptor("Identifiers//Subprogram Parameter", VhdlHighlightingColors.SUBPROGRAM_PARAMETER),
+            new AttributesDescriptor("Identifiers//Subprogram Declaration", VhdlHighlightingColors.SUBPROGRAM_DECLARATION),
+            new AttributesDescriptor("Identifiers//Subprogram Call", VhdlHighlightingColors.SUBPROGRAM_CALL),
+            new AttributesDescriptor("Identifiers//Label", VhdlHighlightingColors.LABEL),
     };
 
     private static final Map<String, TextAttributesKey> ADDITIONAL_DESCRIPTORS = ImmutableMap.<String, TextAttributesKey>builder()
-            .put("primary_design_unit", PRIMARY_DESIGN_UNIT)
-            .put("secondary_design_unit", SECONDARY_DESIGN_UNIT)
-            .put("type", TYPE)
-            .put("generic", GENERIC)
-            .put("port", PORT)
-            .put("signal", SIGNAL)
-            .put("constant", CONSTANT)
-            .put("variable", VARIABLE)
-            .put("attribute", ATTRIBUTE)
-            .put("alias", ALIAS)
-            .put("subprogram_parameter", SUBPROGRAM_PARAMETER)
-            .put("subprogram_declaration", SUBPROGRAM_DECLARATION)
-            .put("subprogram_call", SUBPROGRAM_CALL)
-            .put("label", LABEL)
+            .put("primary_design_unit", VhdlHighlightingColors.PRIMARY_DESIGN_UNIT)
+            .put("secondary_design_unit", VhdlHighlightingColors.SECONDARY_DESIGN_UNIT)
+            .put("type", VhdlHighlightingColors.TYPE)
+            .put("generic", VhdlHighlightingColors.GENERIC)
+            .put("port", VhdlHighlightingColors.PORT)
+            .put("signal", VhdlHighlightingColors.SIGNAL)
+            .put("constant", VhdlHighlightingColors.CONSTANT)
+            .put("variable", VhdlHighlightingColors.VARIABLE)
+            .put("attribute", VhdlHighlightingColors.ATTRIBUTE)
+            .put("alias", VhdlHighlightingColors.ALIAS)
+            .put("subprogram_parameter", VhdlHighlightingColors.SUBPROGRAM_PARAMETER)
+            .put("subprogram_declaration", VhdlHighlightingColors.SUBPROGRAM_DECLARATION)
+            .put("subprogram_call", VhdlHighlightingColors.SUBPROGRAM_CALL)
+            .put("label", VhdlHighlightingColors.LABEL)
             .build();
 
     @Nullable

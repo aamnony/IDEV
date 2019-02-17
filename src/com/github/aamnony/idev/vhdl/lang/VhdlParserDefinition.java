@@ -2,6 +2,8 @@ package com.github.aamnony.idev.vhdl.lang;
 
 import com.github.aamnony.idev.vhdl.lexer.VhdlLexerAdapter;
 import com.github.aamnony.idev.vhdl.parser.VhdlParser;
+import com.github.aamnony.idev.vhdl.lexer.VhdlLexerAdapter;
+import com.github.aamnony.idev.vhdl.parser.VhdlParser;
 import com.github.aamnony.idev.vhdl.psi.VhdlFile;
 import com.github.aamnony.idev.vhdl.psi.VhdlTypes;
 import com.intellij.lang.ASTNode;

@@ -1,6 +1,6 @@
 package com.github.aamnony.idev.vhdl.fileTypes;
 
-import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
+import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
 import com.intellij.openapi.fileTypes.LanguageFileType;

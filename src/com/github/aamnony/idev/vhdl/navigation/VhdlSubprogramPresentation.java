@@ -1,6 +1,5 @@
 package com.github.aamnony.idev.vhdl.navigation;
 
-import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.psi.VhdlDesignator;
 import com.github.aamnony.idev.vhdl.psi.VhdlFunctionParameterConstantDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlFunctionParameterList;
@@ -11,13 +10,9 @@ import com.github.aamnony.idev.vhdl.psi.VhdlProcedureParameterConstantDeclaratio
 import com.github.aamnony.idev.vhdl.psi.VhdlProcedureParameterList;
 import com.github.aamnony.idev.vhdl.psi.VhdlProcedureParameterSignalDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlProcedureParameterVariableDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlRefname;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramBody;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramParameterFileDeclaration;
 import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramSpecification;
 import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiElement;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,9 +35,9 @@ public class VhdlSubprogramPresentation implements ItemPresentation {
     public String getPresentableText() {
         String name = getName();
         List<String> parametersTypes = getParametersTypes();
-        VhdlRefname returnValue = specs.getRefname();
-        if (returnValue != null) {
-            return String.format("%s(%s): %s", name, String.join(", ", parametersTypes), shrinkParenthesis(returnValue.getText()));
+        String type = specs.getType();
+        if (!type.equals("")) {
+            return String.format("%s(%s): %s", name, String.join(", ", parametersTypes), shrinkParenthesis(type));
         } else {
             return String.format("%s(%s)", name, String.join(", ", parametersTypes));
         }
@@ -56,14 +51,7 @@ public class VhdlSubprogramPresentation implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean unused) {
-        PsiElement parent = specs.getParent();
-        if (parent instanceof VhdlSubprogramDeclaration) {
-            return VhdlIcons.SUBPROGRAM;
-        } else if (parent instanceof VhdlSubprogramBody) {
-            return VhdlIcons.SUBPROGRAM_BODY;
-        } else {
-            throw new UnsupportedOperationException("Subprogram specification parent is of illegal type: " + parent.getClass());
-        }
+        return specs.getIcon(0);
     }
 
     @Nullable

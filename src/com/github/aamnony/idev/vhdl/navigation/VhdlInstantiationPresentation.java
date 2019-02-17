@@ -1,7 +1,5 @@
 package com.github.aamnony.idev.vhdl.navigation;
 
-import com.github.aamnony.idev.vhdl.VhdlIcons;
-import com.github.aamnony.idev.vhdl.VhdlIcons;
 import com.github.aamnony.idev.vhdl.psi.VhdlComponentInstantiationStatement;
 import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
 import com.github.aamnony.idev.vhdl.psi.VhdlInstantiatedUnit;
@@ -26,13 +24,8 @@ public class VhdlInstantiationPresentation implements ItemPresentation {
     @Override
     public String getPresentableText() {
         String instanceName = instantiation.getLabel().getIdentifier().getName();
-        Pair<String, String> componentName = getComponentName();
-
-        if (componentName.getSecond() != null) {
-            return String.format("%s: %s(%s)", instanceName, componentName.getFirst(), componentName.getSecond());
-        } else {
-            return String.format("%s: %s", instanceName, componentName.getFirst());
-        }
+        String type = instantiation.getType();
+        return String.format("%s: %s", instanceName, type);
     }
 
     @NotNull
@@ -64,7 +57,7 @@ public class VhdlInstantiationPresentation implements ItemPresentation {
 
     @Override
     public Icon getIcon(boolean unused) {
-        return VhdlIcons.INSTANTIATION;
+        return instantiation.getIcon(0);
     }
 
 }
