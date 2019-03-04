@@ -17,23 +17,7 @@ import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.ARCHITECTURE_BODY;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.COMMENT;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.CONFIGURATION_DECLARATION;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.CONTEXT_CLAUSE;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.ENTITY_DECLARATION;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.LIBRARY_CLAUSE;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.PACKAGE_BODY;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.PACKAGE_DECLARATION;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.T_COLON;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.T_COMMA;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.T_DOT;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.T_LEFT_BRACKET;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.T_LEFT_PAREN;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.T_RIGHT_BRACKET;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.T_RIGHT_PAREN;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.T_SEMICOLON;
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.USE_CLAUSE;
+import static com.github.aamnony.idev.vhdl.lang.VhdlTypes.*;
 
 public class VhdlFormattingModelBuilder implements FormattingModelBuilder {
 

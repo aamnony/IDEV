@@ -2,7 +2,7 @@ package com.github.aamnony.idev.vhdl.lang;
 
 import com.intellij.psi.tree.TokenSet;
 
-import static com.github.aamnony.idev.vhdl.psi.VhdlTypes.*;
+import static com.github.aamnony.idev.vhdl.lang.VhdlTypes.*;
 
 public class VhdlElementTypes {
     public static final TokenSet DECLARATIONS = TokenSet.create(
