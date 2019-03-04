@@ -1,9 +1,8 @@
 package com.github.aamnony.idev.vhdl.highlighting;
 
-import com.github.aamnony.idev.vhdl.psi.VhdlElementTypes;
-import com.github.aamnony.idev.vhdl.lexer.VhdlLexerAdapter;
-import com.github.aamnony.idev.vhdl.psi.VhdlElementTypes;
-import com.github.aamnony.idev.vhdl.psi.VhdlTypes;
+import com.github.aamnony.idev.vhdl.lang.VhdlElementTypes;
+import com.github.aamnony.idev.vhdl.lang.VhdlLexerAdapter;
+import com.github.aamnony.idev.vhdl.lang.VhdlTypes;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
@@ -13,7 +12,6 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.HighlighterColors.BAD_CHARACTER;
-import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
 public class VhdlSyntaxHighlighter extends SyntaxHighlighterBase {
 

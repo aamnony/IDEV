@@ -1,18 +1,12 @@
 package com.github.aamnony.idev.vhdl;
 
-import com.github.aamnony.idev.vhdl.psi.VhdlEntityDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
-import com.github.aamnony.idev.vhdl.psi.VhdlPackageDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlProcessStatement;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramBody;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlArchitectureBody;
-import com.github.aamnony.idev.vhdl.psi.VhdlEntityDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
-import com.github.aamnony.idev.vhdl.psi.VhdlPackageDeclaration;
-import com.github.aamnony.idev.vhdl.psi.VhdlProcessStatement;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramBody;
-import com.github.aamnony.idev.vhdl.psi.VhdlSubprogramDeclaration;
+import com.github.aamnony.idev.vhdl.lang.VhdlArchitectureBody;
+import com.github.aamnony.idev.vhdl.lang.VhdlEntityDeclaration;
+import com.github.aamnony.idev.vhdl.lang.VhdlIdentifier;
+import com.github.aamnony.idev.vhdl.lang.VhdlPackageDeclaration;
+import com.github.aamnony.idev.vhdl.lang.VhdlProcessStatement;
+import com.github.aamnony.idev.vhdl.lang.VhdlSubprogramBody;
+import com.github.aamnony.idev.vhdl.lang.VhdlSubprogramDeclaration;
 import com.intellij.psi.PsiElement;
 
 import java.util.Comparator;

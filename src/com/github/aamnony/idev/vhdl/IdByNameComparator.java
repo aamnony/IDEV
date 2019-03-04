@@ -1,7 +1,6 @@
 package com.github.aamnony.idev.vhdl;
 
-import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
-import com.github.aamnony.idev.vhdl.psi.VhdlIdentifier;
+import com.github.aamnony.idev.vhdl.lang.VhdlIdentifier;
 import com.intellij.codeInsight.completion.CompletionUtil;
 
 import java.util.Comparator;

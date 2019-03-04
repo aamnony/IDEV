@@ -1,8 +1,8 @@
 package com.github.aamnony.idev.vhdl.formatting;
 
+import com.github.aamnony.idev.vhdl.lang.VhdlElementTypes;
 import com.github.aamnony.idev.vhdl.lang.VhdlLanguage;
-import com.github.aamnony.idev.vhdl.psi.VhdlElementTypes;
-import com.github.aamnony.idev.vhdl.psi.VhdlTypes;
+import com.github.aamnony.idev.vhdl.lang.VhdlTypes;
 import com.intellij.formatting.ASTBlock;
 import com.intellij.formatting.Alignment;
 import com.intellij.formatting.Block;

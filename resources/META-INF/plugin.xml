@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.github.aamnony.idev</id>
-    <name>Editor for VHDL</name>
+    <name>IDEV</name>
     <version>0.1.0</version>
     <vendor email="aamnony@gmail.com" url="http://www.github.com/aamnony">aamnony</vendor>
 
@@ -27,22 +27,22 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileTypeFactory implementation="com.github.aamnony.idev.vhdl.fileTypes.VhdlFileTypeFactory" />
+        <fileTypeFactory implementation="com.github.aamnony.idev.vhdl.lang.VhdlFileTypeFactory" />
         <lang.parserDefinition language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.VhdlParserDefinition" />
         <lang.syntaxHighlighterFactory language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.highlighting.VhdlSyntaxHighlighterFactory" />
-        <colorSettingsPage implementation="com.github.aamnony.idev.vhdl.options.colors.VhdlColorSettingsPage"/>
-        <annotator language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.annotation.VhdlAnnotator" />
-        <lang.findUsagesProvider language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.findUsages.VhdlFindUsagesProvider" />
-        <psi.referenceContributor implementation="com.github.aamnony.idev.vhdl.psi.VhdlReferenceContributor" />
+        <colorSettingsPage implementation="com.github.aamnony.idev.vhdl.highlighting.VhdlColorSettingsPage"/>
+        <annotator language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.highlighting.VhdlAnnotator" />
+        <lang.findUsagesProvider language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.navigation.VhdlFindUsagesProvider" />
+        <psi.referenceContributor implementation="com.github.aamnony.idev.vhdl.navigation.VhdlReferenceContributor" />
         <lang.commenter language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.VhdlCommenter" />
         <lang.formatter language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.formatting.VhdlFormattingModelBuilder" />
-        <codeStyleSettingsProvider implementation="com.github.aamnony.idev.vhdl.psi.codeStyle.VhdlCodeStyleSettingsProvider"/>
-        <langCodeStyleSettingsProvider implementation="com.github.aamnony.idev.vhdl.psi.codeStyle.VhdlLanguageCodeStyleSettingsProvider"/>
-        <lang.psiStructureViewFactory language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.VhdlStructureViewFactory" />
-        <codeInsight.lineMarkerProvider language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.codeInsight.daemon.VhdlLineMarkerProvider" />
-        <lang.foldingBuilder language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.lang.folding.VhdlFoldingBuilder" />
-        <completion.contributor language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.codeInsight.completion.VhdlCompletionContributor"/>
-        <defaultLiveTemplatesProvider implementation="com.github.aamnony.idev.vhdl.codeInsight.template.VhdlTemplateProvider"/>
-        <liveTemplateContext implementation="com.github.aamnony.idev.vhdl.codeInsight.template.VhdlContext"/>
+        <codeStyleSettingsProvider implementation="com.github.aamnony.idev.vhdl.formatting.VhdlCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider implementation="com.github.aamnony.idev.vhdl.formatting.VhdlLanguageCodeStyleSettingsProvider"/>
+        <lang.psiStructureViewFactory language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.navigation.VhdlStructureViewFactory" />
+        <codeInsight.lineMarkerProvider language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.navigation.VhdlLineMarkerProvider" />
+        <lang.foldingBuilder language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.display.VhdlFoldingBuilder" />
+        <completion.contributor language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.completion.VhdlCompletionContributor"/>
+        <defaultLiveTemplatesProvider implementation="com.github.aamnony.idev.vhdl.completion.VhdlTemplateProvider"/>
+        <liveTemplateContext implementation="com.github.aamnony.idev.vhdl.completion.VhdlContext"/>
     </extensions>
 </idea-plugin>
