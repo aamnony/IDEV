@@ -339,11 +339,11 @@ component_declaration ::=
     methods=[getPresentation getIcon getType]
 }
 
+component_instantiation_map ::= generic_map_aspect? port_map_aspect?
+
 component_instantiation_statement ::=
-    label ':'
-        instantiated_unit
-            [ generic_map_aspect ]
-            [ port_map_aspect ] ';'
+    label ':' instantiated_unit
+        component_instantiation_map ';'
 {
     methods=[getPresentation getIcon getType]
 }
@@ -543,15 +543,18 @@ private function_parameter_declaration ::=
     | function_parameter_signal_declaration
     | subprogram_parameter_file_declaration
 
-function_parameter_list ::=
-    function_parameter_declaration ( ';' function_parameter_declaration )*
+function_parameter_list ::= function_parameter_declaration ( ';' function_parameter_declaration )*
+
+generate_statement_part ::= ( concurrent_statement )*
+
+generate_declarative_part ::= ( declarative_item )*
 
 generate_statement ::=
     label ':'
         generation_scheme 'generate'
-            [ ( declarative_item )*
+            [ generate_declarative_part
         'begin' ]
-            ( concurrent_statement )*
+            generate_statement_part
         'end' 'generate' [ label ] ';'
 {
     methods=[getPresentation getIcon getType]
@@ -565,7 +568,7 @@ generic_clause ::= 'generic' '(' generic_interface_list ')' ';'
 
 generic_interface_list ::= interface_generic_declaration ( ';' interface_generic_declaration )*
 
-generic_map_aspect ::= 'generic' 'map' aggregate
+generic_map_aspect ::= 'generic' 'map' '(' map_list ')'
 
 group_constituent ::= refname | character_literal
 
@@ -665,6 +668,8 @@ loop_statement ::=
             sequence_of_statements
         'end' 'loop' [ label ] ';'
 
+map_list ::= element_association ( ',' element_association )*
+
 mode ::= mode_simple | 'buffer' | 'linkage'
 
 private mode_simple ::= 'in' | 'out' | 'inout'
@@ -749,7 +754,7 @@ port_clause ::= 'port' '(' port_interface_list ')' ';'
 
 port_interface_list ::= interface_port_declaration ( ';' interface_port_declaration )*
 
-port_map_aspect ::= 'port' 'map' aggregate
+port_map_aspect ::= 'port' 'map' '(' map_list ')'
 
 private primary ::=
     refname ( '.' refname )*

@@ -12,7 +12,9 @@ import com.github.aamnony.idev.vhdl.lang.VhdlConstantDeclaration;
 import com.github.aamnony.idev.vhdl.lang.VhdlEntityDeclaration;
 import com.github.aamnony.idev.vhdl.lang.VhdlEntityHeader;
 import com.github.aamnony.idev.vhdl.lang.VhdlFile;
+import com.github.aamnony.idev.vhdl.lang.VhdlGenerateDeclarativePart;
 import com.github.aamnony.idev.vhdl.lang.VhdlGenerateStatement;
+import com.github.aamnony.idev.vhdl.lang.VhdlGenerateStatementPart;
 import com.github.aamnony.idev.vhdl.lang.VhdlGenericClause;
 import com.github.aamnony.idev.vhdl.lang.VhdlInterfaceGenericDeclaration;
 import com.github.aamnony.idev.vhdl.lang.VhdlInterfacePortDeclaration;
@@ -141,193 +143,202 @@ public class VhdlStructureViewElement implements StructureViewTreeElement, Sorta
 
     @NotNull
     private static TreeElement[] getChildren(VhdlFile element) {
+        List<TreeElement> children = new ArrayList<>(2);
+
         Collection<TreeElement> entities = getTreeElements(VhdlEntityDeclarationImpl.class, element);
         Collection<TreeElement> architectures = getTreeElements(VhdlArchitectureBodyImpl.class, element);
         Collection<TreeElement> packages = getTreeElements(VhdlPackageDeclarationImpl.class, element);
         Collection<TreeElement> packageBodies = getTreeElements(VhdlPackageBodyImpl.class, element);
-        List<TreeElement> children = new ArrayList<>(2);
         children.addAll(entities);
         children.addAll(architectures);
         children.addAll(packages);
         children.addAll(packageBodies);
+
         return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlEntityDeclaration element) {
-        VhdlEntityHeader entityHeader = element.getEntityHeader();
-        Collection<TreeElement> generics = getGenericTreeElements(entityHeader.getGenericClause());
-        Collection<TreeElement> ports = getPortTreeElements(entityHeader.getPortClause());
         List<TreeElement> children = new ArrayList<>(10);
-        children.addAll(generics);
-        children.addAll(ports);
+
+        VhdlEntityHeader header = element.getEntityHeader();
+        if (header != null) {
+            Collection<TreeElement> generics = getGenericTreeElements(header.getGenericClause());
+            Collection<TreeElement> ports = getPortTreeElements(header.getPortClause());
+            children.addAll(generics);
+            children.addAll(ports);
+        }
+
         return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlArchitectureBody element) {
+        List<TreeElement> children = new ArrayList<>(10);
+
         VhdlArchitectureDeclarativePart declarations = element.getArchitectureDeclarativePart();
-        Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
-        Collection<TreeElement> signals = getSignalTreeElements(declarations.getSignalDeclarationList());
-        Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
-                declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
-        );
-        Collection<TreeElement> components = getTreeElements(declarations.getComponentDeclarationList());
+        if (declarations != null) {
+            Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
+            Collection<TreeElement> signals = getSignalTreeElements(declarations.getSignalDeclarationList());
+            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList());
+            Collection<TreeElement> components = getTreeElements(declarations.getComponentDeclarationList());
+            children.addAll(constants);
+            children.addAll(signals);
+            children.addAll(subprograms);
+            children.addAll(components);
+        }
 
         VhdlArchitectureStatementPart statements = element.getArchitectureStatementPart();
-        Collection<TreeElement> instantiations = getTreeElements(statements.getComponentInstantiationStatementList());
-        Collection<TreeElement> processes = getTreeElements(statements.getProcessStatementList());
-        Collection<TreeElement> blocks = getTreeElements(statements.getBlockStatementList());
-        Collection<TreeElement> generates = getTreeElements(statements.getGenerateStatementList());
+        if (statements != null) {
+            Collection<TreeElement> instantiations = getTreeElements(statements.getComponentInstantiationStatementList());
+            Collection<TreeElement> processes = getTreeElements(statements.getProcessStatementList());
+            Collection<TreeElement> blocks = getTreeElements(statements.getBlockStatementList());
+            Collection<TreeElement> generates = getTreeElements(statements.getGenerateStatementList());
+            children.addAll(instantiations);
+            children.addAll(processes);
+            children.addAll(blocks);
+            children.addAll(generates);
+        }
 
-        List<TreeElement> children = new ArrayList<>(10);
-        children.addAll(constants);
-        children.addAll(signals);
-        children.addAll(subprograms);
-        children.addAll(components);
-        children.addAll(instantiations);
-        children.addAll(processes);
-        children.addAll(blocks);
-        children.addAll(generates);
         return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlPackageDeclaration element) {
+        List<TreeElement> children = new ArrayList<>(10);
+
         VhdlPackageDeclarativePart declarations = element.getPackageDeclarativePart();
         Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
         Collection<TreeElement> signals = getSignalTreeElements(declarations.getSignalDeclarationList());
-        Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
-                declarations.getSubprogramDeclarationList(), Collections.emptyList()
-        );
+        Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(declarations.getSubprogramDeclarationList(), Collections.emptyList());
         Collection<TreeElement> components = getTreeElements(declarations.getComponentDeclarationList());
-        List<TreeElement> children = new ArrayList<>(10);
         children.addAll(constants);
         children.addAll(signals);
         children.addAll(subprograms);
         children.addAll(components);
+
         return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlPackageBody element) {
+        List<TreeElement> children = new ArrayList<>(10);
+
         VhdlPackageBodyDeclarativePart declarations = element.getPackageBodyDeclarativePart();
         Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
-        Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
-                declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
-        );
-        List<TreeElement> children = new ArrayList<>(10);
+        Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList());
         children.addAll(constants);
         children.addAll(subprograms);
+
         return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlBlockStatement element) {
-        VhdlBlockHeader blockHeader = element.getBlockHeader();
-        Collection<TreeElement> generics = getGenericTreeElements(blockHeader.getGenericClause());
-        Collection<TreeElement> ports = getPortTreeElements(blockHeader.getPortClause());
+        List<TreeElement> children = new ArrayList<>(10);
+
+        VhdlBlockHeader header = element.getBlockHeader();
+        Collection<TreeElement> generics = getGenericTreeElements(header.getGenericClause());
+        Collection<TreeElement> ports = getPortTreeElements(header.getPortClause());
+        children.addAll(generics);
+        children.addAll(ports);
 
         VhdlBlockDeclarativePart declarations = element.getBlockDeclarativePart();
         Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
         Collection<TreeElement> signals = getSignalTreeElements(declarations.getSignalDeclarationList());
-        Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
-                declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
-        );
+        Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList());
         Collection<TreeElement> components = getTreeElements(declarations.getComponentDeclarationList());
+        children.addAll(constants);
+        children.addAll(signals);
+        children.addAll(subprograms);
+        children.addAll(components);
 
         VhdlBlockStatementPart statements = element.getBlockStatementPart();
         Collection<TreeElement> instantiations = getTreeElements(statements.getComponentInstantiationStatementList());
         Collection<TreeElement> processes = getTreeElements(statements.getProcessStatementList());
         Collection<TreeElement> blocks = getTreeElements(statements.getBlockStatementList());
         Collection<TreeElement> generates = getTreeElements(statements.getGenerateStatementList());
-
-        List<TreeElement> children = new ArrayList<>(10);
-        children.addAll(generics);
-        children.addAll(ports);
-        children.addAll(constants);
-        children.addAll(signals);
-        children.addAll(subprograms);
-        children.addAll(components);
         children.addAll(instantiations);
         children.addAll(processes);
         children.addAll(blocks);
         children.addAll(generates);
+
         return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlGenerateStatement element) {
-        Collection<TreeElement> constants = getConstantTreeElements(element.getConstantDeclarationList());
-        Collection<TreeElement> signals = getSignalTreeElements(element.getSignalDeclarationList());
-        Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
-                element.getSubprogramDeclarationList(), element.getSubprogramBodyList()
-        );
-        Collection<TreeElement> components = getTreeElements(element.getComponentDeclarationList());
-
-        Collection<TreeElement> instantiations = getTreeElements(element.getComponentInstantiationStatementList());
-        Collection<TreeElement> processes = getTreeElements(element.getProcessStatementList());
-        Collection<TreeElement> blocks = getTreeElements(element.getBlockStatementList());
-        Collection<TreeElement> generates = getTreeElements(element.getGenerateStatementList());
-
         List<TreeElement> children = new ArrayList<>(5);
-        children.addAll(constants);
-        children.addAll(signals);
-        children.addAll(subprograms);
-        children.addAll(components);
+
+        VhdlGenerateDeclarativePart declarations = element.getGenerateDeclarativePart();
+        if (declarations != null) {
+            Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
+            Collection<TreeElement> signals = getSignalTreeElements(declarations.getSignalDeclarationList());
+            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList());
+            Collection<TreeElement> components = getTreeElements(declarations.getComponentDeclarationList());
+            children.addAll(constants);
+            children.addAll(signals);
+            children.addAll(subprograms);
+            children.addAll(components);
+        }
+
+        VhdlGenerateStatementPart statements = element.getGenerateStatementPart();
+        Collection<TreeElement> instantiations = getTreeElements(statements.getComponentInstantiationStatementList());
+        Collection<TreeElement> processes = getTreeElements(statements.getProcessStatementList());
+        Collection<TreeElement> blocks = getTreeElements(statements.getBlockStatementList());
+        Collection<TreeElement> generates = getTreeElements(statements.getGenerateStatementList());
         children.addAll(instantiations);
         children.addAll(processes);
         children.addAll(blocks);
         children.addAll(generates);
+
         return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlProcessStatement element) {
+        List<TreeElement> children = new ArrayList<>(10);
+
         VhdlProcessDeclarativePart declarations = element.getProcessDeclarativePart();
         if (declarations != null) {
             Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
             Collection<TreeElement> variables = getVariableTreeElements(declarations.getVariableDeclarationList());
-            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
-                    declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
-            );
-            List<TreeElement> children = new ArrayList<>(10);
+            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList());
             children.addAll(constants);
             children.addAll(variables);
             children.addAll(subprograms);
-            return children.toArray(new TreeElement[0]);
-        } else {
-            return EMPTY_ARRAY;
         }
+
+        return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlSubprogramBody element) {
+        List<TreeElement> children = new ArrayList<>(3);
+
         VhdlSubprogramDeclarativePart declarations = element.getSubprogramDeclarativePart();
         if (declarations != null) {
             Collection<TreeElement> constants = getConstantTreeElements(declarations.getConstantDeclarationList());
             Collection<TreeElement> variables = getVariableTreeElements(declarations.getVariableDeclarationList());
-            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(
-                    declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList()
-            );
-            List<TreeElement> children = new ArrayList<>(3);
+            Collection<TreeElement> subprograms = getSubprogramSpecificationTreeElements(declarations.getSubprogramDeclarationList(), declarations.getSubprogramBodyList());
             children.addAll(constants);
             children.addAll(variables);
             children.addAll(subprograms);
-            return children.toArray(new TreeElement[0]);
-        } else {
-            return EMPTY_ARRAY;
         }
+
+        return children.toArray(new TreeElement[0]);
     }
 
     @NotNull
     private static TreeElement[] getChildren(VhdlComponentDeclaration element) {
+        List<TreeElement> children = new ArrayList<>(10);
+
         VhdlEntityHeader entityHeader = element.getEntityHeader();
         Collection<TreeElement> generics = getGenericTreeElements(entityHeader.getGenericClause());
         Collection<TreeElement> ports = getPortTreeElements(entityHeader.getPortClause());
-        List<TreeElement> children = new ArrayList<>(10);
         children.addAll(generics);
         children.addAll(ports);
+
         return children.toArray(new TreeElement[0]);
     }
 

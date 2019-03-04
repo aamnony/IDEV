@@ -49,7 +49,7 @@ class VhdlBlock implements ASTBlock {
 
     private static final TokenSet OBJECT_STATEMENT_BLOCKS = TokenSet.create(
             VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.BLOCK_STATEMENT_PART,
-            VhdlTypes.GENERATE_STATEMENT, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.AGGREGATE
+            VhdlTypes.GENERATE_STATEMENT, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.AGGREGATE, VhdlTypes.MAP_LIST
     );
     private static final TokenSet OBJECT_ASSIGNMENT_STATEMENT_TYPES = TokenSet.create(
             VhdlTypes.SIGNAL_ASSIGNMENT_STATEMENT, VhdlTypes.VARIABLE_ASSIGNMENT_STATEMENT, VhdlTypes.ELEMENT_ASSOCIATION
@@ -79,7 +79,9 @@ class VhdlBlock implements ASTBlock {
             VhdlTypes.PACKAGE_BODY_DECLARATIVE_PART, VhdlTypes.SUBPROGRAM_DECLARATIVE_PART,
             /*TODO: fix later: VhdlTypes.ENUMERATION_LIST,*/
             VhdlTypes.ELEMENT_DECLARATION, VhdlTypes.PROCEDURE_PARAMETER_LIST, VhdlTypes.FUNCTION_PARAMETER_LIST,
-            VhdlTypes.BLOCK_DECLARATIVE_PART, VhdlTypes.BLOCK_STATEMENT_PART
+            VhdlTypes.BLOCK_DECLARATIVE_PART, VhdlTypes.BLOCK_STATEMENT_PART, VhdlTypes.BLOCK_HEADER,
+            VhdlTypes.COMPONENT_INSTANTIATION_MAP, VhdlTypes.MAP_LIST,
+            VhdlTypes.GENERATE_DECLARATIVE_PART, VhdlTypes.GENERATE_STATEMENT_PART
     );
     private static final TokenSet LABEL_INDENTED_BLOCKS = TokenSet.create(VhdlTypes.LABEL);
     private static final TokenSet ALWAYS_WRAPPED_BLOCKS = TokenSet.create(
