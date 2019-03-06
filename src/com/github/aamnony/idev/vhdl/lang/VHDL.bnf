@@ -356,7 +356,7 @@ concurrent_assertion_statement ::= [ label ':' ] [ 'postponed' ] assertion ';'
 
 concurrent_procedure_call_statement ::= [ label ':' ] [ 'postponed' ] procedure_call ';'
 
-concurrent_signal_assignment_statement ::=
+private concurrent_signal_assignment_statement ::=
       [ label ':' ] [ 'postponed' ] conditional_signal_assignment
     | [ label ':' ] [ 'postponed' ] selected_signal_assignment
 
