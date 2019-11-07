@@ -64,7 +64,7 @@
     <template name="function"
         value="function $FUNC_NAME$($PARAMS$) return $RETURN_TYPE$ is&#10;    variable return_v : $RETURN_TYPE$;&#10;begin&#10;    $END$&#10;    return return_v;&#10;end function $FUNC_NAME$;"
         description="Inserts ''function'' implementation" toReformat="false" toShortenFQNames="true">
-        <variable name="FUNC_NAME" expression="&quot;my_func&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="FUNC_NAME" expression="&quot;my_function&quot;" defaultValue="" alwaysStopAt="true" />
         <variable name="PARAMS" expression="&quot;param : boolean&quot;" defaultValue="" alwaysStopAt="true" />
         <variable name="RETURN_TYPE" expression="&quot;integer&quot;" defaultValue="" alwaysStopAt="true" />
         <context>
@@ -73,7 +73,7 @@
     </template>
     <template name="procedure" value="procedure $PROC_NAME$($PARAM1$; $PARAM2$) is&#10;begin&#10;    $END$&#10;end procedure $PROC_NAME$;" description="Inserts ''procedure'' implementation"
         toReformat="false" toShortenFQNames="true">
-        <variable name="PROC_NAME" expression="&quot;my_func&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="PROC_NAME" expression="&quot;my_procedure&quot;" defaultValue="" alwaysStopAt="true" />
         <variable name="PARAM1" expression="&quot;input : in boolean&quot;" defaultValue="" alwaysStopAt="true" />
         <variable name="PARAM2" expression="&quot;output : out boolean&quot;" defaultValue="" alwaysStopAt="true" />
         <context>
