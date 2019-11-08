@@ -171,17 +171,22 @@ class VhdlBlock implements ASTBlock {
     @NotNull
     @Override
     public ChildAttributes getChildAttributes(final int newChildIndex) {
-        VhdlBlock childBlock = mySubBlocks.get(newChildIndex);
-        IElementType childType = childBlock.myNode.getElementType();
+        if (newChildIndex < mySubBlocks.size()) {
+            VhdlBlock childBlock = mySubBlocks.get(newChildIndex);
+            IElementType childType = childBlock.myNode.getElementType();
 
-        Indent childIndent = childBlock.myIndent;
-        Alignment childAlignment = childBlock.myAlignment;
+            Indent childIndent = childBlock.myIndent;
+            Alignment childAlignment = childBlock.myAlignment;
 
-        if (childType == VhdlTypes.T_END) {
-            childIndent = Indent.getNormalIndent();
+            if (childType == VhdlTypes.T_END) {
+                childIndent = Indent.getNormalIndent();
+            }
+
+            return new ChildAttributes(childIndent, childAlignment);
         }
-
-        return new ChildAttributes(childIndent, childAlignment);
+        else {
+            return new ChildAttributes(myIndent, myAlignment);
+        }
     }
 
     @Override
