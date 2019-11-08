@@ -119,4 +119,187 @@
             <option name="VHDL" value="true" />
         </context>
     </template>
+    <template name="assert" value="assert $COND$&#10;    report $ARCH_NAME$'instance_name &amp; &quot;$REPORT_MSG$&quot;&#10;    severity $SEVERITY$" description="Inserts ''assert'' statement"
+        toReformat="false" toShortenFQNames="true">
+        <variable name="ARCH_NAME" expression="enum(&quot;rtl&quot;, &quot;sim&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="COND" expression="&quot;false&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="REPORT_MSG" expression="&quot;Assertion Failed&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="SEVERITY" expression="enum(&quot;failure&quot;, &quot;error&quot;, &quot;warning&quot;, &quot;note&quot;)" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="report" value="report $ARCH_NAME$'instance_name &amp; &quot;$REPORT_MSG$&quot;&#10;    severity $SEVERITY$" description="Inserts ''report'' statement" toReformat="false"
+        toShortenFQNames="true">
+        <variable name="ARCH_NAME" expression="enum(&quot;rtl&quot;, &quot;sim&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="REPORT_MSG" expression="&quot;Assertion Failed&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="SEVERITY" expression="enum(&quot;failure&quot;, &quot;error&quot;, &quot;warning&quot;, &quot;note&quot;)" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="entity" value="entity $NAME$ is&#10;    $END$&#10;end entity $NAME$;" description="Inserts ''entity'' clause" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my_entity&quot;" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="port" value="port (&#10;    $END$&#10;);" description="Inserts ''port'' clause" toReformat="false" toShortenFQNames="true">
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="in" value="$NAME$ : in $TYPE$; $COMMENT$ $END$" description="Inserts ''in port'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="enum(&quot;clock&quot;, &quot;reset&quot;, &quot;enable&quot;, &quot;data&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE" expression="enum(&quot;std_logic&quot;, &quot;std_logic_vector&quot;, &quot;boolean&quot;, &quot;unsigned&quot;, &quot;signed&quot;, &quot;integer&quot;)" defaultValue=""
+            alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="out" value="$NAME$ : out $TYPE$; $COMMENT$ $END$" description="Inserts ''out port'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="enum(&quot;valid&quot;, &quot;data&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE" expression="enum(&quot;std_logic&quot;, &quot;std_logic_vector&quot;, &quot;boolean&quot;, &quot;unsigned&quot;, &quot;signed&quot;, &quot;integer&quot;)" defaultValue=""
+            alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="inout" value="$NAME$ : inout $TYPE$; $COMMENT$ $END$" description="Inserts ''inout port'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="enum(&quot;spi_mosi&quot;, &quot;spi_miso&quot;, &quot;i2c_clock&quot;, &quot;i2c_data&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE" expression="&quot;std_logic&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="buffer" value="$NAME$ : buffer $TYPE$; $COMMENT$ $END$" description="Inserts ''buffer port'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="enum(&quot;valid_b&quot;, &quot;data_b&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE" expression="enum(&quot;std_logic&quot;, &quot;std_logic_vector&quot;, &quot;boolean&quot;, &quot;unsigned&quot;, &quot;signed&quot;, &quot;integer&quot;)" defaultValue=""
+            alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="P" value="$NAME$ : $DIRECTION$ $TYPE$; $COMMENT$" description="Inserts ''port'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my_port&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="DIRECTION" expression="enum(&quot;in&quot;, &quot;out&quot;, &quot;inout&quot;, &quot;buffer&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE" expression="enum(&quot;std_logic&quot;, &quot;std_logic_vector&quot;, &quot;boolean&quot;, &quot;unsigned&quot;, &quot;signed&quot;, &quot;integer&quot;)" defaultValue=""
+            alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="generic" value="generic (&#10;    $END$&#10;);" description="Inserts ''generic'' clause" toReformat="false" toShortenFQNames="true">
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="G" value="$NAME$_g : $TYPE$ := $DEFAULT_VAL$; $COMMENT$" description="Inserts ''generic'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my_generic&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE"
+            expression="enum(&quot;integer&quot;, &quot;std_logic&quot;, &quot;std_logic_vector&quot;, &quot;boolean&quot;, &quot;time&quot;, &quot;unsigned&quot;, &quot;signed&quot;)" defaultValue=""
+            alwaysStopAt="true" />
+        <variable name="DEFAULT_VAL" expression="" defaultValue="" alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="architecture" value="architecture $NAME$ of $ENTITY_NAME$ is&#10;begin&#10;    $END$&#10;end architecture $NAME$;" description="Inserts ''architecture'' clause" toReformat="false"
+        toShortenFQNames="true">
+        <variable name="NAME" expression="enum(&quot;rtl&quot;, &quot;sim&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="ENTITY_NAME" expression="&quot;my_entity&quot;" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="constant" value="constant $NAME$_c : $TYPE$ := $DEFAULT_VAL$; $COMMENT$" description="Inserts ''constant'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my_const&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE"
+            expression="enum(&quot;integer&quot;, &quot;std_logic&quot;, &quot;std_logic_vector&quot;, &quot;boolean&quot;, &quot;time&quot;, &quot;unsigned&quot;, &quot;signed&quot;)" defaultValue=""
+            alwaysStopAt="true" />
+        <variable name="DEFAULT_VAL" expression="" defaultValue="" alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="signal" value="signal $NAME$ : $TYPE$; $COMMENT$" description="Inserts ''signal'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my_signal&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE" expression="enum(&quot;std_logic&quot;, &quot;std_logic_vector&quot;, &quot;boolean&quot;, &quot;unsigned&quot;, &quot;signed&quot;, &quot;integer&quot;)" defaultValue=""
+            alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="variable" value="variable $NAME$_v : $TYPE$; $COMMENT$" description="Inserts ''variable'' declaration" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my_var&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="TYPE" expression="enum(&quot;std_logic&quot;, &quot;std_logic_vector&quot;, &quot;boolean&quot;, &quot;unsigned&quot;, &quot;signed&quot;, &quot;integer&quot;)" defaultValue=""
+            alwaysStopAt="true" />
+        <variable name="COMMENT" expression="commentStart()" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="package" value="package $NAME$_pkg is&#10;    $END$&#10;end package $NAME$_pkg;" description="Inserts ''package'' clause" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my&quot;" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="body" value="package body $NAME$_pkg is&#10;    $END$&#10;end package body $NAME$_pkg;" description="Inserts ''package body'' clause" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my&quot;" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="block" value="$NAME$ : block is&#10;begin&#10;    $END$&#10;end block $NAME$;" description="Inserts ''block'' clause" toReformat="false" toShortenFQNames="true">
+        <variable name="NAME" expression="&quot;my_block&quot;" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="module"
+        value="library ieee;&#10;    use ieee.std_logic_1164.all;&#10;entity $ENTITY_NAME$ is&#10;    port (&#10;        clock : in std_logic$END$&#10;    );&#10;end entity $ENTITY_NAME$;&#10;&#10;architecture $ARCH_NAME$ of $ENTITY_NAME$ is&#10;begin&#10;    &#10;end architecture $ARCH_NAME$;"
+        description="Inserts module (entity + architecture)" toReformat="true" toShortenFQNames="true">
+        <variable name="ENTITY_NAME" expression="&quot;my_entity&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="ARCH_NAME" expression="enum(&quot;rtl&quot;, &quot;sim&quot;)" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="library" value="library $LIB$;&#10;$END$" description="Inserts ''library'' declaration" toReformat="true" toShortenFQNames="true">
+        <variable name="LIB" expression="enum(&quot;ieee&quot;, &quot;work&quot;)" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="use" value="use $LIB$.$PKG$.$USE$;$END$&#10;" description="Inserts ''use'' statement" toReformat="true" toShortenFQNames="true">
+        <variable name="LIB" expression="enum(&quot;ieee&quot;, &quot;work&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="PKG" expression="enum(&quot;std_logic_1164&quot;, &quot;numeric_std&quot;, &quot;std_logic_misc&quot;, &quot;version_pkg&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="USE" expression="&quot;all&quot;" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="ieee" value="use ieee.$PKG$.$USE$;$END$&#10;" description="Inserts ''use'' statement for IEEE library" toReformat="true" toShortenFQNames="true">
+        <variable name="PKG" expression="enum(&quot;std_logic_1164&quot;, &quot;numeric_std&quot;, &quot;std_logic_misc&quot;)" defaultValue="" alwaysStopAt="true" />
+        <variable name="USE" expression="&quot;all&quot;" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
+    <template name="work" value="use work.$PKG$.$USE$;$END$&#10;" description="Inserts ''use'' use statement for work library" toReformat="true" toShortenFQNames="true">
+        <variable name="PKG" expression="&quot;version_pkg&quot;" defaultValue="" alwaysStopAt="true" />
+        <variable name="USE" expression="&quot;all&quot;" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="VHDL" value="true" />
+        </context>
+    </template>
 </templateSet>
