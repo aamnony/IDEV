@@ -82,6 +82,14 @@ public class VhdlPsiTreeUtil {
                         break; // No need to search the file again.
                     }
                 }
+                VhdlEntityDeclaration[] entities = vhdlFile.findChildrenByClass(VhdlEntityDeclaration.class);
+                for (VhdlEntityDeclaration entity : entities) {
+                    VhdlIdentifier entityId = entity.getIdentifierList().get(0);
+                    if (IdByNameComparator.match(id, entityId)) {
+                        foundIds.add(entityId);
+                    }
+
+                }
             }
         }
     }
@@ -251,4 +259,16 @@ public class VhdlPsiTreeUtil {
         return null;
     }
 
+    public static VhdlEntityDeclaration getEntityDeclaration(PsiElement element) {
+        if (element != null) {
+            if (element instanceof VhdlEntityDeclaration) {
+                return (VhdlEntityDeclaration) element;
+            } else if (element instanceof VhdlFile) {
+                return null;
+            } else {
+                return getEntityDeclaration(element.getParent());
+            }
+        }
+        return null;
+    }
 }
