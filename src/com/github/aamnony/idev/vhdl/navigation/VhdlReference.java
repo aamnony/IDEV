@@ -1,8 +1,12 @@
 package com.github.aamnony.idev.vhdl.navigation;
 
 import com.github.aamnony.idev.vhdl.IdByScopeComparator;
+import com.github.aamnony.idev.vhdl.completion.VhdlEntityLookupElement;
+import com.github.aamnony.idev.vhdl.lang.VhdlElementFactory;
+import com.github.aamnony.idev.vhdl.lang.VhdlEntityDeclaration;
 import com.github.aamnony.idev.vhdl.lang.VhdlIdentifier;
 import com.github.aamnony.idev.vhdl.lang.VhdlPsiTreeUtil;
+import com.intellij.codeInsight.completion.InsertionContext;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.util.TextRange;
@@ -109,6 +113,14 @@ public class VhdlReference extends PsiReferenceBase<PsiNamedElement> {// impleme
                         .withIcon(ref.getIcon(0))
                         .withCaseSensitivity(false)
                         .withTypeText(ref.getType()));
+
+                // If the id is a reference to an entity declaration (TODO: also to a component declaration)
+                VhdlEntityDeclaration entity = VhdlPsiTreeUtil.getEntityDeclaration(ref);
+                if (entity != null) {
+                    variants.add(new VhdlEntityLookupElement(id, entity, true));
+                    variants.add(new VhdlEntityLookupElement(id, entity, false));
+                }
+
             }
         }
 

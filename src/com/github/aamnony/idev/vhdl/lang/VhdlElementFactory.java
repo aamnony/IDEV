@@ -24,7 +24,7 @@ public class VhdlElementFactory {
                 createFileFromText(name, VhdlFileType.INSTANCE, text);
     }
 
-    public static String createInstantiation(Project project, VhdlEntityDeclaration entity) {
+    public static String[] createInstantiation(Project project, VhdlEntityDeclaration entity, boolean useExplicitInstantiation) {
         // First, create the raw, non-formatted instantiation
         String entityName = entity.getIdentifierList().get(0).getName();
 
@@ -32,7 +32,7 @@ public class VhdlElementFactory {
 
 
         StringBuilder sb = new StringBuilder();
-        sb.append(entityName).append("_inst").append(':').append("entity work.").append(entityName).append('\n');
+        sb.append(entityName).append("_inst").append(':').append(useExplicitInstantiation ? "entity work." : "").append(entityName).append('\n');
 
         VhdlGenericClause genericClause = Objects.requireNonNull(entityHeader).getGenericClause();
         if (genericClause != null) {
@@ -77,7 +77,13 @@ public class VhdlElementFactory {
         VhdlArchitectureBody tempArch = (VhdlArchitectureBody) tempVhdlFile.getLastChild();
         VhdlComponentInstantiationStatement inst = Objects.requireNonNull(tempArch.getArchitectureStatementPart()).getComponentInstantiationStatementList().get(0);
 
-        return inst.getText();
+        if (useExplicitInstantiation) {
+            return new String[]{inst.getText()};
+        } else {
+            // Implicit instantiation requires a component declaration, lets create one and return it too.
+            String component = entity.getText().replace("entity", "component");
+            return new String[]{inst.getText(), component};
+        }
     }
 
     private static int getGenericCount(List<VhdlInterfaceGenericDeclaration> genericDeclarations) {

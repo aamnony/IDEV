@@ -271,4 +271,17 @@ public class VhdlPsiTreeUtil {
         }
         return null;
     }
+
+    public static VhdlArchitectureBody getArchitectureBody(PsiElement element) {
+        if (element != null) {
+            if (element instanceof VhdlArchitectureBody) {
+                return (VhdlArchitectureBody) element;
+            } else if (element instanceof VhdlFile) {
+                return null;
+            } else {
+                return getArchitectureBody(element.getParent());
+            }
+        }
+        return null;
+    }
 }
