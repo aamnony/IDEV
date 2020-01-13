@@ -2,18 +2,34 @@
     <id>com.github.aamnony.idev</id>
     <name>IDEV</name>
     <version>0.1.0</version>
-    <vendor email="aamnony@gmail.com" url="http://www.github.com/aamnony">aamnony</vendor>
+    <vendor email="aamnony@gmail.com" url="http://www.github.com/aamnony">Asaf Amnony</vendor>
 
-    <!--TODO: fill description-->
-    <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>
+        Adds support for VHDL.
+    </description>
 
-    <!--TODO: fill change notes-->
     <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+        <p>0.1.0</p>
+        <ul>
+        <li>Initial revision (VHDL only)</li>
+            <ul>
+            <li>PSI tree, lexer and parser</li>
+            <li>Syntax highlighting (static and dynamic)</li>
+            <li>Structure view</li>
+            <li>Icons</li>
+            <li>Line marker provider</li>
+            <li>Code folding - comments (non VHDL 2008) and context clauses</li>
+            <li>Code style settings</li>
+            <li>Color settings</li>
+            <li>Code indent and alignment</li>
+            <li>References</li>
+            <li>Live templates</li>
+            <li>File templates (module = entity + architecture)</li>
+            <li>Auto-complete - keywords, explicit instantiations, identifiers (have some bugs)</li>
+            <li>Partial annotator (very early, very custom)</li>
+            </li>
+            </ul>
+        </ul>
     ]]>
     </change-notes>
 
@@ -44,5 +60,12 @@
         <completion.contributor language="VHDL" implementationClass="com.github.aamnony.idev.vhdl.completion.VhdlCompletionContributor"/>
         <defaultLiveTemplatesProvider implementation="com.github.aamnony.idev.vhdl.completion.VhdlTemplateProvider"/>
         <liveTemplateContext implementation="com.github.aamnony.idev.vhdl.completion.VhdlContext"/>
+        <internalFileTemplate name="VhdlModule"/>
     </extensions>
+
+    <actions>
+        <action class="com.github.aamnony.idev.vhdl.project.CreateVhdlFileAction" id="com.github.aamnony.idev.vhdl.project.CreateVhdlFileAction" text="VHDL File">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+    </actions>
 </idea-plugin>
