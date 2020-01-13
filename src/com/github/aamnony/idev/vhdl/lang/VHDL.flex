@@ -20,9 +20,9 @@ WHITE_SPACE_CHAR = [\ \n\r\t\f]
 END_OF_LINE_COMMENT = ("--")[^\r\n]*
 
 //IDENTIFIER = [a-zA-Z_][a-zA-Z0-9_]*
-IDENTIFIER = [a-zA-Z]           // Starts with a letter.
-             (_?[a-zA-Z0-9]+)*  // Continues with groups of letters and digits, which are separated by a *single* underscore.
-                                // Ends with either a letter or a digit (not an underscore).
+IDENTIFIER = [a-zA-Z]             // Starts with a letter.
+             (?:_?[a-zA-Z0-9]+)*  // Continues with groups of letters and digits, which are separated by a *single* underscore.
+                                  // Ends with either a letter or a digit (not an underscore).
 
 REAL_LIT = // Based real, no exponent allowed.
            ([2-9]|(1[0-6])#      // Base, between 2-16.

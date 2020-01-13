@@ -1,0 +1,13 @@
+library ieee;
+    use ieee.std_logic_1164.all;
+
+entity ${NAME} is
+    port (
+        clock : in std_logic
+    );
+end entity ${NAME};
+
+architecture rtl of ${NAME} is
+begin
+
+end architecture rtl;
