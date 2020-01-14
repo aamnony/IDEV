@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.aamnony.idev</id>
     <name>IDEV</name>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <vendor email="aamnony@gmail.com" url="http://www.github.com/aamnony">Asaf Amnony</vendor>
 
     <description>
@@ -9,22 +9,8 @@
     </description>
 
     <change-notes><![CDATA[
-        <p>0.1.0 - Initial revision (VHDL only)</p>
         <ul>
-        <li>PSI tree, lexer and parser</li>
-        <li>Syntax highlighting (static and dynamic)</li>
-        <li>Structure view</li>
-        <li>Icons</li>
-        <li>Line marker provider</li>
-        <li>Code folding - comments (non VHDL 2008) and context clauses</li>
-        <li>Code style settings</li>
-        <li>Color settings</li>
-        <li>Code indent and alignment</li>
-        <li>References</li>
-        <li>Live templates</li>
-        <li>File templates (module = entity + architecture)</li>
-        <li>Auto-complete - keywords, explicit instantiations, identifiers (have some bugs)</li>
-        <li>Partial annotator (very early, very custom)</li>
+        <li>Added support for all JetBrains IDEs</li>
         </ul>
     ]]>
     </change-notes>
@@ -32,11 +18,7 @@
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="173.0" />
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
+    <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="com.github.aamnony.idev.vhdl.lang.VhdlFileTypeFactory" />
