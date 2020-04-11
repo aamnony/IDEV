@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.aamnony.idev</id>
     <name>IDEV</name>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <vendor email="aamnony@gmail.com" url="http://www.github.com/aamnony">Asaf Amnony</vendor>
 
     <description>
@@ -10,13 +10,14 @@
 
     <change-notes><![CDATA[
         <ul>
-        <li>Added support for all JetBrains IDEs</li>
+        <li>Reduced minimum build to 172</li>
+        <li>Fixed bugs: #26, #27</li>
         </ul>
     ]]>
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="173.0" />
+    <idea-version since-build="172.0" />
 
     <depends>com.intellij.modules.platform</depends>
 
