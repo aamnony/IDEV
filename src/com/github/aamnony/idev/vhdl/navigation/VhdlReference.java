@@ -2,11 +2,12 @@ package com.github.aamnony.idev.vhdl.navigation;
 
 import com.github.aamnony.idev.vhdl.IdByScopeComparator;
 import com.github.aamnony.idev.vhdl.completion.VhdlEntityLookupElement;
-import com.github.aamnony.idev.vhdl.lang.VhdlElementFactory;
 import com.github.aamnony.idev.vhdl.lang.VhdlEntityDeclaration;
+import com.github.aamnony.idev.vhdl.lang.VhdlGenericMapAspect;
 import com.github.aamnony.idev.vhdl.lang.VhdlIdentifier;
+import com.github.aamnony.idev.vhdl.lang.VhdlInterfaceGenericDeclaration;
+import com.github.aamnony.idev.vhdl.lang.VhdlInterfacePortDeclaration;
 import com.github.aamnony.idev.vhdl.lang.VhdlPsiTreeUtil;
-import com.intellij.codeInsight.completion.InsertionContext;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.util.TextRange;
@@ -58,6 +59,15 @@ public class VhdlReference extends PsiReferenceBase<PsiNamedElement> {// impleme
     @Override
     public PsiElement resolve() {
         VhdlIdentifier id = (VhdlIdentifier) getElement();
+        PsiElement mapAspect = VhdlPsiTreeUtil.getMapAspect(id);
+        if (mapAspect != null) {
+            if (VhdlPsiTreeUtil.isChoice(id)) {
+                String entityName = VhdlPsiTreeUtil.getEntityName(mapAspect);
+                return mapAspect instanceof VhdlGenericMapAspect
+                        ? VhdlPsiTreeUtil.getGenericDeclaration(entityName, id)
+                        : VhdlPsiTreeUtil.getPortDeclaration(entityName, id);
+            }
+        }
         if (!id.isDeclared()) {
             PsiElement[] scopes = id.getScopes();
             // This identifier is mentioned, we need to find the declared reference.

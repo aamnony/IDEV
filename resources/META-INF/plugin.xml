@@ -39,11 +39,20 @@
         <defaultLiveTemplatesProvider implementation="com.github.aamnony.idev.vhdl.completion.VhdlTemplateProvider"/>
         <liveTemplateContext implementation="com.github.aamnony.idev.vhdl.completion.VhdlContext"/>
         <internalFileTemplate name="VhdlModule"/>
+        <!--&lt;!&ndash; library &ndash;&gt;-->
+        <!--<library.type implementation="com.github.aamnony.idev.vhdl.project.VhdlLibraryType"/>-->
+        <!--<orderRootType implementation="com.github.aamnony.idev.vhdl.project.LibFileRootType" id="LIBRARY_FILE"-->
+            <!--order="FIRST"/>-->
+        <!--<OrderRootTypeUI key="LIBRARY_FILE"-->
+            <!--implementationClass="com.github.aamnony.idev.vhdl.project.LibFileRootTypeUIFactory"/>-->
     </extensions>
 
     <actions>
         <action class="com.github.aamnony.idev.vhdl.project.CreateVhdlFileAction" id="com.github.aamnony.idev.vhdl.project.CreateVhdlFileAction" text="VHDL File">
             <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+        <action class="com.github.aamnony.idev.vhdl.project.AddVhdlLibrariesAction" id="com.github.aamnony.idev.vhdl.project.AddVhdlLibrariesAction" text="VHDL Libraries">
+            <add-to-group group-id="NewGroup"/>
         </action>
     </actions>
 </idea-plugin>

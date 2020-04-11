@@ -259,6 +259,13 @@ public class VhdlPsiTreeUtil {
         return null;
     }
 
+    /**
+     * Gets the entity declaration which contains {@code element}.
+     *
+     * @param element The {@link PsiElement} to find the entity declaration of.
+     * @return The {@link VhdlEntityDeclaration} that contains {@code element}, or null if none is found.
+     */
+    @Nullable
     public static VhdlEntityDeclaration getEntityDeclaration(PsiElement element) {
         if (element != null) {
             if (element instanceof VhdlEntityDeclaration) {
@@ -272,6 +279,13 @@ public class VhdlPsiTreeUtil {
         return null;
     }
 
+    /**
+     * Gets the architecture body which contains {@code element}.
+     *
+     * @param element The {@link PsiElement} to find the architecture body of.
+     * @return The {@link VhdlArchitectureBody} that contains {@code element}, or null if none is found.
+     */
+    @Nullable
     public static VhdlArchitectureBody getArchitectureBody(PsiElement element) {
         if (element != null) {
             if (element instanceof VhdlArchitectureBody) {
@@ -280,6 +294,158 @@ public class VhdlPsiTreeUtil {
                 return null;
             } else {
                 return getArchitectureBody(element.getParent());
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the (generic or port) map aspect which contains {@code id}.
+     *
+     * @param id The {@link VhdlIdentifier} to find the map aspect of.
+     * @return The {@link VhdlGenericMapAspect}/{@link VhdlPortMapAspect} that contains {@code element}, or null if none is found.
+     */
+    @Nullable
+    public static PsiElement getMapAspect(VhdlIdentifier id) {
+        PsiElement parent = id.getParent();
+        while (!(parent instanceof VhdlFile)) {
+            if (parent instanceof VhdlGenericMapAspect) {
+                return parent;
+            } else if (parent instanceof VhdlPortMapAspect) {
+                return parent;
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
+
+    /**
+     * Gets the instantiated entity name of {@code mapAspect}.
+     *
+     * @param mapAspect The {@link VhdlGenericMapAspect}/{@link VhdlPortMapAspect} to find the entity name of.
+     * @return The instantiated entity name  that contains {@code mapAspect}, or null if none is found.
+     * @throws IllegalArgumentException if {@code mapAspect} is not {@link VhdlGenericMapAspect}/{@link VhdlPortMapAspect}.
+     */
+    @Nullable
+    public static String getEntityName(PsiElement mapAspect) {
+        if (!(mapAspect instanceof VhdlGenericMapAspect || mapAspect instanceof VhdlPortMapAspect)) {
+            throw new IllegalArgumentException("mapAspect must be either VhdlGenericMapAspect or VhdlPortMapAspect");
+        }
+
+        PsiElement parent = mapAspect.getParent();
+        while (!(parent instanceof VhdlFile)) {
+            if (parent instanceof VhdlComponentInstantiationStatement) {
+                VhdlComponentInstantiationStatement inst = (VhdlComponentInstantiationStatement) parent;
+                VhdlInstantiatedUnit unit = inst.getInstantiatedUnit();
+                VhdlSelectedName selectedName = unit.getSelectedName();
+                List<VhdlIdentifier> ids = unit.getIdentifierList();
+                return selectedName != null ? selectedName.getIdentifierList().get(1).getText() : ids.get(0).getName();
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
+
+    /**
+     * Checks whether or not {@code id} is part of a map aspect choice (left side or map assignment).
+     *
+     * @param id The {@link VhdlIdentifier} to check.
+     * @return {@code true} if {@code id} is part of a {@link VhdlGenericMapAspect}/{@link VhdlPortMapAspect} {@link VhdlChoice}.
+     * {@code false} otherwise
+     */
+    public static boolean isChoice(VhdlIdentifier id) {
+        PsiElement parent = id.getParent();
+        while (!(parent instanceof VhdlGenericMapAspect || parent instanceof VhdlPortMapAspect)) {
+            if (parent instanceof VhdlChoice) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
+    }
+
+    /**
+     * Gets the generic declaration of {@code id} inside the entity named {@code entityName}.
+     *
+     * @param entityName The name of the {@link VhdlEntityDeclaration} to search in.
+     * @param id         The {@link VhdlIdentifier} to look for.
+     * @return The {@link VhdlIdentifier} of the generic declaration that is named {@code id} , or null if none is found.
+     */
+    @Nullable
+    public static VhdlIdentifier getGenericDeclaration(String entityName, VhdlIdentifier id) {
+        Project project = id.getProject();
+        VhdlFile idFile = (VhdlFile) id.getContainingFile();
+
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(VhdlFileType.INSTANCE, GlobalSearchScope.allScope(project));
+
+        // Search other files in the project.
+        for (VirtualFile virtualFile : virtualFiles) {
+            VhdlFile vhdlFile = (VhdlFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (vhdlFile != null && vhdlFile != idFile) {
+                VhdlEntityDeclaration[] entities = vhdlFile.findChildrenByClass(VhdlEntityDeclaration.class);
+                for (VhdlEntityDeclaration entity : entities) {
+                    VhdlIdentifier entityId = entity.getIdentifierList().get(0);
+                    if (IdByNameComparator.match(entityId, entityName)) {
+                        List<VhdlInterfaceGenericDeclaration> generics = entity
+                                .getEntityHeader()
+                                .getGenericClause()
+                                .getGenericInterfaceList()
+                                .getInterfaceGenericDeclarationList();
+
+                        for (VhdlInterfaceGenericDeclaration generic : generics) {
+                            for (VhdlIdentifier genericId : generic.getIdentifierList().getIdentifierList()) {
+                                if (IdByNameComparator.match(genericId, id)) {
+                                    return genericId;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Gets the port declaration of {@code id} inside the entity named {@code entityName}.
+     *
+     * @param entityName The name of the {@link VhdlEntityDeclaration} to search in.
+     * @param id         The {@link VhdlIdentifier} to look for.
+     * @return The {@link VhdlIdentifier} of the port declaration that is named {@code id} , or null if none is found.
+     */
+    @Nullable
+    public static VhdlIdentifier getPortDeclaration(String entityName, VhdlIdentifier id) {
+        Project project = id.getProject();
+        VhdlFile idFile = (VhdlFile) id.getContainingFile();
+
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(VhdlFileType.INSTANCE, GlobalSearchScope.allScope(project));
+
+        // Search other files in the project.
+        for (VirtualFile virtualFile : virtualFiles) {
+            VhdlFile vhdlFile = (VhdlFile) PsiManager.getInstance(project).findFile(virtualFile);
+            if (vhdlFile != null && vhdlFile != idFile) {
+                VhdlEntityDeclaration[] entities = vhdlFile.findChildrenByClass(VhdlEntityDeclaration.class);
+                for (VhdlEntityDeclaration entity : entities) {
+                    VhdlIdentifier entityId = entity.getIdentifierList().get(0);
+                    if (IdByNameComparator.match(entityId, entityName)) {
+                        List<VhdlInterfacePortDeclaration> ports = entity
+                                .getEntityHeader()
+                                .getPortClause()
+                                .getPortInterfaceList()
+                                .getInterfacePortDeclarationList();
+
+                        for (VhdlInterfacePortDeclaration port : ports) {
+                            for (VhdlIdentifier portId : port.getIdentifierList().getIdentifierList()) {
+                                if (IdByNameComparator.match(portId, id)) {
+                                    return portId;
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
         }
         return null;

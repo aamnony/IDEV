@@ -34,4 +34,8 @@ public class IdByNameComparator implements Comparator<VhdlIdentifier> {
     public static boolean match(VhdlIdentifier id1, VhdlIdentifier id2) {
         return (id1 != id2) && (INSTANCE.compare(id1, id2) == 0);
     }
+
+    public static boolean match(VhdlIdentifier id, String string) {
+        return id.getText().equalsIgnoreCase(string);
+    }
 }
