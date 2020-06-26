@@ -247,6 +247,9 @@ assertion ::=
     'assert' condition
         [ 'report' expression ]
         [ 'severity' expression ]
+{
+    pin=1
+}
 
 assertion_statement ::= [ label ':' ] assertion ';'
 
@@ -255,12 +258,18 @@ association_element ::= [ formal_part '=>' ] actual_part
 association_list ::= association_element ( ',' association_element )*
 
 attribute_declaration ::= 'attribute' identifier ':' type_mark ';'
+{
+    pin=3
+}
 
 private attribute_designator ::= identifier | range_type
 
 attribute_name ::= suffix [ '(' actual_parameter_part ')' ] signature? "'" attribute_designator [ '(' expression ')' ]
 
 attribute_specification ::= 'attribute' attribute_designator 'of' entity_specification 'is' expression ';'
+{
+    pin=2
+}
 
 base_unit_declaration ::= identifier ';'
 
@@ -300,6 +309,7 @@ block_statement ::=
         'end' 'block' [ label ] ';'
 {
     methods=[getPresentation getIcon getType]
+    pin=3
 }
 
 block_statement_part ::= ( concurrent_statement )*
@@ -310,6 +320,9 @@ case_statement ::=
             case_statement_alternative
             ( case_statement_alternative )*
         'end' 'case'[ label ] ';'
+{
+    pin=2
+}
 
 case_statement_alternative ::=
     'when' choices '=>'
@@ -337,6 +350,7 @@ component_declaration ::=
     'end' 'component' identifier? ';'
 {
     methods=[getPresentation getIcon getType]
+    pin=1
 }
 
 component_instantiation_map ::= generic_map_aspect? port_map_aspect?
@@ -346,6 +360,7 @@ component_instantiation_statement ::=
         component_instantiation_map ';'
 {
     methods=[getPresentation getIcon getType]
+//    pin=3
 }
 
 component_specification ::= instantiation_list ':' refname
@@ -403,6 +418,7 @@ constant_declaration ::=
     'constant' identifier_list ':' subtype_indication [ ':=' expression ] ';'
 {
     methods=[getPresentation getIcon getType]
+    pin=1
 }
 
 constrained_array_definition ::= 'array' index_constraint 'of' subtype_indication
@@ -561,6 +577,7 @@ generate_statement ::=
         'end' 'generate' [ label ] ';'
 {
     methods=[getPresentation getIcon getType]
+    pin=4
 }
 
 generation_scheme ::=
@@ -605,6 +622,9 @@ if_statement ::=
         [ 'else'
             sequence_of_statements ]
         'end' 'if' [ label ] ';'
+{
+    pin=2
+}
 
 incomplete_type_declaration ::= 'type' identifier ';'
 
@@ -664,12 +684,18 @@ private literal ::=
 logical_name ::= identifier
 
 logical_name_list ::= logical_name ( ',' logical_name )*
+{
+    pin=1
+}
 
 loop_statement ::=
     [ label ':' ]
         [ iteration_scheme ] 'loop'
             sequence_of_statements
         'end' 'loop' [ label ] ';'
+{
+    pin=3
+}
 
 map_list ::= element_association ( ',' element_association )*
 
@@ -700,6 +726,7 @@ package_body ::=
     'end' [ 'package' 'body' ] identifier? ';'
 {
     methods=[getPresentation getIcon getType]
+//    pin=2
 }
 
 private package_body_declarative_item ::=
@@ -723,6 +750,7 @@ package_declaration ::=
     'end' [ 'package' ] identifier? ';'
 {
     methods=[getPresentation getIcon getType]
+//    pin=1
 }
 
 private package_declarative_item ::=
@@ -823,6 +851,7 @@ process_statement ::=
         'end' [ 'postponed' ] 'process' [ label ] ';'
 {
     methods=[getPresentation getIcon getType]
+    pin=3
 }
 
 qualified_expression ::=
@@ -867,6 +896,9 @@ private secondary_unit ::=
 secondary_unit_declaration ::= identifier '=' reallit ';'
 
 selected_name ::= identifier ( '.' suffix )+
+{
+    pin=1
+}
 
 private selected_signal_assignment ::=
     'with' expression 'select'
@@ -1005,12 +1037,19 @@ unconstrained_array_definition ::=
         'of' subtype_indication
 
 use_clause ::= 'use' selected_name ( ',' selected_name )* ';'
+{
+    pin=1
+}
 
 variable_assignment_statement ::= [ label ':' ] target ':=' expression ';'
+{
+    pin=3
+}
 
 variable_declaration ::= [ 'shared' ] 'variable' identifier_list ':' subtype_indication [ ':=' expression ] ';'
 {
     methods=[getPresentation getIcon getType]
+    pin=2
 }
 
 wait_statement ::= [ label ':' ] 'wait' [ sensitivity_clause ] [ condition_clause ] [ timeout_clause ] ';'
