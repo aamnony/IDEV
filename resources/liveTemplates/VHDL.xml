@@ -119,7 +119,7 @@
             <option name="VHDL" value="true" />
         </context>
     </template>
-    <template name="assert" value="assert $COND$&#10;    report $ARCH_NAME$'instance_name &amp; &quot;$REPORT_MSG$&quot;&#10;    severity $SEVERITY$" description="Inserts ''assert'' statement"
+    <template name="assert" value="assert $COND$&#10;    report $ARCH_NAME$'instance_name &amp; &quot;$REPORT_MSG$&quot;&#10;    severity $SEVERITY$;" description="Inserts ''assert'' statement"
         toReformat="false" toShortenFQNames="true">
         <variable name="ARCH_NAME" expression="enum(&quot;rtl&quot;, &quot;sim&quot;)" defaultValue="" alwaysStopAt="true" />
         <variable name="COND" expression="&quot;false&quot;" defaultValue="" alwaysStopAt="true" />
