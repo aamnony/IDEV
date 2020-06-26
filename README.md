@@ -7,6 +7,7 @@
 VHDL IDE, implemented as an IntelliJ plugin.
 
 ## Creating a Project
+<i>Needed for versions prior to 0.2.0.</i>
 ### Pycharm
 1. Create a new project like a regular Python project
 2. Navigate to: File &rarr; Settings &rarr; Project: <i>the-project-name</i> &rarr; Project Structure
