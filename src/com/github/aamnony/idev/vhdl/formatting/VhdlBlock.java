@@ -52,7 +52,8 @@ class VhdlBlock implements ASTBlock {
             VhdlTypes.GENERATE_STATEMENT, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.AGGREGATE, VhdlTypes.MAP_LIST
     );
     private static final TokenSet OBJECT_ASSIGNMENT_STATEMENT_TYPES = TokenSet.create(
-            VhdlTypes.SIGNAL_ASSIGNMENT_STATEMENT, VhdlTypes.VARIABLE_ASSIGNMENT_STATEMENT, VhdlTypes.ELEMENT_ASSOCIATION
+            VhdlTypes.SIGNAL_ASSIGNMENT_STATEMENT, VhdlTypes.CONCURRENT_SIGNAL_ASSIGNMENT_STATEMENT,
+            VhdlTypes.VARIABLE_ASSIGNMENT_STATEMENT, VhdlTypes.ELEMENT_ASSOCIATION
     );
     private static final TokenSet OBJECT_DECLARATION_BLOCKS = TokenSet.create(
             VhdlTypes.ARCHITECTURE_DECLARATIVE_PART, VhdlTypes.BLOCK_DECLARATIVE_PART, VhdlTypes.PACKAGE_DECLARATIVE_PART,
@@ -303,9 +304,9 @@ class VhdlBlock implements ASTBlock {
                 }
             }
         }
-        if (true /*myCommonSettings.ALIGN_ASSIGNMENT_STATEMENTS*/) {
+        if (myCommonSettings.ALIGN_SUBSEQUENT_SIMPLE_METHODS) {
             if (OBJECT_ASSIGNMENT_STATEMENT_TYPES.contains(myType)) {
-                if (VhdlElementTypes.ASSIGNMENT_OPERATORS.contains(myChildType)) {
+                if (VhdlElementTypes.ASSIGNMENT_OPERATORS.contains(myChildType) ) {
                     childAlignment = myParent.myListAlignments[0];
                 }
             } else if (myChildType == VhdlTypes.COMMENT) {

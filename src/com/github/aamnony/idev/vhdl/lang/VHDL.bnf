@@ -373,7 +373,10 @@ condition ::= expression
 
 condition_clause ::= 'until' condition
 
-conditional_signal_assignment ::= target '<=' options conditional_waveforms ';'
+private conditional_signal_assignment ::= target '<=' options conditional_waveforms ';'
+{
+    pin(".*")=2
+}
 
 conditional_waveforms ::=
     ( waveform 'when' condition 'else' )*
@@ -865,7 +868,7 @@ secondary_unit_declaration ::= identifier '=' reallit ';'
 
 selected_name ::= identifier ( '.' suffix )+
 
-selected_signal_assignment ::=
+private selected_signal_assignment ::=
     'with' expression 'select'
         target '<=' options selected_waveforms ';'
 

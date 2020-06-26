@@ -49,9 +49,11 @@ public class VhdlLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSett
                 consumer.renameStandardOption("SPACE_AROUND_MULTIPLICATIVE_OPERATORS", "Multiplicative operators (*, /, **)");
                 break;
             case WRAPPING_AND_BRACES_SETTINGS:
-                consumer.showStandardOptions("ALIGN_GROUP_FIELD_DECLARATIONS", "ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS");
+                consumer.showStandardOptions("ALIGN_GROUP_FIELD_DECLARATIONS", "ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS",
+                        "ALIGN_SUBSEQUENT_SIMPLE_METHODS");
                 consumer.renameStandardOption("ALIGN_GROUP_FIELD_DECLARATIONS", "Align ports & generics in columns");
                 consumer.renameStandardOption("ALIGN_CONSECUTIVE_VARIABLE_DECLARATIONS", "Align objects in columns");
+                consumer.renameStandardOption("ALIGN_SUBSEQUENT_SIMPLE_METHODS", "Align assignments in columns");
                 break;
         }
     }
