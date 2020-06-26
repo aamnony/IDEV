@@ -639,9 +639,9 @@ index_subtype_definition ::= type_mark [ 'range' '<>' ]
 indexed_name ::= suffix aggregate
 
 instantiated_unit ::=
-    [ 'component' ] {selected_name | identifier}
-    | 'entity' {selected_name | identifier} [ '(' identifier ')' ]
-    | 'configuration' {selected_name | identifier}
+    [ 'component' ] selected_name
+    | 'entity' selected_name [ '(' identifier ')' ]
+    | 'configuration' selected_name
 
 instantiation_list ::=
     label ( ',' label )*
@@ -684,9 +684,6 @@ private literal ::=
 logical_name ::= identifier
 
 logical_name_list ::= logical_name ( ',' logical_name )*
-{
-    pin=1
-}
 
 loop_statement ::=
     [ label ':' ]
@@ -895,7 +892,7 @@ private secondary_unit ::=
 
 secondary_unit_declaration ::= identifier '=' reallit ';'
 
-selected_name ::= identifier ( '.' suffix )+
+selected_name ::= identifier ( '.' suffix )*
 {
     pin=1
 }

@@ -159,22 +159,17 @@ public class VhdlPsiImplUtil {
 
     @NotNull
     public static String getType(VhdlComponentInstantiationStatement instantiation) {
-        String entityName;
-        String architectureName = null;
         VhdlInstantiatedUnit unit = instantiation.getInstantiatedUnit();
         VhdlSelectedName selectedName = unit.getSelectedName();
-        List<VhdlIdentifier> ids = unit.getIdentifierList();
-        if (selectedName != null) {
-            entityName = selectedName.getText();
-            if (ids.size() == 1) {
-                architectureName = ids.get(0).getName();
-            }
-        } else {
-            entityName = ids.get(0).getText();
-            if (ids.size() == 2) {
-                architectureName = ids.get(0).getName();
-            }
+        VhdlIdentifier architectureId = unit.getIdentifier();
+        List<VhdlIdentifier> entityIds = selectedName.getIdentifierList();
+
+        String entityName = entityIds.get(entityIds.size() - 1).getText();
+        String architectureName = null;
+        if (architectureId != null) {
+            architectureName = architectureId.getName();
         }
+
         if (architectureName != null) {
             return String.format("%s(%s)", entityName, architectureName);
         } else {

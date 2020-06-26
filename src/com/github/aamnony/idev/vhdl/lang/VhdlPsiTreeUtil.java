@@ -336,10 +336,8 @@ public class VhdlPsiTreeUtil {
         while (!(parent instanceof VhdlFile)) {
             if (parent instanceof VhdlComponentInstantiationStatement) {
                 VhdlComponentInstantiationStatement inst = (VhdlComponentInstantiationStatement) parent;
-                VhdlInstantiatedUnit unit = inst.getInstantiatedUnit();
-                VhdlSelectedName selectedName = unit.getSelectedName();
-                List<VhdlIdentifier> ids = unit.getIdentifierList();
-                return selectedName != null ? selectedName.getIdentifierList().get(1).getText() : ids.get(0).getName();
+                List<VhdlIdentifier> entityIds = inst.getInstantiatedUnit().getSelectedName().getIdentifierList();
+                return entityIds.get(entityIds.size() - 1).getText();
             }
             parent = parent.getParent();
         }

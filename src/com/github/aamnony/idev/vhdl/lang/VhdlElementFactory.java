@@ -81,7 +81,7 @@ public class VhdlElementFactory {
             return new String[]{inst.getText()};
         } else {
             // Implicit instantiation requires a component declaration, lets create one and return it too.
-            String component = entity.getText().replace("entity", "component");
+            String component = entity.getText().replaceAll("\\bentity\\b", "component") + "\n\n";
             return new String[]{inst.getText(), component};
         }
     }

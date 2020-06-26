@@ -28,27 +28,6 @@ public class VhdlInstantiationPresentation implements ItemPresentation {
         return String.format("%s: %s", instanceName, type);
     }
 
-    @NotNull
-    private Pair<String, String> getComponentName() {
-        String entityName;
-        String architectureName = null;
-        VhdlInstantiatedUnit unit = instantiation.getInstantiatedUnit();
-        VhdlSelectedName selectedName = unit.getSelectedName();
-        List<VhdlIdentifier> ids = unit.getIdentifierList();
-        if (selectedName != null) {
-            entityName = selectedName.getText();
-            if (ids.size() == 1) {
-                architectureName = ids.get(0).getName();
-            }
-        } else {
-            entityName = ids.get(0).getName();
-            if (ids.size() == 2) {
-                architectureName = ids.get(0).getName();
-            }
-        }
-        return new Pair<>(entityName, architectureName);
-    }
-
     @Nullable
     @Override
     public String getLocationString() {
