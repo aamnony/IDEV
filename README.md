@@ -16,7 +16,7 @@ VHDL IDE, implemented as an IntelliJ plugin.
 
 ### Intellij IDEA
 1. Create a new Java project, without a template
-1.1. Feel free to rename (or even delete) the <i>src</i> directory
+   1. Feel free to rename (or even delete) the <i>src</i> directory
 2. Navigate to: File &rarr; Project Structure &rarr; Project Settings &rarr; Modules &rarr; Sources
 3. Click: Add Content Root
 4. Navigate to a folder or JAR containing IEEE and Standard VHDL libraries and click OK twice
