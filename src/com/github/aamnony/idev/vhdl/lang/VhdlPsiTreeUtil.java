@@ -448,4 +448,22 @@ public class VhdlPsiTreeUtil {
         }
         return null;
     }
+
+    /**
+     * Gets the component declaration which contains {@code id}.
+     *
+     * @param id The {@link VhdlIdentifier} to find the component declaration of.
+     * @return The {@link VhdlComponentDeclaration} that contains {@code element}, or null if none is found.
+     */
+    @Nullable
+    public static VhdlComponentDeclaration getComponentDeclaration(VhdlIdentifier id) {
+        PsiElement parent = id.getParent();
+        while (!(parent instanceof VhdlFile)) {
+            if (parent instanceof VhdlComponentDeclaration) {
+                return (VhdlComponentDeclaration) parent;
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
 }

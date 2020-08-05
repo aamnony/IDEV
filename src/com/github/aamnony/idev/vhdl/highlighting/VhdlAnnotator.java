@@ -640,12 +640,24 @@ public class VhdlAnnotator implements Annotator {
      * @throws DeclarationAlreadyExistsException If {@code declarationId} is already declared in its scope.
      */
     private void checkDuplicates(@NotNull VhdlIdentifier declarationId) throws DeclarationAlreadyExistsException {
-        PsiElement[] scopes = declarationId.getScopes();
+        VhdlComponentDeclaration componentDeclaration = VhdlPsiTreeUtil.getComponentDeclaration(declarationId);
+        PsiElement[] scopes;
+        if (componentDeclaration == null) {
+            scopes = declarationId.getScopes();
+        } else {
+            // Inside a component declaration, ignore other scopes to prevent false alarms
+            scopes = new PsiElement[]{componentDeclaration};
+        }
+
         PsiElement declaration = null;
         List<VhdlIdentifier> ids = new ArrayList<>();
         VhdlPsiTreeUtil.findIdentifiers(declarationId, ids, scopes);
         for (VhdlIdentifier id : ids) {
             if (id.isDeclared()) {
+                if (VhdlPsiTreeUtil.getComponentDeclaration(id) != null) {
+                    // Inside a component declaration, ignore it
+                    continue;
+                }
                 declaration = id.getParent();
                 if (declaration instanceof VhdlIdentifierList) {
                     declaration = declaration.getParent();
@@ -654,9 +666,17 @@ public class VhdlAnnotator implements Annotator {
             }
         }
         if (declaration instanceof VhdlInterfaceGenericDeclaration) {
-            throw new DeclarationAlreadyExistsException("Generic named '%s' already exists in this entity", declarationId);
+            if (componentDeclaration == null) {
+                throw new DeclarationAlreadyExistsException("Generic named '%s' already exists in this entity", declarationId);
+            } else {
+                throw new DeclarationAlreadyExistsException("Generic named '%s' already exists in this component", declarationId);
+            }
         } else if (declaration instanceof VhdlInterfacePortDeclaration) {
-            throw new DeclarationAlreadyExistsException("Port named '%s' already exists in this entity", declarationId);
+            if (componentDeclaration == null) {
+                throw new DeclarationAlreadyExistsException("Port named '%s' already exists in this entity", declarationId);
+            } else {
+                throw new DeclarationAlreadyExistsException("Port named '%s' already exists in this component", declarationId);
+            }
         } else if (declaration instanceof VhdlConstantDeclaration) {
             throw new DeclarationAlreadyExistsException("Constant named '%s' already exists in this scope", declarationId);
         } else if (declaration instanceof VhdlSignalDeclaration) {
