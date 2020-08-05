@@ -526,6 +526,7 @@ expression ::=
     | relation 'nor' relation
     | relation
     | discrete_range
+    | 'open'
 
 factor ::=
     primary [ '**' primary ]
