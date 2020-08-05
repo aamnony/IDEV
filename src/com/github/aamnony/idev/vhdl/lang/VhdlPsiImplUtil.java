@@ -462,27 +462,45 @@ public class VhdlPsiImplUtil {
 
     @NotNull
     public static PsiElement[] getScopes(@NotNull VhdlIdentifier id) {
-        /*
-        Walk up the PSI tree until reaching one of the following, and return it, unless stated otherwise:
-            - entity
-            - architecture - return it and its entity
-            - subprogram declaration
-            - subprogram body
-            - package
-            - package body - return it and its package. (TODO: handle not full declarations [e.g. constant without value in package, which the body sets)
-            - process
+        return getScopes(id, false);
+    }
 
-         */
+    /**
+     * Walk up the PSI tree until reaching one of the following, and return it, unless stated otherwise:
+     * <ul>
+     * <li>entity</li>
+     * <li>architecture declarative part - only if {@code stopOnArchitecturePart == true}, otherwise continue up until hitting architecture</li>
+     * <li>architecture statement part - only if {@code stopOnArchitecturePart == true}, otherwise continue up until hitting architecture</li>
+     * <li>architecture - return it and its entity</li>
+     * <li>component declaration</li>
+     * <li>subprogram declaration - continue up until hitting a design unit</li>
+     * <li>subprogram body - continue up until hitting a design unit</li>
+     * <li>package</li>
+     * <li>package body - return it and its package. (TODO: handle non-full declarations [e.g. constant without value in package, which the body sets)</li>
+     * <li>process - continue up until hitting the architecture</li>
+     * </ul>
+     */
+    @NotNull
+    public static PsiElement[] getScopes(@NotNull VhdlIdentifier id, boolean stopOnArchitecturePart) {
         LinkedList<PsiElement> scopes = new LinkedList<>();
         PsiElement parent = id.getParent();
         while (!(parent instanceof VhdlFile)) {
             if (parent instanceof VhdlEntityDeclaration) {
                 scopes.add(parent); // Entity.
                 break;
+            } else if (stopOnArchitecturePart && parent instanceof VhdlArchitectureDeclarativePart) {
+                scopes.add(parent); // Architecture declarative part.
+                break;
+            } else if (stopOnArchitecturePart && parent instanceof VhdlArchitectureStatementPart) {
+                scopes.add(parent); // Architecture statements part.
+                break;
             } else if (parent instanceof VhdlArchitectureBody) {
                 VhdlEntityDeclaration entity = VhdlPsiTreeUtil.getEntity(((VhdlArchitectureBody) parent));
                 scopes.add(parent); // Architecture.
                 scopes.add(entity); // Entity.
+                break;
+            } else if (parent instanceof VhdlComponentDeclaration) {
+                scopes.add(parent); // Component declaration.
                 break;
             } else if (parent instanceof VhdlSubprogramDeclaration) {
                 scopes.add(parent); // Subprogram, continue up until hitting a design unit.

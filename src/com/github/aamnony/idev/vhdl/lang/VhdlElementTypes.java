@@ -2,6 +2,9 @@ package com.github.aamnony.idev.vhdl.lang;
 
 import com.intellij.psi.tree.TokenSet;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class VhdlElementTypes {
     public static final TokenSet DECLARATIONS = TokenSet.create(
             VhdlTypes.ALIAS_DECLARATION, VhdlTypes.ATTRIBUTE_DECLARATION, VhdlTypes.COMPONENT_DECLARATION, VhdlTypes.CONSTANT_DECLARATION,
@@ -66,4 +69,73 @@ public class VhdlElementTypes {
     public static final TokenSet OPERATORS_2 = TokenSet.create(VhdlTypes.T_APOSTROPHE);
     public static final TokenSet PARENTHESES = TokenSet.create(VhdlTypes.T_LEFT_PAREN, VhdlTypes.T_RIGHT_PAREN);
     public static final TokenSet SEMICOLONS = TokenSet.create(VhdlTypes.T_COLON, VhdlTypes.T_SEMICOLON);
+
+    public static final Map<Class, TokenSet> SCOPE_DEPENDENT_KEYWORDS;
+
+    static {
+        SCOPE_DEPENDENT_KEYWORDS = new HashMap<>();
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlEntityDeclaration.class, TokenSet.create(
+                VhdlTypes.T_PORT, VhdlTypes.T_GENERIC, VhdlTypes.T_CONSTANT, VhdlTypes.T_SIGNAL,
+                VhdlTypes.T_BUFFER, VhdlTypes.T_IN, VhdlTypes.T_INOUT, VhdlTypes.T_LINKAGE, VhdlTypes.T_OUT,
+                VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlArchitectureDeclarativePart.class, TokenSet.create(
+                VhdlTypes.T_PORT, VhdlTypes.T_GENERIC, VhdlTypes.T_CONSTANT, VhdlTypes.T_SIGNAL,
+                VhdlTypes.T_COMPONENT, VhdlTypes.T_FUNCTION, VhdlTypes.T_PROCEDURE, VhdlTypes.T_ENTITY, VhdlTypes.T_ARCHITECTURE,
+                VhdlTypes.T_ATTRIBUTE, VhdlTypes.T_FILE, VhdlTypes.T_ALIAS, VhdlTypes.T_END, VhdlTypes.T_IS,
+                VhdlTypes.T_TYPE, VhdlTypes.T_SUBTYPE, VhdlTypes.T_ARRAY, VhdlTypes.T_RECORD,
+                VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlArchitectureStatementPart.class, TokenSet.create(
+                VhdlTypes.T_COMPONENT, VhdlTypes.T_FUNCTION, VhdlTypes.T_PROCEDURE, VhdlTypes.T_ENTITY, VhdlTypes.T_ARCHITECTURE,
+                VhdlTypes.T_END, VhdlTypes.T_IS, VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS,
+                VhdlTypes.T_IF, VhdlTypes.T_THEN, VhdlTypes.T_ELSE, VhdlTypes.T_ELSIF, VhdlTypes.T_BEGIN,
+                VhdlTypes.T_MAP, VhdlTypes.T_BLOCK, VhdlTypes.T_ASSERT, VhdlTypes.T_REPORT,
+                VhdlTypes.T_SEVERITY, VhdlTypes.T_WHEN, VhdlTypes.T_GENERATE, VhdlTypes.T_FOR
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlComponentDeclaration.class, TokenSet.create(
+                VhdlTypes.T_PORT, VhdlTypes.T_GENERIC, VhdlTypes.T_CONSTANT, VhdlTypes.T_SIGNAL,
+                VhdlTypes.T_BUFFER, VhdlTypes.T_IN, VhdlTypes.T_INOUT, VhdlTypes.T_LINKAGE, VhdlTypes.T_OUT,
+                VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlSubprogramDeclaration.class, TokenSet.create(
+                VhdlTypes.T_VARIABLE, VhdlTypes.T_CONSTANT, VhdlTypes.T_ATTRIBUTE,
+                VhdlTypes.T_ALIAS, VhdlTypes.T_FILE, VhdlTypes.T_IS,
+                VhdlTypes.T_TYPE, VhdlTypes.T_SUBTYPE, VhdlTypes.T_ARRAY, VhdlTypes.T_RECORD,
+                VhdlTypes.T_IN, VhdlTypes.T_INOUT, VhdlTypes.T_LINKAGE, VhdlTypes.T_OUT,
+                VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlSubprogramBody.class, TokenSet.create(
+                VhdlTypes.T_END, VhdlTypes.T_IS, VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS,
+                VhdlTypes.T_IF, VhdlTypes.T_THEN, VhdlTypes.T_ELSE, VhdlTypes.T_ELSIF, VhdlTypes.T_BEGIN,
+                VhdlTypes.T_MAP, VhdlTypes.T_BLOCK, VhdlTypes.T_ASSERT, VhdlTypes.T_REPORT,
+                VhdlTypes.T_SEVERITY, VhdlTypes.T_WHEN, VhdlTypes.T_FOR, VhdlTypes.T_WHILE,
+                VhdlTypes.T_NEXT, VhdlTypes.T_LOOP
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlPackageDeclaration.class, TokenSet.create(
+                VhdlTypes.T_PORT, VhdlTypes.T_GENERIC, VhdlTypes.T_CONSTANT, VhdlTypes.T_SIGNAL, VhdlTypes.T_VARIABLE,
+                VhdlTypes.T_COMPONENT, VhdlTypes.T_FUNCTION, VhdlTypes.T_PROCEDURE, VhdlTypes.T_ENTITY, VhdlTypes.T_ARCHITECTURE,
+                VhdlTypes.T_ATTRIBUTE, VhdlTypes.T_FILE, VhdlTypes.T_ALIAS, VhdlTypes.T_END, VhdlTypes.T_IS,
+                VhdlTypes.T_TYPE, VhdlTypes.T_SUBTYPE, VhdlTypes.T_ARRAY, VhdlTypes.T_RECORD,
+                VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlPackageBody.class, TokenSet.create(
+                VhdlTypes.T_PORT, VhdlTypes.T_GENERIC, VhdlTypes.T_CONSTANT, VhdlTypes.T_SIGNAL, VhdlTypes.T_VARIABLE,
+                VhdlTypes.T_COMPONENT, VhdlTypes.T_FUNCTION, VhdlTypes.T_PROCEDURE, VhdlTypes.T_ENTITY, VhdlTypes.T_ARCHITECTURE,
+                VhdlTypes.T_ATTRIBUTE, VhdlTypes.T_FILE, VhdlTypes.T_ALIAS, VhdlTypes.T_END, VhdlTypes.T_IS,
+                VhdlTypes.T_TYPE, VhdlTypes.T_SUBTYPE, VhdlTypes.T_ARRAY, VhdlTypes.T_RECORD,
+                VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlProcessStatement.class, TokenSet.create(
+                VhdlTypes.T_VARIABLE, VhdlTypes.T_CONSTANT, VhdlTypes.T_ATTRIBUTE,
+                VhdlTypes.T_ALIAS, VhdlTypes.T_FILE, VhdlTypes.T_IS,
+                VhdlTypes.T_TYPE, VhdlTypes.T_SUBTYPE, VhdlTypes.T_ARRAY, VhdlTypes.T_RECORD,
+                VhdlTypes.T_END, VhdlTypes.T_IS, VhdlTypes.T_RANGE, VhdlTypes.T_TO, VhdlTypes.T_DOWNTO, VhdlTypes.T_OTHERS,
+                VhdlTypes.T_IF, VhdlTypes.T_THEN, VhdlTypes.T_ELSE, VhdlTypes.T_ELSIF, VhdlTypes.T_BEGIN,
+                VhdlTypes.T_MAP, VhdlTypes.T_BLOCK, VhdlTypes.T_ASSERT, VhdlTypes.T_REPORT,
+                VhdlTypes.T_SEVERITY, VhdlTypes.T_WHEN, VhdlTypes.T_FOR, VhdlTypes.T_WHILE,
+                VhdlTypes.T_NEXT, VhdlTypes.T_LOOP
+        ));
+        SCOPE_DEPENDENT_KEYWORDS.put(VhdlFile.class, KEYWORDS);
+    }
 }
