@@ -21,7 +21,7 @@ VHDL IDE, implemented as an IntelliJ plugin.
 3. Click: Add Content Root
 4. Navigate to a folder or JAR containing IEEE and Standard VHDL libraries and click OK twice
 
-
+#
 [![Help Wanted](https://img.shields.io/badge/-HELP%20WANTED-blue)](https://github.com/aamnony/IDEV/issues)
 
 # Building
