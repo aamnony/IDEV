@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.aamnony.idev</id>
     <name>IDEV</name>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <vendor email="aamnony@gmail.com" url="http://www.github.com/aamnony">Asaf Amnony</vendor>
 
     <description>
@@ -10,10 +10,7 @@
 
     <change-notes><![CDATA[
         <ul>
-        <li>Make identifier completion work in many places</li>
-        <li>Add VHDL libraries (IEEE, STD) as to External Libraries for all projects automatically</li>
-        <li>Fix assert, implicit component instantiation templates</li>
-        <li>Fix issues: #21, #28, #29, #25 (partially)</li>
+        <li>Fix issues: #22, #30, #31, #32, #33</li>
         </ul>
     ]]>
     </change-notes>
