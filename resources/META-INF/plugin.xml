@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.github.aamnony.idev</id>
     <name>IDEV</name>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <vendor email="aamnony@gmail.com" url="http://www.github.com/aamnony">Asaf Amnony</vendor>
 
     <description>
@@ -10,7 +10,7 @@
 
     <change-notes><![CDATA[
         <ul>
-        <li>Fix issues: #22, #30, #31, #32, #33</li>
+        <li>Fix issues: #35</li>
         </ul>
     ]]>
     </change-notes>

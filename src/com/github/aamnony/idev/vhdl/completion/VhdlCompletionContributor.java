@@ -28,7 +28,10 @@ public class VhdlCompletionContributor extends CompletionContributor {
                 if (id instanceof VhdlIdentifier) {
                     PsiElement[] scopes = ((VhdlIdentifier) id).getScopes();
                     // Use first scope only to determine the keywords, because it should be the most restricting (inner-most scope).
-                    keywords = VhdlElementTypes.SCOPE_DEPENDENT_KEYWORDS.get(scopes[0].getClass().getInterfaces()[0]);
+                    TokenSet scopeDependentKeywords = VhdlElementTypes.SCOPE_DEPENDENT_KEYWORDS.get(scopes[0].getClass().getInterfaces()[0]);
+                    if (scopeDependentKeywords != null) {
+                        keywords = scopeDependentKeywords;
+                    }
                 }
                 for (IElementType keyword : keywords.getTypes()) {
                     resultSet.addElement(LookupElementBuilder.create(keyword.toString().toLowerCase()).withCaseSensitivity(false));
