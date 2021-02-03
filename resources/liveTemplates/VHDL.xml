@@ -5,6 +5,22 @@
             <option name="VHDL" value="true" />
         </context>
     </template>
+    <template name="testbench" value="library ieee;&#10;    use ieee.std_logic_1164.all;&#10;&#10;entity $ENTITY_NAME$_tb is&#10;end $ENTITY_NAME$_tb;&#10;&#10;architecture $ENTITY_NAME$_tb_arch of $ENTITY_NAME$_tb is&#10;    component $ENTITY_NAME$ is&#10;    port(&#10;        $ALL_INPUTS$ : in $IN_TYPE$;&#10;        $ALL_OUTPUTS$ : out $OUT_TYPE$&#10;    );&#10;    end component;&#10;    &#10;    signal $ALL_INPUTS_INTERNAL_SIGNALS$ : $IN_TYPE$;&#10;    signal $ALL_OUTPUTS_INTERNAL_SIGNALS$ : $OUT_TYPE$;&#10;    constant $CLK_PERIOD$ :time := 2 ns;&#10;    &#10;begin&#10;    comp: $ENTITY_NAME$ port map ($PORT_MAPPING$);    &#10;    &#10;    test0: process&#10;    begin&#10;        $CLOCK_NAME$_tb &lt;= '0';&#10;        wait for $CLK_PERIOD$/4;&#10;        $CLOCK_NAME$_tb &lt;= '1';&#10;        wait for $CLK_PERIOD$/4;&#10;        $CLOCK_NAME$_tb &lt;= '0';&#10;        wait for $CLK_PERIOD$/4;&#10;        $CLOCK_NAME$_tb &lt;= '1';&#10;        wait for $CLK_PERIOD$/4;&#10;     end process;&#10;    &#10;end architecture $ENTITY_NAME$_tb_arch;" description="" toReformat="false" toShortenFQNames="true">
+      <variable name="ENTITY_NAME" expression="variableOfType(&quot;entity&quot;)" defaultValue="" alwaysStopAt="true" />
+      <variable name="ALL_INPUTS" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="IN_TYPE" expression="" defaultValue="&quot;std_logic&quot;" alwaysStopAt="true" />
+      <variable name="ALL_OUTPUTS" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="OUT_TYPE" expression="" defaultValue="&quot;std_logic&quot;" alwaysStopAt="true" />
+      <variable name="ALL_INPUTS_INTERNAL_SIGNALS" expression="regularExpression(ALL_INPUTS,&quot;(\\w+)&quot;,&quot;$1_tb&quot;)" defaultValue="" alwaysStopAt="true" />
+      <variable name="ALL_OUTPUTS_INTERNAL_SIGNALS" expression="regularExpression(ALL_OUTPUTS,&quot;(\\w+)&quot;,&quot;$1_tb&quot;)" defaultValue="" alwaysStopAt="true" />
+      <variable name="CLK_PERIOD" expression="" defaultValue="&quot;clock_period&quot;" alwaysStopAt="true" />
+      <variable name="PORT_MAPPING" expression="concat(regularExpression(ALL_INPUTS,&quot;(\\w+)&quot;,&quot;$1 =&gt; $1_tb&quot;),&quot;, &quot;,regularExpression(ALL_OUTPUTS,&quot;(\\w+)&quot;,&quot;$1 =&gt; $1_tb&quot;))" defaultValue="" alwaysStopAt="true" />
+      <variable name="CLOCK_NAME" expression="" defaultValue="&quot;clock&quot;" alwaysStopAt="true" />
+      <context>
+        <option name="GROOVY" value="true" />
+        <option name="VHDL" value="true" />
+      </context>
+    </template>
     <template name="if" value="if $COND$ then&#10;    $END$" description="Inserts ''if' branch" toReformat="false" toShortenFQNames="true">
         <variable name="COND" expression="&quot;true&quot;" defaultValue="" alwaysStopAt="true" />
         <context>
