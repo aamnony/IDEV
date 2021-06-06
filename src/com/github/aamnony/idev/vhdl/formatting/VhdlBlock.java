@@ -48,7 +48,7 @@ class VhdlBlock implements ASTBlock {
     private Boolean myIncomplete;
 
     private static final TokenSet OBJECT_STATEMENT_BLOCKS = TokenSet.create(
-            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.BLOCK_STATEMENT_PART,
+            VhdlTypes.ARCHITECTURE_STATEMENT_PART, VhdlTypes.BLOCK_STATEMENT_PART, VhdlTypes.GENERATE_STATEMENT_PART,
             VhdlTypes.GENERATE_STATEMENT, VhdlTypes.SEQUENCE_OF_STATEMENTS, VhdlTypes.AGGREGATE, VhdlTypes.MAP_LIST
     );
     private static final TokenSet OBJECT_ASSIGNMENT_STATEMENT_TYPES = TokenSet.create(
