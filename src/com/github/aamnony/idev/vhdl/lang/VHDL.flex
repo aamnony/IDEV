@@ -43,6 +43,8 @@ STR_LIT = [\"]           // Starts with quote (").
           ([^\"]|\"\")*  // Contains nothing (empty string) or non-quote characters or escaped quotes ("").
           [\"]           // Ends with quote (").
 
+CHAR_CAST = character'\(('[^']')\)  // Workaround for character casting (really hacky, but found no other way)
+
 %state IN_VALUE
 %state IN_KEY_VALUE_SEPARATOR
 
@@ -246,6 +248,7 @@ STR_LIT = [\"]           // Starts with quote (").
     {HEX_LIT}                      { return VhdlTypes.HEXLIT; }
 
     {STR_LIT}                      { return VhdlTypes.STRLIT; }
+    {CHAR_CAST}                    { return VhdlTypes.CHARCAST; }
     {IDENTIFIER}                   { return VhdlTypes.ID; }
     {END_OF_LINE_COMMENT}          { return VhdlTypes.COMMENT; }
     {REAL_LIT}                     { return VhdlTypes.REALLIT;}

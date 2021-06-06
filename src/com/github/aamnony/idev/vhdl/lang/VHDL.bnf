@@ -1040,7 +1040,7 @@ use_clause ::= 'use' selected_name ( ',' selected_name )* ';'
     pin=1
 }
 
-variable_assignment_statement ::= [ label ':' ] target ':=' expression ';'
+variable_assignment_statement ::= [ label ':' ] target ':=' ( charcast | expression ) ';'
 {
     pin=3
 }
