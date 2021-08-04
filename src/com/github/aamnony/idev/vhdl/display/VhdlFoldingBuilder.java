@@ -36,7 +36,8 @@ public class VhdlFoldingBuilder extends FoldingBuilderEx {
     public String getPlaceholderText(@NotNull ASTNode node) {
         PsiElement psi = node.getPsi();
         if (psi instanceof PsiComment) {
-            return "-- ...";
+            return getFirstNonBlankAndNonSeperatorLine(psi.getText());
+//            return "-- ...";
         } else if (psi instanceof VhdlContextClause) {
             return "use ...";
         }
@@ -89,6 +90,19 @@ public class VhdlFoldingBuilder extends FoldingBuilderEx {
             commentStart = null;
             commentEnd = null;
         }
+    }
+
+    @Nullable
+    private static String getFirstNonBlankAndNonSeperatorLine(String text) {
+        String[] lines = text.split("\n");
+        for (String line : lines) {
+            for (int i = 0; i < line.length(); i++) {
+                if (Character.isAlphabetic(line.charAt(i))){
+                    return line;
+                }
+            }
+        }
+        return lines[0];
     }
 }
 

@@ -2,7 +2,6 @@ package com.github.aamnony.idev.vhdl.display;
 
 import com.github.aamnony.idev.utils.StringUtils;
 import com.github.aamnony.idev.vhdl.lang.VhdlConstantDeclaration;
-import com.github.aamnony.idev.vhdl.lang.VhdlExpression;
 import com.intellij.navigation.ItemPresentation;
 
 import org.jetbrains.annotations.Nullable;
@@ -22,13 +21,13 @@ public class VhdlConstantPresentation implements ItemPresentation {
     public String getPresentableText() {
         String name = declaration.getIdentifierList().getIdentifierList().get(index).getName();
         String type = StringUtils.shrinkParenthesis(declaration.getType());
-        VhdlExpression expression = declaration.getExpression();
+//        VhdlExpression expression = declaration.getExpression();
 
-        if (expression == null) {
-            return String.format("%s: %s", name, type);
-        } else {
-            return String.format("%s: %s = %s", name, type, expression.getText());
-        }
+//        if (expression == null) {
+        return String.format("%s: %s", name, type);
+//        } else {
+//            return String.format("%s: %s = %s", name, type, expression.getText());
+//        }
     }
 
     @Nullable

@@ -62,7 +62,7 @@ public class VhdlSubprogramPresentation implements ItemPresentation {
             return identifier.getName();
         }
         VhdlOperatorSymbol operatorSymbol = designator.getOperatorSymbol();
-        return operatorSymbol != null ? operatorSymbol.getStringLiteral().getText() : null;
+        return operatorSymbol != null ? operatorSymbol.getText() : null;
     }
 
     @NotNull
